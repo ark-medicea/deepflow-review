@@ -3,1270 +3,467 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Concept 5: Executive Suite — DeepFlow</title>
+<title>DeepFlow — Concept 05: Executive Suite</title>
 <style>
-  /* ── Reset & Base ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --navy: #1B2A4A;
-    --navy-light: #2C3E6B;
-    --navy-muted: #4A5578;
-    --blue-accent: #3B6CB4;
-    --blue-light: #E8EFF8;
-    --blue-subtle: #F4F7FC;
-    --text-primary: #1B2A4A;
-    --text-secondary: #5A6580;
-    --text-muted: #8892A8;
-    --border: #D8DDE8;
-    --border-light: #E8ECF2;
-    --bg-white: #FFFFFF;
-    --bg-panel: #F7F8FB;
-    --bg-hover: #EEF1F7;
+    --l1:#3BB8D6; --l2:#14B8A6; --l3:#F59E0B; --l4:#F97316; --l5:#E74C8A;
+    --bg:#F8F9FA; --surface:#FFFFFF; --text:#1A1A2E; --muted:#6B7280;
+    --border:#E5E7EB; --accent:#1A1A2E; --accent2:#7C3AED;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',-apple-system,system-ui,sans-serif; background:var(--bg); color:var(--text); }
+  .app { width:1200px; margin:0 auto; min-height:100vh; }
 
-    --green: #1A8754;
-    --green-bg: #E8F5EE;
-    --green-border: #B8DFC9;
-    --amber: #B8860B;
-    --amber-bg: #FFF8E7;
-    --amber-border: #E8D5A0;
-    --red: #C0392B;
-    --red-bg: #FDECEA;
-    --red-border: #E8B4AE;
-    --blue-status: #2E6BB5;
-    --blue-status-bg: #E8F0FA;
-    --blue-status-border: #A8C8E8;
-    --grey-status: #7B8694;
-    --grey-status-bg: #F0F2F5;
-    --grey-status-border: #D0D5DD;
+  .tab-bar { display:flex; gap:2px; background:var(--surface); border-bottom:2px solid var(--border); padding:0 24px; position:sticky; top:0; z-index:100; }
+  .tab-bar .tab { padding:14px 24px; font-size:13px; font-weight:600; cursor:pointer; border-bottom:2px solid transparent; color:var(--muted); transition:all .2s; margin-bottom:-2px; }
+  .tab-bar .tab:hover { color:var(--text); }
+  .tab-bar .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .tab-bar .concept-label { margin-left:auto; align-self:center; font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
 
-    --gold: #B8860B;
-    --gold-border: #D4A843;
-    --gold-bg: #FFF8E1;
+  .view { display:none; } .view.active { display:block; }
 
-    --font: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-    --font-mono: 'SF Mono', 'Consolas', 'Monaco', monospace;
-  }
+  .header { display:flex; align-items:center; gap:12px; padding:16px 24px; background:var(--surface); border-bottom:1px solid var(--border); }
+  .header .back { width:28px; height:28px; border-radius:6px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px; color:var(--muted); }
+  .header .title { font-size:16px; font-weight:700; }
+  .header .badge { padding:3px 10px; border-radius:99px; font-size:11px; font-weight:600; }
+  .breadcrumb { display:flex; gap:6px; align-items:center; padding:10px 24px; background:var(--surface); border-bottom:1px solid var(--border); font-size:12px; }
+  .breadcrumb .level-badge { padding:2px 8px; border-radius:4px; color:#fff; font-weight:700; font-size:10px; }
 
-  body {
-    font-family: var(--font);
-    color: var(--text-primary);
-    background: #E8ECF2;
-    line-height: 1.5;
-    font-size: 13px;
-    -webkit-font-smoothing: antialiased;
-  }
+  .filter-bar { display:flex; gap:6px; padding:10px 24px; background:var(--surface); border-bottom:1px solid var(--border); }
+  .filter-pill { padding:4px 12px; border-radius:6px; font-size:11px; font-weight:600; border:1px solid var(--border); background:var(--surface); cursor:pointer; color:var(--muted); }
+  .filter-pill.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 
-  /* ── Outer Frame ── */
-  .frame {
-    width: 1200px;
-    margin: 24px auto;
-    background: var(--bg-white);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(27, 42, 74, 0.08);
-  }
+  /* GRAPH */
+  .graph-container { position:relative; background:#F3F4F6; height:620px; overflow:hidden; }
 
-  /* ── Concept Title Bar ── */
-  .concept-bar {
-    background: var(--navy);
-    color: #C8D0E0;
-    font-size: 11px;
-    padding: 6px 16px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .concept-bar span { color: #8896B8; }
+  .node { position:absolute; display:flex; flex-direction:column; align-items:center; cursor:pointer; transition:transform .15s; z-index:2; }
+  .node:hover { transform:scale(1.05); }
+  .node-hex { width:68px; height:68px; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .node-hex-border { width:78px; height:78px; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; align-items:center; justify-content:center; }
+  .node-circle { width:68px; height:68px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .node-circle-border { width:78px; height:78px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .node-label { margin-top:8px; font-size:11px; font-weight:600; text-align:center; max-width:120px; line-height:1.3; }
+  .node-sub { font-size:10px; color:var(--muted); margin-top:2px; }
+  .node-status { position:absolute; top:-4px; right:-4px; width:18px; height:18px; border-radius:50%; border:2px solid #F3F4F6; display:flex; align-items:center; justify-content:center; font-size:9px; color:#fff; z-index:3; }
 
-  /* ── Top Governance Bar ── */
-  .gov-bar {
-    background: var(--bg-panel);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .gov-bar-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .gov-bar-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--navy);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .gov-bar-title svg { flex-shrink: 0; }
-  .gov-badges {
-    display: flex;
-    gap: 8px;
-  }
-  .gov-badge {
-    font-size: 10.5px;
-    padding: 3px 10px;
-    border-radius: 3px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .gov-badge.active {
-    background: var(--green-bg);
-    color: var(--green);
-    border: 1px solid var(--green-border);
-  }
-  .gov-badge.compliance {
-    background: var(--blue-status-bg);
-    color: var(--blue-status);
-    border: 1px solid var(--blue-status-border);
-  }
-  .gov-badge.review {
-    background: var(--bg-panel);
-    color: var(--text-secondary);
-    border: 1px solid var(--border);
-  }
-  .gov-bar-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .gov-bar-user {
-    font-size: 12px;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .avatar-sm {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--navy-light);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-  }
+  /* Approval badge for governance */
+  .approval-badge { position:absolute; bottom:-2px; left:50%; transform:translateX(-50%); background:var(--accent2); color:#fff; font-size:8px; font-weight:800; padding:1px 6px; border-radius:4px; white-space:nowrap; letter-spacing:.3px; }
+  .approval-badge.approved { background:#16A34A; }
+  .approval-badge.pending { background:#F59E0B; }
+  .approval-badge.required { background:#DC2626; }
 
-  /* ── Progress Bar ── */
-  .progress-strip {
-    background: var(--bg-white);
-    border-bottom: 1px solid var(--border);
-    padding: 8px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .progress-label {
-    font-size: 12px;
-    color: var(--text-secondary);
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  .progress-label strong { color: var(--navy); }
-  .progress-track {
-    flex: 1;
-    height: 6px;
-    background: var(--grey-status-bg);
-    border-radius: 3px;
-    overflow: hidden;
-    display: flex;
-  }
-  .progress-fill-complete {
-    background: var(--green);
-    width: 44.4%;
-    transition: width 0.3s;
-  }
-  .progress-fill-pending {
-    background: var(--amber);
-    width: 22.2%;
-    transition: width 0.3s;
-  }
-  .progress-stats {
-    font-size: 11px;
-    color: var(--text-muted);
-    white-space: nowrap;
-    display: flex;
-    gap: 12px;
-  }
-  .progress-stats .stat { display: flex; align-items: center; gap: 4px; }
-  .stat-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .stat-dot.complete { background: var(--green); }
-  .stat-dot.pending { background: var(--amber); }
-  .stat-dot.remaining { background: var(--grey-status); }
-  .progress-due {
-    font-size: 11px;
-    color: var(--text-secondary);
-    font-weight: 600;
-    white-space: nowrap;
-  }
+  .mini-nav { position:absolute; bottom:16px; left:16px; background:var(--surface); border-radius:12px; padding:12px; box-shadow:0 2px 12px rgba(0,0,0,.06); border:1px solid var(--border); }
+  .mini-nav .nav-title { font-size:10px; font-weight:700; color:var(--muted); margin-bottom:8px; text-transform:uppercase; }
+  .mini-nav .layer { display:flex; align-items:center; gap:6px; margin-bottom:4px; font-size:10px; font-weight:600; color:var(--muted); }
+  .mini-nav .layer-dot { width:10px; height:10px; border-radius:3px; }
+  .mini-nav .layer.current { color:var(--text); font-weight:800; }
 
-  /* ── Three-Column Layout ── */
-  .main-layout {
-    display: flex;
-    height: 620px;
-  }
+  .graph-toolbar { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:4px; background:var(--surface); border-radius:10px; padding:6px; box-shadow:0 2px 12px rgba(0,0,0,.06); border:1px solid var(--border); }
+  .graph-toolbar button { width:32px; height:32px; border:none; background:none; border-radius:6px; cursor:pointer; font-size:14px; color:var(--muted); }
+  .graph-toolbar button:hover { background:#F3F4F6; color:var(--text); }
 
-  /* ── Left Panel: Audit Trail ── */
-  .panel-left {
-    width: 260px;
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    background: var(--bg-white);
-  }
-  .panel-header {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: var(--navy-muted);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--bg-panel);
-  }
-  .panel-header .count {
-    background: var(--border);
-    color: var(--text-secondary);
-    font-size: 10px;
-    padding: 1px 6px;
-    border-radius: 8px;
-    font-weight: 600;
-  }
-  .audit-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 4px 0;
-  }
-  .audit-entry {
-    padding: 8px 14px;
-    border-bottom: 1px solid var(--border-light);
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .audit-entry:hover { background: var(--bg-hover); }
-  .audit-time {
-    font-size: 10px;
-    font-family: var(--font-mono);
-    color: var(--text-muted);
-    margin-bottom: 2px;
-  }
-  .audit-text {
-    font-size: 12px;
-    color: var(--text-primary);
-    line-height: 1.4;
-  }
-  .audit-text .actor { font-weight: 600; }
-  .audit-text .task-ref { color: var(--blue-accent); font-weight: 500; }
-  .audit-entry .audit-tag {
-    display: inline-block;
-    font-size: 9.5px;
-    padding: 1px 6px;
-    border-radius: 2px;
-    font-weight: 600;
-    margin-top: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-  }
-  .tag-approved { background: var(--green-bg); color: var(--green); }
-  .tag-completed { background: var(--blue-status-bg); color: var(--blue-status); }
-  .tag-started { background: var(--grey-status-bg); color: var(--grey-status); }
-  .tag-submitted { background: var(--amber-bg); color: var(--amber); }
-  .tag-rejected { background: var(--red-bg); color: var(--red); }
-  .tag-assigned { background: #F0E8FA; color: #6B3FA0; }
-  .tag-system { background: var(--bg-panel); color: var(--text-muted); }
+  /* Governance stats bar */
+  .gov-bar { display:flex; gap:24px; padding:10px 24px; background:var(--surface); border-bottom:1px solid var(--border); font-size:11px; }
+  .gov-stat { display:flex; align-items:center; gap:6px; }
+  .gov-stat .num { font-size:16px; font-weight:800; }
+  .gov-stat .label { color:var(--muted); }
 
-  /* ── Centre Panel: Graph ── */
-  .panel-centre {
-    flex: 1;
-    background: var(--blue-subtle);
-    position: relative;
-    overflow: hidden;
-  }
-  .graph-area {
-    width: 100%;
-    height: 100%;
-    position: relative;
-  }
+  /* WORKSPACE */
+  .workspace-layout { display:grid; grid-template-columns:1fr 320px 300px; height:620px; background:var(--surface); }
+  .ws-panel { border-right:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; }
+  .ws-panel:last-child { border-right:none; }
+  .ws-panel-header { display:flex; align-items:center; gap:8px; padding:10px 16px; border-bottom:1px solid var(--border); font-size:12px; font-weight:700; color:var(--muted); }
+  .ws-tab-bar { display:flex; gap:0; border-bottom:1px solid var(--border); }
+  .ws-tab { padding:8px 12px; font-size:11px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; }
+  .ws-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .ws-content { flex:1; overflow-y:auto; padding:16px; }
 
-  /* SVG connections */
-  .graph-area svg.connections {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .connections line {
-    stroke: var(--border);
-    stroke-width: 1.5;
-    stroke-dasharray: 6 3;
-  }
-  .connections line.active {
-    stroke: var(--blue-accent);
-    stroke-dasharray: none;
-    stroke-width: 2;
-  }
-  .connections .arrow {
-    fill: var(--border);
-  }
-  .connections .arrow.active {
-    fill: var(--blue-accent);
-  }
+  .output-toolbar { display:flex; gap:4px; padding:8px 16px; border-bottom:1px solid var(--border); }
+  .output-toolbar button { padding:2px 6px; border:none; background:none; font-size:12px; cursor:pointer; color:var(--muted); font-weight:600; }
+  .preview-toggle { margin-left:auto; display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); }
+  .toggle-switch { width:32px; height:18px; background:var(--accent2); border-radius:99px; position:relative; cursor:pointer; }
+  .toggle-switch::after { content:''; width:14px; height:14px; border-radius:50%; background:#fff; position:absolute; top:2px; right:2px; }
+  .version-nav { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); font-weight:600; }
+  .version-nav button { width:20px; height:20px; border:1px solid var(--border); border-radius:4px; background:none; cursor:pointer; font-size:10px; color:var(--muted); }
 
-  /* ── Graph Node Cards ── */
-  .node-card {
-    position: absolute;
-    width: 170px;
-    background: var(--bg-white);
-    border: 1.5px solid var(--border);
-    border-radius: 5px;
-    padding: 10px 11px 9px;
-    cursor: pointer;
-    z-index: 2;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    box-shadow: 0 1px 3px rgba(27, 42, 74, 0.06);
-  }
-  .node-card:hover {
-    border-color: var(--blue-accent);
-    box-shadow: 0 2px 8px rgba(59, 108, 180, 0.12);
-  }
-  .node-card.selected {
-    border-color: var(--blue-accent);
-    box-shadow: 0 0 0 2px rgba(59, 108, 180, 0.2), 0 2px 8px rgba(59, 108, 180, 0.12);
-  }
-  .node-card.status-complete { border-left: 3px solid var(--green); }
-  .node-card.status-pending { border-left: 3px solid var(--amber); }
-  .node-card.status-in-review { border-left: 3px solid var(--blue-status); }
-  .node-card.status-in-progress { border-left: 3px solid var(--blue-status); }
-  .node-card.status-not-started { border-left: 3px solid var(--grey-status); }
-  .node-card.status-rejected { border-left: 3px solid var(--red); }
+  .chat-exec-btn { display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; margin:12px 16px 8px; border-radius:8px; background:var(--accent); color:#fff; font-size:12px; font-weight:700; cursor:pointer; border:none; }
+  .chat-avatar { width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:#fff; flex-shrink:0; }
+  .chat-msg-header { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .chat-sender { font-size:12px; font-weight:700; }
+  .chat-time { font-size:10px; color:var(--muted); }
+  .chat-message { margin-bottom:16px; }
+  .thought-process { background:#F9FAFB; border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin:8px 0; font-size:11px; }
+  .thought-header { display:flex; align-items:center; gap:6px; font-weight:700; font-size:11px; }
+  .thought-badge { background:var(--accent2); color:#fff; padding:1px 6px; border-radius:4px; font-size:9px; }
+  .thought-step { margin-top:8px; padding-left:12px; border-left:2px solid var(--border); }
+  .thought-step-title { font-weight:700; font-size:11px; display:flex; align-items:center; gap:6px; }
+  .thought-step-dot { width:6px; height:6px; border-radius:50%; background:var(--accent2); }
+  .thought-step-body { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.5; }
+  .chat-action { display:flex; align-items:center; gap:6px; font-size:11px; margin-top:6px; color:var(--muted); }
+  .chat-action .check { color:#16A34A; }
+  .chat-input { display:flex; align-items:center; gap:8px; padding:12px 16px; border-top:1px solid var(--border); margin-top:auto; }
+  .chat-input input { flex:1; border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:12px; outline:none; }
+  .chat-input .send { width:32px; height:32px; border-radius:50%; background:var(--accent); border:none; color:#fff; cursor:pointer; font-size:14px; }
 
-  /* Board Approval Gate */
-  .node-card.gate-node {
-    border: 2px solid var(--gold-border);
-    background: var(--gold-bg);
-    box-shadow: 0 1px 6px rgba(184, 134, 11, 0.12);
-  }
-  .node-card.gate-node:hover {
-    border-color: var(--gold);
-    box-shadow: 0 2px 10px rgba(184, 134, 11, 0.18);
-  }
-  .node-card.gate-node.selected {
-    box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.25), 0 2px 10px rgba(184, 134, 11, 0.18);
-  }
+  /* History with audit emphasis */
+  .history-entry { display:flex; gap:10px; margin-bottom:14px; position:relative; padding-left:4px; }
+  .history-entry::before { content:''; position:absolute; left:15px; top:28px; bottom:-14px; width:1px; background:var(--border); }
+  .history-entry:last-child::before { display:none; }
+  .history-avatar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:#fff; flex-shrink:0; }
+  .history-text { font-size:11px; line-height:1.5; }
+  .history-text strong { font-weight:700; }
+  .history-time { font-size:10px; color:var(--muted); }
+  .audit-tag { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; margin-left:4px; }
+  .audit-tag.governance { background:#EDE9FE; color:#7C3AED; }
+  .audit-tag.change { background:#FEF3C7; color:#D97706; }
 
-  .node-title {
-    font-size: 11.5px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 5px;
-    line-height: 1.3;
-    display: flex;
-    align-items: flex-start;
-    gap: 5px;
-  }
-  .node-title .gate-icon {
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .node-status {
-    display: inline-block;
-    font-size: 9.5px;
-    padding: 1px 6px;
-    border-radius: 2px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.2px;
-    margin-bottom: 5px;
-  }
-  .ns-complete { background: var(--green-bg); color: var(--green); }
-  .ns-pending { background: var(--amber-bg); color: var(--amber); }
-  .ns-in-review { background: var(--blue-status-bg); color: var(--blue-status); }
-  .ns-in-progress { background: var(--blue-status-bg); color: var(--blue-status); }
-  .ns-not-started { background: var(--grey-status-bg); color: var(--grey-status); }
-  .ns-rejected { background: var(--red-bg); color: var(--red); }
-
-  .node-meta {
-    font-size: 10.5px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-  .node-meta .assignee {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-bottom: 2px;
-  }
-  .node-meta .type-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    font-size: 9.5px;
-    padding: 1px 5px;
-    border-radius: 2px;
-    font-weight: 600;
-  }
-  .type-human { background: #EDE8F5; color: #5B3FA0; }
-  .type-agent { background: #E8F0FA; color: #2A5EA8; }
-
-  .node-meta .due {
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-  .node-approval {
-    margin-top: 5px;
-    padding-top: 5px;
-    border-top: 1px solid var(--border-light);
-    font-size: 10px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .approval-approved { color: var(--green); }
-  .approval-pending { color: var(--amber); }
-  .approval-rejected { color: var(--red); }
-  .gate-approval-bar {
-    margin-top: 6px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(184, 134, 11, 0.25);
-    font-size: 10px;
-    color: var(--amber);
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .gate-pips {
-    display: flex;
-    gap: 3px;
-  }
-  .gate-pip {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 1.5px solid var(--gold-border);
-    background: var(--bg-white);
-  }
-  .gate-pip.filled { background: var(--green); border-color: var(--green); }
-
-  /* ── Right Panel: Detail ── */
-  .panel-right {
-    width: 280px;
-    border-left: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    background: var(--bg-white);
-  }
-  .detail-empty {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: var(--text-muted);
-    font-size: 12px;
-    gap: 8px;
-  }
-  .detail-empty svg { opacity: 0.3; }
-  .detail-content {
-    flex: 1;
-    overflow-y: auto;
-    display: none;
-  }
-  .detail-content.active { display: block; }
-  .detail-top {
-    padding: 14px 16px 10px;
-    border-bottom: 1px solid var(--border-light);
-  }
-  .detail-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 6px;
-  }
-  .detail-section {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border-light);
-  }
-  .detail-section-title {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: var(--navy-muted);
-    margin-bottom: 6px;
-  }
-  .detail-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    font-size: 12px;
-    margin-bottom: 4px;
-  }
-  .detail-row .label {
-    color: var(--text-muted);
-    min-width: 80px;
-  }
-  .detail-row .value {
-    color: var(--text-primary);
-    font-weight: 500;
-    text-align: right;
-  }
-  .detail-desc {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-  .approval-flow {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .approver-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11.5px;
-    padding: 5px 8px;
-    background: var(--bg-panel);
-    border-radius: 4px;
-  }
-  .approver-row .approver-status {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .approver-row .approver-status.done { background: var(--green); }
-  .approver-row .approver-status.waiting { background: var(--amber); border: 1.5px solid var(--amber); background: var(--amber-bg); }
-  .approver-row .approver-name { font-weight: 600; color: var(--navy); }
-  .approver-row .approver-role { color: var(--text-muted); font-size: 10.5px; }
-  .version-list, .doc-list, .compliance-list {
-    font-size: 11.5px;
-    color: var(--text-secondary);
-  }
-  .version-list li, .doc-list li, .compliance-list li {
-    padding: 3px 0;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .version-list li::before { content: "•"; color: var(--text-muted); }
-  .doc-list li svg { flex-shrink: 0; }
-  .compliance-list li::before { content: "✓"; color: var(--green); font-weight: 700; font-size: 11px; }
-
-  /* Scrollbar styling */
-  .audit-list::-webkit-scrollbar,
-  .detail-content::-webkit-scrollbar {
-    width: 5px;
-  }
-  .audit-list::-webkit-scrollbar-track,
-  .detail-content::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .audit-list::-webkit-scrollbar-thumb,
-  .detail-content::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 3px;
-  }
+  /* LIST with compliance columns */
+  .list-container { background:var(--surface); }
+  .list-header-row { display:grid; grid-template-columns:36px 1fr 90px 80px 50px 80px 76px 80px; padding:8px 20px; border-bottom:2px solid var(--border); font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+  .list-row { display:grid; grid-template-columns:36px 1fr 90px 80px 50px 80px 76px 80px; padding:10px 20px; border-bottom:1px solid var(--border); font-size:12px; align-items:center; transition:background .15s; }
+  .list-row:hover { background:#F9FAFB; }
+  .list-chevron { cursor:pointer; color:var(--muted); font-size:10px; }
+  .list-task { display:flex; align-items:center; gap:8px; }
+  .list-task-icon { width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:800; color:#fff; flex-shrink:0; }
+  .list-task-icon.hex { clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); }
+  .list-task-icon.circle { border-radius:50%; }
+  .list-task-name { font-weight:600; }
+  .list-status { padding:3px 8px; border-radius:4px; font-size:10px; font-weight:700; display:inline-block; }
+  .list-status.done { background:#DCFCE7; color:#16A34A; }
+  .list-status.progress { background:#FEF3C7; color:#D97706; }
+  .list-status.pending { background:#F3F4F6; color:#6B7280; }
+  .list-status.failed { background:#FEE2E2; color:#DC2626; }
+  .list-assignee { display:flex; align-items:center; gap:4px; font-size:11px; }
+  .list-assignee-avatar { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:800; color:#fff; }
+  .list-level { padding:2px 6px; border-radius:4px; font-size:10px; font-weight:800; color:#fff; }
+  .list-depends { font-size:10px; color:var(--muted); }
+  .list-due { font-size:11px; color:var(--muted); }
+  .list-approval { font-size:10px; font-weight:700; }
+  .list-approval.yes { color:#16A34A; }
+  .list-approval.pending { color:#F59E0B; }
+  .list-approval.na { color:#D1D5DB; }
+  .indent-1 { padding-left:40px; } .indent-2 { padding-left:64px; }
+  .bg-l1{background:var(--l1);} .bg-l2{background:var(--l2);} .bg-l3{background:var(--l3);} .bg-l4{background:var(--l4);} .bg-l5{background:var(--l5);}
 </style>
 </head>
 <body>
-
-<div class="frame">
-  <!-- Concept Title Bar -->
-  <div class="concept-bar">
-    Concept 5: Executive Suite <span>— Governance-Focused Enterprise View</span>
+<div class="app">
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchView('graph')">📐 Graph View</div>
+    <div class="tab" onclick="switchView('workspace')">🖥 Workspace View</div>
+    <div class="tab" onclick="switchView('list')">📋 List View</div>
+    <span class="concept-label">05 — Executive Suite</span>
   </div>
 
-  <!-- Governance Top Bar -->
-  <div class="gov-bar">
-    <div class="gov-bar-left">
-      <div class="gov-bar-title">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="16" height="13" rx="2" stroke="#1B2A4A" stroke-width="1.5"/><path d="M1 7h16" stroke="#1B2A4A" stroke-width="1.5"/><path d="M6 3V1M12 3V1" stroke="#1B2A4A" stroke-width="1.5" stroke-linecap="round"/></svg>
-        ICAAP Document Preparation
-      </div>
-      <div class="gov-badges">
-        <span class="gov-badge active">
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" fill="#1A8754"/><path d="M3 5.2L4.5 6.5 7 3.8" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Audit Trail: Active
-        </span>
-        <span class="gov-badge compliance">
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1L9 3.5V6.5C9 8 7.2 9.2 5 10 2.8 9.2 1 8 1 6.5V3.5L5 1z" fill="#2E6BB5"/></svg>
-          Compliance: PRA / FCA
-        </span>
-        <span class="gov-badge review">
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="#7B8694" stroke-width="1.2"/><path d="M5 3v2.5l1.5 1" stroke="#7B8694" stroke-width="1.2" stroke-linecap="round"/></svg>
-          Last Review: 2 hours ago
-        </span>
+  <!-- GRAPH -->
+  <div class="view active" id="view-graph">
+    <div class="header">
+      <div class="back">←</div>
+      <div class="title">ICAAP Submission 2026</div>
+      <span class="badge" style="background:#FEF3C7;color:#D97706;">● In Progress</span>
+      <span style="font-size:11px;color:var(--muted);margin-left:auto;">8 tasks · 2 pending approval</span>
+    </div>
+    <div class="gov-bar">
+      <div class="gov-stat"><span class="num" style="color:#16A34A;">3</span><span class="label">Approved</span></div>
+      <div class="gov-stat"><span class="num" style="color:#F59E0B;">2</span><span class="label">Awaiting Approval</span></div>
+      <div class="gov-stat"><span class="num" style="color:#DC2626;">1</span><span class="label">Approval Required</span></div>
+      <div class="gov-stat"><span class="num" style="color:var(--muted);">2</span><span class="label">Not Required</span></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+        <span style="font-size:10px;color:var(--muted);">Compliance:</span>
+        <div style="width:100px;height:6px;background:#E5E7EB;border-radius:3px;overflow:hidden;"><div style="width:62%;height:100%;background:#16A34A;border-radius:3px;"></div></div>
+        <span style="font-size:10px;font-weight:700;color:#16A34A;">62%</span>
       </div>
     </div>
-    <div class="gov-bar-right">
-      <div class="gov-bar-user">
-        <div class="avatar-sm">AP</div>
-        Ali Panju · Project Lead
+    <div class="breadcrumb">
+      <span class="level-badge bg-l1">L1</span> <span>ICAAP Programme</span>
+      <span style="color:var(--muted);">›</span>
+      <span class="level-badge bg-l2">L2</span> <span>Capital Assessment</span>
+    </div>
+    <div class="graph-container">
+      <svg width="1200" height="540" style="position:absolute;top:0;left:0;z-index:1;">
+        <defs>
+          <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#14B8A6" opacity=".5"/></marker>
+          <marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#16A34A" opacity=".4"/></marker>
+        </defs>
+        <path d="M200,150 C270,150 270,90 340,90" stroke="#14B8A6" stroke-width="1.5" fill="none" opacity=".4" marker-end="url(#a1)"/>
+        <path d="M200,150 C270,150 270,230 340,230" stroke="#14B8A6" stroke-width="1.5" fill="none" opacity=".4" marker-end="url(#a1)"/>
+        <path d="M200,150 C270,150 270,370 340,370" stroke="#14B8A6" stroke-width="1.5" fill="none" opacity=".4" marker-end="url(#a1)"/>
+        <path d="M420,90 C490,90 490,150 540,150" stroke="#14B8A6" stroke-width="1.5" fill="none" opacity=".3" marker-end="url(#a1)"/>
+        <path d="M420,230 C490,230 490,150 540,150" stroke="#14B8A6" stroke-width="1.5" fill="none" opacity=".3" marker-end="url(#a1)"/>
+        <path d="M420,370 C490,370 490,290 540,290" stroke="#14B8A6" stroke-width="1.5" fill="none" opacity=".3" marker-end="url(#a1)"/>
+        <path d="M620,150 C680,150 680,220 730,220" stroke="#16A34A" stroke-width="1.5" fill="none" opacity=".3" marker-end="url(#a2)"/>
+        <path d="M620,290 C680,290 680,220 730,220" stroke="#16A34A" stroke-width="1.5" fill="none" opacity=".3" marker-end="url(#a2)"/>
+        <path d="M810,220 C860,220 860,220 910,220" stroke="#14B8A6" stroke-width="1.5" fill="none" opacity=".4" marker-end="url(#a1)"/>
+      </svg>
+      <div style="z-index:2;position:relative;width:100%;height:100%;">
+        <!-- Human: Gather Data -->
+        <div class="node" style="left:120px;top:100px;">
+          <div class="node-circle-border" style="background:var(--l2);"><div class="node-circle" style="background:#F0FDF4;color:var(--l2);">AP</div></div>
+          <div class="node-status" style="background:#F59E0B;">⏳</div>
+          <div class="approval-badge pending">⏳ PENDING</div>
+          <div class="node-label">Gather Historical Data</div><div class="node-sub">Ali P.</div>
+        </div>
+        <!-- Human: Risk Assessment -->
+        <div class="node" style="left:280px;top:40px;">
+          <div class="node-circle-border" style="background:var(--l2);"><div class="node-circle" style="background:#F0FDF4;color:var(--l2);">MB</div></div>
+          <div class="node-status" style="background:#F59E0B;">⏳</div>
+          <div class="approval-badge required">⚠ REQUIRED</div>
+          <div class="node-label">Risk Assessment</div><div class="node-sub">Molly B.</div>
+        </div>
+        <!-- AI: Capital Model -->
+        <div class="node" style="left:280px;top:180px;">
+          <div class="node-hex-border" style="background:var(--l2);"><div class="node-hex" style="background:#F0FDF4;color:var(--l2);">DF</div></div>
+          <div class="node-status" style="background:#3B82F6;">▶</div>
+          <div class="approval-badge pending">⏳ PENDING</div>
+          <div class="node-label">Run Capital Model</div><div class="node-sub">DeepFlow</div>
+        </div>
+        <!-- AI: Stress Testing -->
+        <div class="node" style="left:280px;top:320px;">
+          <div class="node-hex-border" style="background:var(--l2);"><div class="node-hex" style="background:#F0FDF4;color:var(--l2);">ST</div></div>
+          <div class="node-status" style="background:#6B7280;">○</div>
+          <div class="node-label">Stress Testing</div><div class="node-sub">Stress Agent</div>
+        </div>
+        <!-- Human: Review -->
+        <div class="node" style="left:480px;top:100px;">
+          <div class="node-circle-border" style="background:var(--l2);"><div class="node-circle" style="background:#F0FDF4;color:var(--l2);">JW</div></div>
+          <div class="node-status" style="background:#16A34A;">✓</div>
+          <div class="approval-badge approved">✓ APPROVED</div>
+          <div class="node-label">Review Results</div><div class="node-sub">James W.</div>
+        </div>
+        <!-- AI: Generate Scenarios -->
+        <div class="node" style="left:480px;top:240px;">
+          <div class="node-hex-border" style="background:var(--l2);"><div class="node-hex" style="background:#F0FDF4;color:var(--l2);">DF</div></div>
+          <div class="node-status" style="background:#16A34A;">✓</div>
+          <div class="approval-badge approved">✓ APPROVED</div>
+          <div class="node-label">Generate Scenarios</div><div class="node-sub">DeepFlow</div>
+        </div>
+        <!-- AI: Compile -->
+        <div class="node" style="left:670px;top:170px;">
+          <div class="node-hex-border" style="background:var(--l2);"><div class="node-hex" style="background:#F0FDF4;color:var(--l2);">DF</div></div>
+          <div class="node-status" style="background:#F59E0B;">⏳</div>
+          <div class="approval-badge approved">✓ APPROVED</div>
+          <div class="node-label">Compile Report</div><div class="node-sub">DeepFlow</div>
+        </div>
+        <!-- Human: Final Approval -->
+        <div class="node" style="left:860px;top:170px;">
+          <div class="node-circle-border" style="background:var(--l2);"><div class="node-circle" style="background:#F0FDF4;color:var(--l2);">AP</div></div>
+          <div class="node-status" style="background:#6B7280;">○</div>
+          <div class="approval-badge required">⚠ REQUIRED</div>
+          <div class="node-label">Final Approval</div><div class="node-sub">Ali P.</div>
+        </div>
+      </div>
+      <div class="mini-nav">
+        <div class="nav-title">Depth</div>
+        <div class="layer"><div class="layer-dot" style="background:var(--l1);"></div> L1 Programme</div>
+        <div class="layer current"><div class="layer-dot" style="background:var(--l2);"></div> L2 Capital ←</div>
+        <div class="layer"><div class="layer-dot" style="background:var(--l3);"></div> L3 Sub-tasks</div>
+      </div>
+      <div class="graph-toolbar">
+        <button>↩</button><button>↪</button><button>+</button><button>−</button><button>⊞</button><button>⬡</button><button>👤</button><button>↗</button>
       </div>
     </div>
   </div>
 
-  <!-- Progress Strip -->
-  <div class="progress-strip">
-    <span class="progress-label"><strong>ICAAP Progress</strong></span>
-    <div class="progress-track">
-      <div class="progress-fill-complete"></div>
-      <div class="progress-fill-pending"></div>
+  <!-- WORKSPACE -->
+  <div class="view" id="view-workspace">
+    <div class="header">
+      <div class="back">←</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:28px;height:28px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);background:var(--l2);display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;font-weight:800;color:#fff;">DF</span></div>
+        <div class="title">Run Capital Model</div>
+      </div>
+      <span class="badge" style="background:#DBEAFE;color:#3B82F6;">▶ In Progress</span>
+      <span class="badge" style="background:#FEF3C7;color:#D97706;margin-left:4px;">⏳ Approval Pending</span>
+      <div class="version-nav" style="margin-left:auto;"><button>‹</button><span>V2/3</span><button>›</button></div>
     </div>
-    <div class="progress-stats">
-      <span class="stat"><span class="stat-dot complete"></span> 4/9 complete</span>
-      <span class="stat"><span class="stat-dot pending"></span> 2 pending approval</span>
-      <span class="stat"><span class="stat-dot remaining"></span> 3 remaining</span>
+    <div class="workspace-layout">
+      <div class="ws-panel">
+        <div class="ws-panel-header"><span>📄</span> Workspace <span style="margin-left:auto;cursor:pointer;">⤢</span></div>
+        <div class="ws-tab-bar"><div class="ws-tab active">Capital Model Output</div><div class="ws-tab">+</div></div>
+        <div class="output-toolbar">
+          <button><b>B</b></button><button><i>I</i></button><button>🔗</button><button>&lt;/&gt;</button>
+          <div class="preview-toggle">Preview <div class="toggle-switch"></div></div>
+        </div>
+        <div class="ws-content" style="font-size:13px;line-height:1.7;">
+          <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">ICAAP Capital Model — Draft v2</h3>
+          <p style="margin-bottom:12px;">Internal capital adequacy assessment for Q1 2026.</p>
+          <h4 style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;">1. Executive Summary</h4>
+          <p style="margin-bottom:12px;">Total: <strong>£42.3M</strong> base / <strong>£58.7M</strong> stressed. Surplus: £8.4M.</p>
+          <h4 style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;">2. Risk Categories</h4>
+          <ul style="padding-left:20px;margin-bottom:12px;"><li>Credit: £18.2M + £4.1M P2A</li><li>Market: £8.9M</li><li>Operational: £6.4M</li><li>Concentration: £4.7M</li></ul>
+          <div style="background:#F0FDF4;border:1px solid #16A34A;border-radius:8px;padding:12px;font-size:11px;color:#16A34A;">✅ All ratios exceed minimums. CET1: 14.2%</div>
+        </div>
+      </div>
+      <div class="ws-panel">
+        <div class="ws-panel-header"><span>💬</span> Chat <span style="margin-left:auto;font-size:11px;color:var(--muted);">Exec #2</span></div>
+        <button class="chat-exec-btn">⚡ Execute this task for me</button>
+        <div class="ws-content">
+          <div class="chat-message">
+            <div class="chat-msg-header"><div class="chat-avatar" style="background:var(--l2);">DF</div><span class="chat-sender">DeepFlow</span><span class="chat-time">14:32</span></div>
+            <div class="thought-process">
+              <div class="thought-header">🧠 Thought process <span class="thought-badge">3 steps</span></div>
+              <div class="thought-step"><div class="thought-step-title"><div class="thought-step-dot"></div> Step 1 — Inputs</div><div class="thought-step-body">Risk register, P&L, prior ICAAP.</div></div>
+              <div class="thought-step"><div class="thought-step-title"><div class="thought-step-dot"></div> Step 2 — Calculations</div><div class="thought-step-body">Standardised credit risk approach. Pillar 2A.</div></div>
+              <div class="thought-step"><div class="thought-step-title"><div class="thought-step-dot"></div> Step 3 — Compliance check</div><div class="thought-step-body">Verified output against PRA guidelines SS31/15. All thresholds met.</div></div>
+            </div>
+            <div class="chat-action"><span class="check">✅</span> Creating artifact</div>
+            <div class="chat-action"><span class="check">✅</span> Compliance validation passed</div>
+            <div class="chat-action"><span class="check">✅</span> Request Completion</div>
+          </div>
+        </div>
+        <div class="chat-input"><input type="text" placeholder="Your message…"><button class="send">▶</button></div>
+      </div>
+      <div class="ws-panel">
+        <div class="ws-panel-header"><span>ℹ️</span> Details</div>
+        <div class="ws-tab-bar">
+          <div class="ws-tab">Info</div><div class="ws-tab">Resources</div><div class="ws-tab">Comments</div>
+          <div class="ws-tab active">History</div><div class="ws-tab">Sub-tasks</div><div class="ws-tab">Advanced</div>
+        </div>
+        <div class="ws-content">
+          <div style="background:#EDE9FE;border-radius:8px;padding:10px 12px;margin-bottom:16px;font-size:11px;color:#7C3AED;font-weight:600;">
+            🔒 This task requires governance approval before status can change to Done.
+          </div>
+          <div class="history-entry">
+            <div class="history-avatar" style="background:var(--l2);">DF</div>
+            <div><div class="history-text"><strong>DeepFlow</strong> completed execution <span class="audit-tag governance">GOVERNANCE</span></div><div class="history-time">14:33 today</div></div>
+          </div>
+          <div class="history-entry">
+            <div class="history-avatar" style="background:var(--accent2);">SY</div>
+            <div><div class="history-text"><strong>System</strong> compliance check passed <span class="audit-tag governance">GOVERNANCE</span></div><div class="history-time">14:33 today</div></div>
+          </div>
+          <div class="history-entry">
+            <div class="history-avatar" style="background:var(--l2);">DF</div>
+            <div><div class="history-text"><strong>DeepFlow</strong> started calculation</div><div class="history-time">14:32 today</div></div>
+          </div>
+          <div class="history-entry">
+            <div class="history-avatar" style="background:#3B82F6;">AP</div>
+            <div><div class="history-text"><strong>Ali Panju</strong> triggered execution #2 <span class="audit-tag change">CHANGE</span></div><div class="history-time">14:31 today</div></div>
+          </div>
+          <div class="history-entry">
+            <div class="history-avatar" style="background:#3B82F6;">AP</div>
+            <div><div class="history-text"><strong>Ali Panju</strong> updated description <span class="audit-tag change">CHANGE</span></div><div class="history-time">14:20 today</div></div>
+          </div>
+          <div class="history-entry">
+            <div class="history-avatar" style="background:#3B82F6;">AP</div>
+            <div><div class="history-text"><strong>Ali Panju</strong> assigned to <strong>DeepFlow</strong></div><div class="history-time">13:45 today</div></div>
+          </div>
+          <div class="history-entry">
+            <div class="history-avatar" style="background:#3B82F6;">AP</div>
+            <div><div class="history-text"><strong>Ali Panju</strong> created the task</div><div class="history-time">13:40 today</div></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <span class="progress-due">Due: 31 Mar 2026</span>
   </div>
 
-  <!-- Main Three-Column Layout -->
-  <div class="main-layout">
-    <!-- Left: Audit Trail -->
-    <div class="panel-left">
-      <div class="panel-header">
-        <span>Audit Trail</span>
-        <span class="count">14</span>
-      </div>
-      <div class="audit-list">
-        <div class="audit-entry">
-          <div class="audit-time">11 Mar · 16:42</div>
-          <div class="audit-text"><span class="actor">Ali P.</span> approved <span class="task-ref">'Risk Assessment'</span></div>
-          <span class="audit-tag tag-approved">Approved</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">11 Mar · 16:38</div>
-          <div class="audit-text"><span class="actor">DeepFlow Agent</span> completed <span class="task-ref">'Run Capital Model'</span></div>
-          <span class="audit-tag tag-completed">Completed</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">11 Mar · 16:22</div>
-          <div class="audit-text"><span class="actor">DeepFlow Agent</span> started <span class="task-ref">'Run Capital Model'</span></div>
-          <span class="audit-tag tag-started">Started</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">11 Mar · 15:55</div>
-          <div class="audit-text"><span class="actor">Ali P.</span> submitted <span class="task-ref">'Risk Assessment'</span> for approval</div>
-          <span class="audit-tag tag-submitted">Submitted</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">11 Mar · 14:30</div>
-          <div class="audit-text"><span class="actor">Jonathan G.</span> approved <span class="task-ref">'Data Collection'</span></div>
-          <span class="audit-tag tag-approved">Approved</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">11 Mar · 13:15</div>
-          <div class="audit-text"><span class="actor">Ali P.</span> assigned <span class="task-ref">'Draft Report'</span> to Molly B.</div>
-          <span class="audit-tag tag-assigned">Assigned</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">11 Mar · 12:48</div>
-          <div class="audit-text"><span class="actor">Molly B.</span> completed <span class="task-ref">'Data Collection'</span></div>
-          <span class="audit-tag tag-completed">Completed</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">11 Mar · 10:00</div>
-          <div class="audit-text"><span class="actor">Molly B.</span> started <span class="task-ref">'Data Collection'</span></div>
-          <span class="audit-tag tag-started">Started</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">10 Mar · 17:30</div>
-          <div class="audit-text"><span class="actor">Jonathan G.</span> rejected <span class="task-ref">'Risk Assessment'</span> v1 — missing stress scenarios</div>
-          <span class="audit-tag tag-rejected">Rejected</span>
-        </div>
-        <div class="audit-entry">
-          <div class="audit-time">10 Mar · 16:00</div>
-          <div class="audit-text"><span class="actor">System</span> initialised workflow — <span class="task-ref">'ICAAP Document Preparation'</span></div>
-          <span class="audit-tag tag-system">System</span>
-        </div>
-      </div>
+  <!-- LIST with compliance columns -->
+  <div class="view" id="view-list">
+    <div class="header">
+      <div class="back">←</div>
+      <div class="title">ICAAP Submission 2026</div>
+      <span class="badge" style="background:#FEF3C7;color:#D97706;">● In Progress</span>
+      <span style="font-size:11px;color:var(--muted);margin-left:auto;">12 tasks · 62% compliant</span>
     </div>
-
-    <!-- Centre: Graph -->
-    <div class="panel-centre">
-      <div class="graph-area" id="graphArea">
-        <!-- SVG Connections -->
-        <svg class="connections" id="connectionsSvg">
-          <defs>
-            <marker id="arrow" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
-              <polygon points="0 0, 6 2, 0 4" class="arrow"/>
-            </marker>
-            <marker id="arrowActive" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
-              <polygon points="0 0, 6 2, 0 4" class="arrow active"/>
-            </marker>
-          </defs>
-        </svg>
-
-        <!-- Row 1 -->
-        <div class="node-card status-complete" data-node="data-collection" style="left: 28px; top: 24px;" onclick="selectNode(this)">
-          <div class="node-title">Data Collection</div>
-          <span class="node-status ns-complete">Complete</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-human">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-                Human
-              </span>
-              Molly Buckwald
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Risk Analyst</div>
-            <div class="due">Due: 8 Mar 2026</div>
-          </div>
-          <div class="node-approval approval-approved">
-            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#1A8754"/><path d="M3 5.2L4.5 6.5 7 3.8" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Approved
-          </div>
-        </div>
-
-        <div class="node-card status-complete" data-node="risk-assessment" style="left: 224px; top: 24px;" onclick="selectNode(this)">
-          <div class="node-title">Risk Assessment</div>
-          <span class="node-status ns-complete">Complete</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-human">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-                Human
-              </span>
-              Ali Panju
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Project Lead</div>
-            <div class="due">Due: 12 Mar 2026</div>
-          </div>
-          <div class="node-approval approval-approved">
-            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#1A8754"/><path d="M3 5.2L4.5 6.5 7 3.8" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Approved
-          </div>
-        </div>
-
-        <div class="node-card status-complete" data-node="run-capital-model" style="left: 420px; top: 24px;" onclick="selectNode(this)">
-          <div class="node-title">Run Capital Model</div>
-          <span class="node-status ns-complete">Complete</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-agent">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><rect x="1" y="1" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1"/><circle cx="3.5" cy="4" r="0.8" fill="currentColor"/><circle cx="5.5" cy="4" r="0.8" fill="currentColor"/><path d="M3 6h3" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"/></svg>
-                AI Agent
-              </span>
-              DeepFlow Agent
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Model Runner</div>
-            <div class="due">Due: 14 Mar 2026</div>
-          </div>
-          <div class="node-approval approval-approved">
-            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#1A8754"/><path d="M3 5.2L4.5 6.5 7 3.8" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Approved
-          </div>
-        </div>
-
-        <!-- Row 2 -->
-        <div class="node-card status-pending" data-node="draft-report" style="left: 28px; top: 210px;" onclick="selectNode(this)">
-          <div class="node-title">Draft Report</div>
-          <span class="node-status ns-pending">Pending Approval</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-human">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-                Human
-              </span>
-              Molly Buckwald
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Risk Analyst</div>
-            <div class="due">Due: 18 Mar 2026</div>
-          </div>
-          <div class="node-approval approval-pending">
-            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#B8860B" stroke-width="1.5"/><path d="M5 3v2.5l1.5 1" stroke="#B8860B" stroke-width="1.2" stroke-linecap="round"/></svg>
-            Pending Approval
-          </div>
-        </div>
-
-        <div class="node-card status-in-review selected" data-node="internal-review" style="left: 224px; top: 210px;" onclick="selectNode(this)">
-          <div class="node-title">Internal Review</div>
-          <span class="node-status ns-in-review">In Review</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-human">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-                Human
-              </span>
-              Jonathan Gilmore
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Compliance</div>
-            <div class="due">Due: 20 Mar 2026</div>
-          </div>
-          <div class="node-approval approval-pending">
-            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#B8860B" stroke-width="1.5"/><path d="M5 3v2.5l1.5 1" stroke="#B8860B" stroke-width="1.2" stroke-linecap="round"/></svg>
-            Pending Approval
-          </div>
-        </div>
-
-        <div class="node-card status-not-started" data-node="revisions" style="left: 420px; top: 210px;" onclick="selectNode(this)">
-          <div class="node-title">Revisions</div>
-          <span class="node-status ns-not-started">Not Started</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-human">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-                Human
-              </span>
-              Ali Panju
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Project Lead</div>
-            <div class="due">Due: 23 Mar 2026</div>
-          </div>
-        </div>
-
-        <!-- Row 3 -->
-        <div class="node-card status-not-started" data-node="final-report" style="left: 28px; top: 410px;" onclick="selectNode(this)">
-          <div class="node-title">Final Report</div>
-          <span class="node-status ns-not-started">Not Started</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-human">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-                Human
-              </span>
-              Ali Panju
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Project Lead</div>
-            <div class="due">Due: 26 Mar 2026</div>
-          </div>
-        </div>
-
-        <div class="node-card gate-node status-not-started" data-node="board-approval" style="left: 224px; top: 410px;" onclick="selectNode(this)">
-          <div class="node-title">
-            <span class="gate-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 4v3c0 3.5 2.1 5.8 5 7 2.9-1.2 5-3.5 5-7V4L7 1z" fill="#B8860B" opacity="0.2" stroke="#B8860B" stroke-width="1.2"/><path d="M5 7l1.5 1.5L9 5.5" stroke="#B8860B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-            Board Approval
-          </div>
-          <span class="node-status ns-not-started">Not Started</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-human">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-                Human
-              </span>
-              Board Members
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Sign-Off Required</div>
-          </div>
-          <div class="gate-approval-bar">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1.5L10 4v2.5c0 2.8-1.7 4.6-4 5.5-2.3-.9-4-2.7-4-5.5V4L6 1.5z" stroke="#B8860B" stroke-width="1.2"/></svg>
-            0 / 3 approvals
-            <div class="gate-pips">
-              <div class="gate-pip"></div>
-              <div class="gate-pip"></div>
-              <div class="gate-pip"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="node-card status-not-started" data-node="submission" style="left: 420px; top: 410px;" onclick="selectNode(this)">
-          <div class="node-title">Submission</div>
-          <span class="node-status ns-not-started">Not Started</span>
-          <div class="node-meta">
-            <div class="assignee">
-              <span class="type-badge type-human">
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-                Human
-              </span>
-              Ali Panju
-            </div>
-            <div style="color:var(--text-muted);font-size:10px">Project Lead</div>
-            <div class="due">Due: 31 Mar 2026</div>
-          </div>
-        </div>
-
+    <div class="list-container">
+      <div class="list-header-row"><span></span><span>Task</span><span>Status</span><span>Assignee</span><span>Level</span><span>Depends</span><span>Approval</span><span>Due Date</span></div>
+      <div class="list-row" style="background:#F9FAFB;">
+        <span class="list-chevron">▼</span>
+        <div class="list-task"><div class="list-task-icon circle bg-l1">AP</div><span class="list-task-name">ICAAP Programme</span></div>
+        <span class="list-status progress">In Progress</span>
+        <div class="list-assignee"><div class="list-assignee-avatar bg-l1">AP</div> Ali P.</div>
+        <span class="list-level bg-l1">L1</span><span class="list-depends">—</span>
+        <span class="list-approval pending">⏳ Pending</span><span class="list-due">31 Mar</span>
       </div>
-    </div>
-
-    <!-- Right: Task Detail -->
-    <div class="panel-right">
-      <div class="panel-header">
-        <span>Task Detail</span>
+      <div class="list-row">
+        <span class="list-chevron indent-1">▼</span>
+        <div class="list-task indent-1"><div class="list-task-icon circle bg-l2">AP</div><span class="list-task-name">Gather Historical Data</span></div>
+        <span class="list-status progress">In Progress</span>
+        <div class="list-assignee"><div class="list-assignee-avatar" style="background:#6366F1;">AP</div> Ali P.</div>
+        <span class="list-level bg-l2">L2</span><span class="list-depends">—</span>
+        <span class="list-approval pending">⏳ Pending</span><span class="list-due">15 Mar</span>
       </div>
-      <div class="detail-empty" id="detailEmpty">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="6" width="24" height="20" rx="3" stroke="#8892A8" stroke-width="1.5"/><path d="M4 12h24M12 6v20" stroke="#8892A8" stroke-width="1.5"/></svg>
-        <span>Select a task to view details</span>
+      <div class="list-row">
+        <span class="list-chevron indent-1">▶</span>
+        <div class="list-task indent-1"><div class="list-task-icon circle bg-l2">MB</div><span class="list-task-name">Risk Assessment</span></div>
+        <span class="list-status progress">In Progress</span>
+        <div class="list-assignee"><div class="list-assignee-avatar" style="background:#EC4899;">MB</div> Molly B.</div>
+        <span class="list-level bg-l2">L2</span><span class="list-depends">Gather</span>
+        <span class="list-approval" style="color:#DC2626;">⚠ Required</span><span class="list-due">18 Mar</span>
       </div>
-      <div class="detail-content" id="detailContent">
-        <div class="detail-top">
-          <div class="detail-title" id="detailTitle">Internal Review</div>
-          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-            <span class="node-status" id="detailStatus">In Review</span>
-            <span class="type-badge type-human" id="detailType">
-              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>
-              Human
-            </span>
-          </div>
-        </div>
-
-        <div class="detail-section">
-          <div class="detail-section-title">Properties</div>
-          <div class="detail-row"><span class="label">Assignee</span><span class="value" id="dAssignee">Jonathan Gilmore</span></div>
-          <div class="detail-row"><span class="label">Role</span><span class="value" id="dRole">Compliance</span></div>
-          <div class="detail-row"><span class="label">Due Date</span><span class="value" id="dDue">20 Mar 2026</span></div>
-          <div class="detail-row"><span class="label">Priority</span><span class="value" id="dPriority">High</span></div>
-          <div class="detail-row"><span class="label">Dependencies</span><span class="value" id="dDeps">Draft Report</span></div>
-        </div>
-
-        <div class="detail-section">
-          <div class="detail-section-title">Description</div>
-          <div class="detail-desc" id="dDesc">Compliance review of the draft ICAAP report. Verify all risk categories are addressed, capital adequacy calculations are correct, and stress scenarios meet PRA/FCA requirements. Flag any gaps before revisions phase.</div>
-        </div>
-
-        <div class="detail-section">
-          <div class="detail-section-title">Approval Workflow</div>
-          <div class="approval-flow" id="dApproval">
-            <div class="approver-row">
-              <div class="approver-status waiting"></div>
-              <span class="approver-name">Jonathan Gilmore</span>
-              <span class="approver-role">— Compliance Sign-Off</span>
-            </div>
-            <div class="approver-row">
-              <div class="approver-status waiting"></div>
-              <span class="approver-name">Ali Panju</span>
-              <span class="approver-role">— Project Lead Sign-Off</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="detail-section">
-          <div class="detail-section-title">Version History</div>
-          <ul class="version-list" id="dVersions">
-            <li>v2 — 11 Mar 16:10 — Resubmitted with stress scenarios</li>
-            <li>v1 — 10 Mar 15:30 — Initial submission (rejected)</li>
-          </ul>
-        </div>
-
-        <div class="detail-section">
-          <div class="detail-section-title">Attached Documents</div>
-          <ul class="doc-list" id="dDocs">
-            <li>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 1h4l3 3v7H3V1z" stroke="#5A6580" stroke-width="1"/><path d="M7 1v3h3" stroke="#5A6580" stroke-width="1"/></svg>
-              ICAAP_Draft_v2.docx
-            </li>
-            <li>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 1h4l3 3v7H3V1z" stroke="#5A6580" stroke-width="1"/><path d="M7 1v3h3" stroke="#5A6580" stroke-width="1"/></svg>
-              Capital_Model_Output.xlsx
-            </li>
-            <li>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 1h4l3 3v7H3V1z" stroke="#5A6580" stroke-width="1"/><path d="M7 1v3h3" stroke="#5A6580" stroke-width="1"/></svg>
-              Risk_Register_2026.pdf
-            </li>
-          </ul>
-        </div>
-
-        <div class="detail-section">
-          <div class="detail-section-title">Compliance Notes</div>
-          <ul class="compliance-list" id="dCompliance">
-            <li>Meets PRA SS31/15 capital adequacy requirements</li>
-            <li>FCA ICAAP guidance BIPRU 2.2 checklist — 8/10 items verified</li>
-            <li>Stress scenarios include base, adverse, and severe conditions</li>
-          </ul>
-        </div>
+      <div class="list-row">
+        <span class="list-chevron indent-1">▼</span>
+        <div class="list-task indent-1"><div class="list-task-icon hex bg-l2">DF</div><span class="list-task-name">Run Capital Model</span></div>
+        <span class="list-status progress">In Progress</span>
+        <div class="list-assignee"><div class="list-assignee-avatar bg-l2">DF</div> DeepFlow</div>
+        <span class="list-level bg-l2">L2</span><span class="list-depends">Gather</span>
+        <span class="list-approval pending">⏳ Pending</span><span class="list-due">20 Mar</span>
+      </div>
+      <div class="list-row">
+        <span class="list-chevron indent-2">▶</span>
+        <div class="list-task indent-2"><div class="list-task-icon hex bg-l3">DF</div><span class="list-task-name">Calc Credit Risk</span></div>
+        <span class="list-status done">Done</span>
+        <div class="list-assignee"><div class="list-assignee-avatar bg-l3">DF</div> DF</div>
+        <span class="list-level bg-l3">L3</span><span class="list-depends">—</span>
+        <span class="list-approval yes">✓ Approved</span><span class="list-due">18 Mar</span>
+      </div>
+      <div class="list-row">
+        <span class="list-chevron indent-2">▶</span>
+        <div class="list-task indent-2"><div class="list-task-icon hex bg-l3">DF</div><span class="list-task-name">Calc Market Risk</span></div>
+        <span class="list-status done">Done</span>
+        <div class="list-assignee"><div class="list-assignee-avatar bg-l3">DF</div> DF</div>
+        <span class="list-level bg-l3">L3</span><span class="list-depends">—</span>
+        <span class="list-approval yes">✓ Approved</span><span class="list-due">18 Mar</span>
+      </div>
+      <div class="list-row">
+        <span class="list-chevron indent-2">▶</span>
+        <div class="list-task indent-2"><div class="list-task-icon hex bg-l3">DF</div><span class="list-task-name">Stress Scenarios</span></div>
+        <span class="list-status progress">In Progress</span>
+        <div class="list-assignee"><div class="list-assignee-avatar bg-l3">DF</div> DF</div>
+        <span class="list-level bg-l3">L3</span><span class="list-depends">Credit, Mkt</span>
+        <span class="list-approval na">— N/A</span><span class="list-due">19 Mar</span>
+      </div>
+      <div class="list-row">
+        <span class="list-chevron indent-1">▶</span>
+        <div class="list-task indent-1"><div class="list-task-icon hex bg-l2">ST</div><span class="list-task-name">Stress Testing</span></div>
+        <span class="list-status pending">Pending</span>
+        <div class="list-assignee"><div class="list-assignee-avatar bg-l2">ST</div> Stress</div>
+        <span class="list-level bg-l2">L2</span><span class="list-depends">Capital</span>
+        <span class="list-approval na">— N/A</span><span class="list-due">22 Mar</span>
+      </div>
+      <div class="list-row">
+        <span class="list-chevron indent-1">▶</span>
+        <div class="list-task indent-1"><div class="list-task-icon circle bg-l2">JW</div><span class="list-task-name">Review Results</span></div>
+        <span class="list-status done">Done</span>
+        <div class="list-assignee"><div class="list-assignee-avatar" style="background:#8B5CF6;">JW</div> James</div>
+        <span class="list-level bg-l2">L2</span><span class="list-depends">Risk, Cap</span>
+        <span class="list-approval yes">✓ Approved</span><span class="list-due">24 Mar</span>
+      </div>
+      <div class="list-row">
+        <span class="list-chevron indent-1">▶</span>
+        <div class="list-task indent-1"><div class="list-task-icon hex bg-l2">DF</div><span class="list-task-name">Compile Report</span></div>
+        <span class="list-status progress">In Progress</span>
+        <div class="list-assignee"><div class="list-assignee-avatar bg-l2">DF</div> DF</div>
+        <span class="list-level bg-l2">L2</span><span class="list-depends">Review</span>
+        <span class="list-approval yes">✓ Approved</span><span class="list-due">28 Mar</span>
+      </div>
+      <div class="list-row">
+        <span class="list-chevron indent-1">▶</span>
+        <div class="list-task indent-1"><div class="list-task-icon circle bg-l2">AP</div><span class="list-task-name">Final Approval</span></div>
+        <span class="list-status pending">Pending</span>
+        <div class="list-assignee"><div class="list-assignee-avatar" style="background:#6366F1;">AP</div> Ali P.</div>
+        <span class="list-level bg-l2">L2</span><span class="list-depends">Compile</span>
+        <span class="list-approval" style="color:#DC2626;">⚠ Required</span><span class="list-due">31 Mar</span>
       </div>
     </div>
   </div>
 </div>
-
 <script>
-// ── Node Data ──
-const nodeData = {
-  'data-collection': {
-    title: 'Data Collection',
-    statusClass: 'ns-complete', statusText: 'Complete',
-    typeHtml: 'Human', typeBadgeClass: 'type-human',
-    assignee: 'Molly Buckwald', role: 'Risk Analyst',
-    due: '8 Mar 2026', priority: 'Medium', deps: 'None',
-    desc: 'Gather all required data inputs for ICAAP analysis: historical loss data, risk exposure reports, current capital positions, and market data. Coordinate with Treasury and Risk departments for data extraction.',
-    approval: [
-      { name: 'Jonathan Gilmore', role: 'Compliance Check', done: true },
-      { name: 'Ali Panju', role: 'Project Lead Sign-Off', done: true }
-    ],
-    versions: ['v1 — 11 Mar 12:48 — Submitted and approved'],
-    docs: ['Historical_Loss_Data_2024-25.xlsx', 'Risk_Exposure_Report_Q4.pdf', 'Capital_Position_Summary.xlsx'],
-    compliance: ['Data sourced from approved internal systems', 'Reconciliation checks passed', 'Audit trail maintained for all extracts']
-  },
-  'risk-assessment': {
-    title: 'Risk Assessment',
-    statusClass: 'ns-complete', statusText: 'Complete',
-    typeHtml: 'Human', typeBadgeClass: 'type-human',
-    assignee: 'Ali Panju', role: 'Project Lead',
-    due: '12 Mar 2026', priority: 'High', deps: 'Data Collection',
-    desc: 'Comprehensive risk identification and assessment across all material risk categories: credit, market, operational, liquidity, and concentration risk. Quantify risk appetite and tolerances.',
-    approval: [
-      { name: 'Jonathan Gilmore', role: 'Compliance Review', done: true },
-      { name: 'Ali Panju', role: 'Project Lead Sign-Off', done: true }
-    ],
-    versions: ['v2 — 11 Mar 15:55 — Resubmitted with stress scenarios', 'v1 — 10 Mar 14:20 — Initial (rejected — missing stress scenarios)'],
-    docs: ['Risk_Assessment_Matrix_v2.xlsx', 'Stress_Scenario_Assumptions.pdf'],
-    compliance: ['All five material risk categories assessed', 'Risk appetite statement aligned with Board policy', 'Stress scenarios include base, adverse, severe']
-  },
-  'run-capital-model': {
-    title: 'Run Capital Model',
-    statusClass: 'ns-complete', statusText: 'Complete',
-    typeHtml: 'AI Agent', typeBadgeClass: 'type-agent',
-    assignee: 'DeepFlow Agent', role: 'Model Runner',
-    due: '14 Mar 2026', priority: 'High', deps: 'Risk Assessment',
-    desc: 'Automated execution of the internal capital adequacy model. Processes risk assessment inputs through Monte Carlo simulation (10,000 iterations), calculates Pillar 2A capital requirements, and generates stress-test outputs.',
-    approval: [
-      { name: 'Ali Panju', role: 'Model Output Validation', done: true },
-      { name: 'Jonathan Gilmore', role: 'Model Governance Check', done: true }
-    ],
-    versions: ['v1 — 11 Mar 16:38 — Execution completed (14m 22s)'],
-    docs: ['Capital_Model_Output.xlsx', 'Monte_Carlo_Results.csv', 'Model_Execution_Log.txt'],
-    compliance: ['Model validated against PRA SS11/13', 'Execution log preserved for audit', 'Results within expected tolerance bands']
-  },
-  'draft-report': {
-    title: 'Draft Report',
-    statusClass: 'ns-pending', statusText: 'Pending Approval',
-    typeHtml: 'Human', typeBadgeClass: 'type-human',
-    assignee: 'Molly Buckwald', role: 'Risk Analyst',
-    due: '18 Mar 2026', priority: 'High', deps: 'Run Capital Model',
-    desc: 'Author the draft ICAAP document incorporating risk assessment findings and capital model outputs. Structure per PRA template: executive summary, risk assessment, capital adequacy, stress testing results, and capital planning.',
-    approval: [
-      { name: 'Ali Panju', role: 'Content Review', done: false },
-      { name: 'Jonathan Gilmore', role: 'Compliance Review', done: false }
-    ],
-    versions: ['v1 — 11 Mar (in progress) — Awaiting review'],
-    docs: ['ICAAP_Draft_v1.docx', 'Capital_Model_Output.xlsx'],
-    compliance: ['Follows PRA ICAAP template structure', 'Executive summary drafted', 'Pending compliance review']
-  },
-  'internal-review': {
-    title: 'Internal Review',
-    statusClass: 'ns-in-review', statusText: 'In Review',
-    typeHtml: 'Human', typeBadgeClass: 'type-human',
-    assignee: 'Jonathan Gilmore', role: 'Compliance',
-    due: '20 Mar 2026', priority: 'High', deps: 'Draft Report',
-    desc: 'Compliance review of the draft ICAAP report. Verify all risk categories are addressed, capital adequacy calculations are correct, and stress scenarios meet PRA/FCA requirements. Flag any gaps before revisions phase.',
-    approval: [
-      { name: 'Jonathan Gilmore', role: 'Compliance Sign-Off', done: false },
-      { name: 'Ali Panju', role: 'Project Lead Sign-Off', done: false }
-    ],
-    versions: ['v2 — 11 Mar 16:10 — Resubmitted with stress scenarios', 'v1 — 10 Mar 15:30 — Initial submission (rejected)'],
-    docs: ['ICAAP_Draft_v2.docx', 'Capital_Model_Output.xlsx', 'Risk_Register_2026.pdf'],
-    compliance: ['Meets PRA SS31/15 capital adequacy requirements', 'FCA ICAAP guidance BIPRU 2.2 checklist — 8/10 items verified', 'Stress scenarios include base, adverse, and severe conditions']
-  },
-  'revisions': {
-    title: 'Revisions',
-    statusClass: 'ns-not-started', statusText: 'Not Started',
-    typeHtml: 'Human', typeBadgeClass: 'type-human',
-    assignee: 'Ali Panju', role: 'Project Lead',
-    due: '23 Mar 2026', priority: 'Medium', deps: 'Internal Review',
-    desc: 'Incorporate all feedback from internal review. Address compliance gaps, update calculations if needed, and prepare the final version for Board review.',
-    approval: [
-      { name: 'Jonathan Gilmore', role: 'Final Compliance Check', done: false }
-    ],
-    versions: [],
-    docs: [],
-    compliance: ['All review comments must be addressed', 'Change log required for audit trail']
-  },
-  'final-report': {
-    title: 'Final Report',
-    statusClass: 'ns-not-started', statusText: 'Not Started',
-    typeHtml: 'Human', typeBadgeClass: 'type-human',
-    assignee: 'Ali Panju', role: 'Project Lead',
-    due: '26 Mar 2026', priority: 'Critical', deps: 'Revisions',
-    desc: 'Final ICAAP document ready for Board presentation. Includes all revisions, sign-offs from compliance, and executive summary with key findings and capital recommendations.',
-    approval: [
-      { name: 'Ali Panju', role: 'Project Lead Final Sign-Off', done: false },
-      { name: 'Jonathan Gilmore', role: 'Compliance Final Sign-Off', done: false }
-    ],
-    versions: [],
-    docs: [],
-    compliance: ['Must include Board-ready executive summary', 'All compliance sign-offs must be recorded', 'Version-controlled final document']
-  },
-  'board-approval': {
-    title: 'Board Approval',
-    statusClass: 'ns-not-started', statusText: 'Not Started',
-    typeHtml: 'Human', typeBadgeClass: 'type-human',
-    assignee: 'Board Members', role: 'Sign-Off Required',
-    due: '28 Mar 2026', priority: 'Critical', deps: 'Final Report',
-    desc: 'Board of Directors review and formal approval of the ICAAP document. Requires sign-off from minimum 3 Board members including the Chair, CRO, and CFO. Board pack must be distributed 5 business days in advance.',
-    approval: [
-      { name: 'Board Chair', role: 'Chair Approval', done: false },
-      { name: 'Chief Risk Officer', role: 'CRO Approval', done: false },
-      { name: 'Chief Financial Officer', role: 'CFO Approval', done: false }
-    ],
-    versions: [],
-    docs: [],
-    compliance: ['Board pack distribution 5 days in advance', 'Quorum requirements: 3 Board members', 'Minutes must be recorded and archived']
-  },
-  'submission': {
-    title: 'Submission',
-    statusClass: 'ns-not-started', statusText: 'Not Started',
-    typeHtml: 'Human', typeBadgeClass: 'type-human',
-    assignee: 'Ali Panju', role: 'Project Lead',
-    due: '31 Mar 2026', priority: 'Critical', deps: 'Board Approval',
-    desc: 'Submit the approved ICAAP document to the PRA via RegData. Include Board approval minutes, compliance attestation, and all supporting appendices. Confirm receipt and file reference number.',
-    approval: [
-      { name: 'Ali Panju', role: 'Submission Confirmation', done: false }
-    ],
-    versions: [],
-    docs: [],
-    compliance: ['Submission via PRA RegData portal', 'Board approval minutes attached', 'Filing reference to be recorded for audit']
-  }
-};
-
-// ── Connection Definitions ──
-const connections = [
-  ['data-collection', 'risk-assessment', true],
-  ['risk-assessment', 'run-capital-model', true],
-  ['run-capital-model', 'draft-report', true],
-  ['draft-report', 'internal-review', true],
-  ['internal-review', 'revisions', false],
-  ['revisions', 'final-report', false],
-  ['final-report', 'board-approval', false],
-  ['board-approval', 'submission', false]
-];
-
-// ── Draw Connections ──
-function drawConnections() {
-  const svg = document.getElementById('connectionsSvg');
-  // Clear existing lines
-  while (svg.childNodes.length > 1) {
-    if (svg.lastChild !== svg.firstChild) svg.removeChild(svg.lastChild);
-  }
-
-  connections.forEach(([fromId, toId, active]) => {
-    const fromEl = document.querySelector(`[data-node="${fromId}"]`);
-    const toEl = document.querySelector(`[data-node="${toId}"]`);
-    if (!fromEl || !toEl) return;
-
-    const graphArea = document.getElementById('graphArea');
-    const gaRect = graphArea.getBoundingClientRect();
-
-    const fromRect = fromEl.getBoundingClientRect();
-    const toRect = toEl.getBoundingClientRect();
-
-    let x1, y1, x2, y2;
-
-    // Same row (roughly same top) → connect right side to left side
-    if (Math.abs(fromRect.top - toRect.top) < 100) {
-      x1 = fromRect.right - gaRect.left;
-      y1 = fromRect.top + fromRect.height / 2 - gaRect.top;
-      x2 = toRect.left - gaRect.left;
-      y2 = toRect.top + toRect.height / 2 - gaRect.top;
-    }
-    // Different rows → connect bottom to top
-    else if (fromRect.bottom < toRect.top) {
-      x1 = fromRect.left + fromRect.width / 2 - gaRect.left;
-      y1 = fromRect.bottom - gaRect.top;
-      x2 = toRect.left + toRect.width / 2 - gaRect.left;
-      y2 = toRect.top - gaRect.top;
-    } else {
-      x1 = fromRect.right - gaRect.left;
-      y1 = fromRect.top + fromRect.height / 2 - gaRect.top;
-      x2 = toRect.left - gaRect.left;
-      y2 = toRect.top + toRect.height / 2 - gaRect.top;
-    }
-
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', x1);
-    line.setAttribute('y1', y1);
-    line.setAttribute('x2', x2);
-    line.setAttribute('y2', y2);
-    line.setAttribute('marker-end', active ? 'url(#arrowActive)' : 'url(#arrow)');
-    if (active) line.classList.add('active');
-    svg.appendChild(line);
-  });
+function switchView(v){
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-bar .tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.tab-bar .tab')[{graph:0,workspace:1,list:2}[v]].classList.add('active');
 }
-
-// ── Select Node ──
-function selectNode(el) {
-  document.querySelectorAll('.node-card').forEach(n => n.classList.remove('selected'));
-  el.classList.add('selected');
-
-  const id = el.getAttribute('data-node');
-  const d = nodeData[id];
-  if (!d) return;
-
-  document.getElementById('detailEmpty').style.display = 'none';
-  const content = document.getElementById('detailContent');
-  content.classList.add('active');
-
-  document.getElementById('detailTitle').textContent = d.title;
-
-  const statusEl = document.getElementById('detailStatus');
-  statusEl.className = 'node-status ' + d.statusClass;
-  statusEl.textContent = d.statusText;
-
-  const typeEl = document.getElementById('detailType');
-  typeEl.className = 'type-badge ' + d.typeBadgeClass;
-  const icon = d.typeBadgeClass === 'type-agent'
-    ? '<svg width="9" height="9" viewBox="0 0 9 9" fill="none"><rect x="1" y="1" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1"/><circle cx="3.5" cy="4" r="0.8" fill="currentColor"/><circle cx="5.5" cy="4" r="0.8" fill="currentColor"/><path d="M3 6h3" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"/></svg>'
-    : '<svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="3" r="2" stroke="currentColor" stroke-width="1"/><path d="M1 8.5c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1"/></svg>';
-  typeEl.innerHTML = icon + ' ' + d.typeHtml;
-
-  document.getElementById('dAssignee').textContent = d.assignee;
-  document.getElementById('dRole').textContent = d.role;
-  document.getElementById('dDue').textContent = d.due;
-  document.getElementById('dPriority').textContent = d.priority;
-  document.getElementById('dDeps').textContent = d.deps;
-  document.getElementById('dDesc').textContent = d.desc;
-
-  // Approval flow
-  const approvalEl = document.getElementById('dApproval');
-  approvalEl.innerHTML = d.approval.map(a =>
-    `<div class="approver-row">
-      <div class="approver-status ${a.done ? 'done' : 'waiting'}"></div>
-      <span class="approver-name">${a.name}</span>
-      <span class="approver-role">— ${a.role}</span>
-    </div>`
-  ).join('');
-
-  // Versions
-  const versionsEl = document.getElementById('dVersions');
-  versionsEl.innerHTML = d.versions.length
-    ? d.versions.map(v => `<li>${v}</li>`).join('')
-    : '<li style="color:var(--text-muted)">No versions yet</li>';
-
-  // Docs
-  const docsEl = document.getElementById('dDocs');
-  const docIcon = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 1h4l3 3v7H3V1z" stroke="#5A6580" stroke-width="1"/><path d="M7 1v3h3" stroke="#5A6580" stroke-width="1"/></svg>';
-  docsEl.innerHTML = d.docs.length
-    ? d.docs.map(doc => `<li>${docIcon} ${doc}</li>`).join('')
-    : '<li style="color:var(--text-muted)">No documents attached</li>';
-
-  // Compliance
-  const complianceEl = document.getElementById('dCompliance');
-  complianceEl.innerHTML = d.compliance.length
-    ? d.compliance.map(c => `<li>${c}</li>`).join('')
-    : '<li style="color:var(--text-muted)">No compliance notes</li>';
-}
-
-// Draw connections on load
-window.addEventListener('load', () => {
-  setTimeout(drawConnections, 50);
-});
-window.addEventListener('resize', drawConnections);
 </script>
 </body>
 </html>
