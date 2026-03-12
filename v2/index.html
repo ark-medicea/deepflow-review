@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepFlow — Design Concepts V2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --cyan: #3BB8D6;
+    --dark: #1a1a2e;
+    --darker: #12121f;
+    --text: #1e293b;
+    --muted: #64748b;
+    --light: #f8fafc;
+    --border: #e2e8f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 40%, #1a2744 100%);
+    color: white;
+    padding: 64px 40px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 70%, rgba(59,184,214,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(249,115,22,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .hero h1 span { color: var(--cyan); }
+  .hero .subtitle {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 640px;
+    margin: 0 auto 20px;
+    position: relative;
+  }
+  .hero .back-link {
+    display: inline-block;
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    position: relative;
+    transition: opacity 0.2s;
+  }
+  .hero .back-link:hover { opacity: 0.8; }
+
+  /* Grid */
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 48px 40px 64px;
+  }
+
+  .intro {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .intro h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .intro p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .concepts {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* Concept card - alternating layout */
+  .concept {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: box-shadow 0.3s, transform 0.3s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .concept:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+  .concept:nth-child(even) { direction: rtl; }
+  .concept:nth-child(even) > * { direction: ltr; }
+
+  .concept-img {
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+  }
+  .concept-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top left;
+    display: block;
+    transition: transform 0.4s;
+  }
+  .concept:hover .concept-img img {
+    transform: scale(1.03);
+  }
+  .concept-img .number {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: white;
+    z-index: 2;
+  }
+  .concept:nth-child(even) .concept-img .number {
+    left: auto;
+    right: 16px;
+  }
+
+  .concept-body {
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .concept-body .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    width: fit-content;
+  }
+
+  .concept-body h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .concept-body .inspiration {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+  .concept-body p {
+    font-size: 0.92rem;
+    color: #475569;
+    margin-bottom: 16px;
+    line-height: 1.65;
+  }
+
+  .concept-body .features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .concept-body .features li {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .concept-body .verdict {
+    font-size: 0.85rem;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .verdict-pro { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .verdict-con { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+  .concept-body .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cyan);
+    transition: gap 0.2s;
+  }
+  .concept:hover .cta { gap: 10px; }
+
+  /* Colour accents per concept */
+  .c1 .number { background: #8B5CF6; }
+  .c1 .tag { background: #f5f3ff; color: #7c3aed; }
+  .c2 .number { background: #0ea5e9; }
+  .c2 .tag { background: #f0f9ff; color: #0284c7; }
+  .c3 .number { background: #f97316; }
+  .c3 .tag { background: #fff7ed; color: #ea580c; }
+  .c4 .number { background: #22c55e; }
+  .c4 .tag { background: #f0fdf4; color: #16a34a; }
+  .c5 .number { background: #1e293b; }
+  .c5 .tag { background: #f1f5f9; color: #475569; }
+
+  /* Best for badges */
+  .best-for {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .best-for strong { color: var(--text); }
+
+  /* Recommendation */
+  .reco {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .reco h3 { font-size: 1.2rem; margin-bottom: 8px; }
+  .reco p { color: var(--muted); font-size: 0.92rem; max-width: 700px; margin: 0 auto; line-height: 1.65; }
+  .reco .combo {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .reco .combo span {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 800px) {
+    .concept { grid-template-columns: 1fr; }
+    .concept:nth-child(even) { direction: ltr; }
+    .concept-img { min-height: 200px; }
+    .concept:nth-child(even) .concept-img .number { left: 16px; right: auto; }
+    .container { padding: 32px 20px; }
+    .hero { padding: 40px 20px 36px; }
+    .hero h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1><span>Deep</span>Flow — Design Concepts V2</h1>
+  <p class="subtitle">Five radically different design directions, each with a distinct philosophy on how to present AI orchestration to business users.</p>
+  <a href="../" class="back-link">← Back to main review</a>
+</header>
+
+<div class="container">
+
+  <div class="intro">
+    <h2>Not reskins — different philosophies</h2>
+    <p>Each concept answers a different question: What should the <em>primary</em> interface be? A board? A list? A page? A terminal? Or just beautiful typography? Click any concept to explore the interactive mockup.</p>
+  </div>
+
+  <div class="concepts">
+
+    <!-- 01 -->
+    <a href="01-boards-and-bliss.html" class="concept c1">
+      <div class="concept-img">
+        <img src="v2-01-thumb.jpg" alt="Boards & Bliss" loading="lazy">
+        <div class="number">01</div>
+      </div>
+      <div class="concept-body">
+        <span class="tag">Visual-First</span>
+        <h3>Boards & Bliss</h3>
+        <p class="inspiration">Inspired by Monday.com × Slack × Notion</p>
+        <p>The graph is hidden. The board is the star — big colourful rectangular cards with massive status stripes, phase swim lanes, and confetti on completion. Chat is a first-class view where you talk to DeepFlow and it responds with rich embedded cards.</p>
+        <ul class="features">
+          <li>Board-first</li>
+          <li>No sidebar</li>
+          <li>Rectangles</li>
+          <li>Chat view</li>
+          <li>Celebrations</li>
+          <li>Full task names</li>
+        </ul>
+        <div class="verdict verdict-pro">✅ <strong>Strength:</strong> Status is finally the dominant visual. Chat-as-interface is a fresh take for AI orchestration.</div>
+        <p class="best-for"><strong>Best for:</strong> Onboarding, non-technical stakeholders, simple-to-medium projects</p>
+        <span class="cta">Open interactive mockup →</span>
+      </div>
+    </a>
+
+    <!-- 02 -->
+    <a href="02-clear-path.html" class="concept c2">
+      <div class="concept-img">
+        <img src="v2-02-thumb.jpg" alt="Clear Path" loading="lazy">
+        <div class="number">02</div>
+      </div>
+      <div class="concept-body">
+        <span class="tag">Structured</span>
+        <h3>Clear Path</h3>
+        <p class="inspiration">Inspired by Asana × Todoist</p>
+        <p>List-first. Every task is a row with inline dependency columns — "Depends on" and "Blocks" as clickable chips. Task detail slides over from the right with a mini per-task dependency graph. The graph's intelligence leaks into every view without needing the canvas.</p>
+        <ul class="features">
+          <li>List-first</li>
+          <li>Dependency columns</li>
+          <li>Slide-over detail</li>
+          <li>Mini dep graph</li>
+          <li>Depth borders</li>
+          <li>Phase grouping</li>
+        </ul>
+        <div class="verdict verdict-pro">✅ <strong>Strength:</strong> Most production-ready. Dependency columns are the killer feature — graph intelligence in a familiar format.</div>
+        <p class="best-for"><strong>Best for:</strong> Day-to-day project management, governance workflows, power users who live in lists</p>
+        <span class="cta">Open interactive mockup →</span>
+      </div>
+    </a>
+
+    <!-- 03 -->
+    <a href="03-deep-blocks.html" class="concept c3">
+      <div class="concept-img">
+        <img src="v2-03-thumb.jpg" alt="Deep Blocks" loading="lazy">
+        <div class="number">03</div>
+      </div>
+      <div class="concept-body">
+        <span class="tag">Composable</span>
+        <h3>Deep Blocks</h3>
+        <p class="inspiration">Inspired by Notion × Craft × Coda</p>
+        <p>Everything is a block. A project is a Notion-style page where users compose their own view: graph block, task database, chat thread, dashboard widget, notes. Slash commands to add blocks. Drag to reorder. The AI helps build the page itself.</p>
+        <ul class="features">
+          <li>Block-based</li>
+          <li>Slash commands</li>
+          <li>Draggable blocks</li>
+          <li>Graph as block</li>
+          <li>Page navigation</li>
+          <li>Composable</li>
+        </ul>
+        <div class="verdict verdict-pro">✅ <strong>Strength:</strong> Most philosophically different. Gives users total control over their workspace layout.</div>
+        <div class="verdict verdict-con" style="margin-top:6px;">⚠️ <strong>Risk:</strong> Infinite flexibility = Notion's biggest usability complaint. Could overwhelm new users.</div>
+        <p class="best-for"><strong>Best for:</strong> Consulting firms, teams already in Notion, customisable per-client project pages</p>
+        <span class="cta">Open interactive mockup →</span>
+      </div>
+    </a>
+
+    <!-- 04 -->
+    <a href="04-command-center.html" class="concept c4">
+      <div class="concept-img">
+        <img src="v2-04-thumb.jpg" alt="Command Center" loading="lazy">
+        <div class="number">04</div>
+      </div>
+      <div class="concept-body">
+        <span class="tag">Power User</span>
+        <h3>Command Center</h3>
+        <p class="inspiration">Inspired by Cursor × VS Code × Warp Terminal</p>
+        <p>DeepFlow as an IDE. Tiled resizable panes, ⌘K command palette, terminal-style AI chat. Unique screens: watch an AI agent execute in real-time with streaming logs, and compare output versions with Git-style diffs.</p>
+        <ul class="features">
+          <li>Dark mode</li>
+          <li>⌘K palette</li>
+          <li>Tiled panes</li>
+          <li>Terminal chat</li>
+          <li>Execution view</li>
+          <li>Version diffs</li>
+        </ul>
+        <div class="verdict verdict-pro">✅ <strong>Strength:</strong> Execution view and diff view are unique — no other concept shows the AI working in real-time.</div>
+        <div class="verdict verdict-con" style="margin-top:6px;">⚠️ <strong>Risk:</strong> Would terrify non-technical users. This is developer tooling.</div>
+        <p class="best-for"><strong>Best for:</strong> Technical teams, AI/ML ops, developers building on DeepFlow</p>
+        <span class="cta">Open interactive mockup →</span>
+      </div>
+    </a>
+
+    <!-- 05 -->
+    <a href="05-flow.html" class="concept c5">
+      <div class="concept-img">
+        <img src="v2-05-thumb.jpg" alt="Flow" loading="lazy">
+        <div class="number">05</div>
+      </div>
+      <div class="concept-body">
+        <span class="tag">Minimal</span>
+        <h3>Flow</h3>
+        <p class="inspiration">Inspired by Linear × iA Writer × Apple Notes</p>
+        <p>Ultra-minimal. Near-monochrome. Typography does all the heavy lifting — no cards, no containers, just text with hierarchy. The graph rendered as pure art: 1px lines, tiny status-coloured nodes, perfect spacing. One view at a time, beautifully.</p>
+        <ul class="features">
+          <li>Near-monochrome</li>
+          <li>Typography-driven</li>
+          <li>8px status dots</li>
+          <li>Graph as art</li>
+          <li>⌘K navigation</li>
+          <li>Keyboard-first</li>
+        </ul>
+        <div class="verdict verdict-pro">✅ <strong>Strength:</strong> The most beautiful. Feels fast, focused, and intentional. The graph view is stunning.</div>
+        <div class="verdict verdict-con" style="margin-top:6px;">⚠️ <strong>Risk:</strong> Almost too minimal — no dependency info in list view, no progress indicators. Austerity may underserve complexity.</div>
+        <p class="best-for"><strong>Best for:</strong> Design-conscious teams, small focused projects, marketing hero screenshots</p>
+        <span class="cta">Open interactive mockup →</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Recommendation -->
+  <div class="reco">
+    <h3>💡 The Winning Product Combines Elements</h3>
+    <p>These concepts aren't mutually exclusive. The strongest outcome likely cherry-picks from several:</p>
+    <div class="combo">
+      <span style="background:#0ea5e9;">Clear Path's dependency columns</span>
+      <span style="background:#8B5CF6;">Boards & Bliss's chat interface</span>
+      <span style="background:#f97316;">Deep Blocks' composable pages</span>
+      <span style="background:#22c55e;">Command Center's execution view</span>
+      <span style="background:#1e293b;">Flow's typographic craft</span>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>DeepFlow UI/UX Review · Prepared March 2026 · Confidential</p>
+</footer>
+
+</body>
+</html>
