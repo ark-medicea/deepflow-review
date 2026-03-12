@@ -242,6 +242,10 @@
   .c4 .tag { background: #f0fdf4; color: #16a34a; }
   .c5 .number { background: #1e293b; }
   .c5 .tag { background: #f1f5f9; color: #475569; }
+  .c6 .number { background: #3BB8D6; }
+  .c6 .tag { background: #f0fafe; color: #0891b2; }
+  .concept.featured { border: 2px solid #3BB8D6; box-shadow: 0 4px 20px rgba(59,184,214,0.12); }
+  .concept.featured .concept-body .tag::after { content: ' ★ CO-DESIGNED'; }
 
   /* Best for badges */
   .best-for {
@@ -301,14 +305,14 @@
 
 <header class="hero">
   <h1><span>Deep</span>Flow — Design Concepts V2</h1>
-  <p class="subtitle">Five radically different design directions, each with a distinct philosophy on how to present AI orchestration to business users.</p>
+  <p class="subtitle">Six design directions — from exploration to recommendation, each with a distinct philosophy on how to present AI orchestration to business users.</p>
   <a href="../" class="back-link">← Back to main review</a>
 </header>
 
 <div class="container">
 
   <div class="intro">
-    <h2>Not reskins — different philosophies</h2>
+    <h2>Six concepts, one recommendation</h2>
     <p>Each concept answers a different question: What should the <em>primary</em> interface be? A board? A list? A page? A terminal? Or just beautiful typography? Click any concept to explore the interactive mockup.</p>
   </div>
 
@@ -442,18 +446,48 @@
       </div>
     </a>
 
+    <!-- 06 -->
+    <a href="06-chat-canvas.html" class="concept c6 featured">
+      <div class="concept-img">
+        <img src="v2-06-thumb.jpg" alt="Chat Canvas" loading="lazy">
+        <div class="number">06</div>
+      </div>
+      <div class="concept-body">
+        <span class="tag">Chat-First</span>
+        <h3>Chat Canvas</h3>
+        <p class="inspiration">A new paradigm: chat as the primary interface, graph as the canvas</p>
+        <p>Chat isn't a sidebar feature — it's the main interface. A persistent AI pane handles commands, status queries, and proactive suggestions. The canvas to the right switches between graph, list, and workspace views. A drawer overlays task details on demand. In an AI-first world, why click when you can talk?</p>
+        <ul class="features">
+          <li>Chat-first</li>
+          <li>Context-aware AI</li>
+          <li>Smart suggestions</li>
+          <li>Animated edges</li>
+          <li>Shaped avatars</li>
+          <li>Depth colours</li>
+          <li>Drawer overlay</li>
+          <li>3 canvas modes</li>
+        </ul>
+        <div class="verdict verdict-pro">✅ <strong>Strength:</strong> Chat as everything — commands, queries, suggestions, actions. Combines the best of all previous concepts: rectangular cards with shaped avatars, animated flowing edges, status-as-dominant-visual, depth-colour gradient.</div>
+        <p class="best-for"><strong>Best for:</strong> AI-native workflows, business users who prefer conversation over point-and-click, teams running whole operations on DeepFlow</p>
+        <span class="cta">Open interactive mockup →</span>
+      </div>
+    </a>
+
   </div>
 
   <!-- Recommendation -->
   <div class="reco">
-    <h3>💡 The Winning Product Combines Elements</h3>
-    <p>These concepts aren't mutually exclusive. The strongest outcome likely cherry-picks from several:</p>
+    <h3>💡 Concept 6 Brings It Together</h3>
+    <p><strong>Chat Canvas</strong> was co-designed iteratively, combining the strongest ideas from all five explorations. It also draws from the best of each concept:</p>
     <div class="combo">
-      <span style="background:#0ea5e9;">Clear Path's dependency columns</span>
-      <span style="background:#8B5CF6;">Boards & Bliss's chat interface</span>
-      <span style="background:#f97316;">Deep Blocks' composable pages</span>
-      <span style="background:#22c55e;">Command Center's execution view</span>
-      <span style="background:#1e293b;">Flow's typographic craft</span>
+      <span style="background:#3BB8D6;">Chat Canvas — the recommended direction</span>
+    </div>
+    <div class="combo" style="margin-top: 10px;">
+      <span style="background:#0ea5e9;">+ Clear Path's dependency columns</span>
+      <span style="background:#8B5CF6;">+ Boards & Bliss's rich chat cards</span>
+      <span style="background:#f97316;">+ Deep Blocks' composable flexibility</span>
+      <span style="background:#22c55e;">+ Command Center's execution view</span>
+      <span style="background:#1e293b;">+ Flow's typographic craft</span>
     </div>
   </div>
 
