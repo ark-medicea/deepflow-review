@@ -4,24 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeepFlow — Design Guidelines</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Euclid Circular B — Self-hosted -->
+    <style>
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-SemiBold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
     <style>
         /* ============================================
-           DEEPFLOW DESIGN GUIDELINES
+           DEEPFLOW DESIGN GUIDELINES v1.1
            Monochrome + Pops of Colour
+           Brand: Euclid Circular B + Cyan→Blue Gradient
            ============================================ */
 
         :root {
-            /* --- Brand --- */
-            --brand-cyan: #00BCD4;
-            --brand-cyan-light: #4DD0E1;
-            --brand-cyan-dark: #0097A7;
-            --brand-gradient: linear-gradient(135deg, #0097A7 0%, #00BCD4 40%, #4DD0E1 100%);
-            --brand-gradient-subtle: linear-gradient(135deg, rgba(0,188,212,0.08) 0%, rgba(77,208,225,0.04) 100%);
+            /* --- Brand Gradient --- */
+            --brand-cyan: #00D4F5;
+            --brand-blue: #2244FF;
+            --brand-mid: #0099FF;
+            --brand-gradient: linear-gradient(135deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-gradient-horizontal: linear-gradient(90deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-gradient-vertical: linear-gradient(180deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-gradient-subtle: linear-gradient(135deg, rgba(0,229,255,0.08) 0%, rgba(34,68,255,0.04) 100%);
 
-            /* --- Neutrals (Monochrome Base) --- */
+            /* --- Brand Solid (for when gradient isn't appropriate) --- */
+            --brand-solid: #0099FF;
+            --brand-solid-hover: #00AAFF;
+            --brand-solid-active: #0088EE;
+
+            /* --- Neutrals (Monochrome Base — blue-tinted) --- */
             --neutral-950: #0A0A0F;
             --neutral-900: #111118;
             --neutral-850: #16161F;
@@ -57,10 +102,10 @@
             --status-pending-bg: rgba(92, 92, 115, 0.12);
 
             /* --- Grouping (Parent-Child Containment) --- */
-            --group-l1: rgba(0, 188, 212, 0.06);
-            --group-l1-border: rgba(0, 188, 212, 0.15);
-            --group-l2: rgba(0, 188, 212, 0.03);
-            --group-l2-border: rgba(0, 188, 212, 0.08);
+            --group-l1: rgba(0, 153, 255, 0.06);
+            --group-l1-border: rgba(0, 153, 255, 0.15);
+            --group-l2: rgba(0, 153, 255, 0.03);
+            --group-l2-border: rgba(0, 153, 255, 0.08);
 
             /* --- Spacing Scale (4px base) --- */
             --space-1: 4px;
@@ -77,22 +122,23 @@
             --space-24: 96px;
 
             /* --- Typography Scale --- */
-            --text-xs: 0.75rem;    /* 12px */
-            --text-sm: 0.8125rem;  /* 13px */
-            --text-base: 0.875rem; /* 14px */
-            --text-md: 1rem;       /* 16px */
-            --text-lg: 1.125rem;   /* 18px */
-            --text-xl: 1.25rem;    /* 20px */
-            --text-2xl: 1.5rem;    /* 24px */
-            --text-3xl: 1.875rem;  /* 30px */
-            --text-4xl: 2.25rem;   /* 36px */
-            --text-5xl: 3rem;      /* 48px */
+            --text-xs: 0.75rem;
+            --text-sm: 0.8125rem;
+            --text-base: 0.875rem;
+            --text-md: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
 
             /* --- Elevation --- */
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.25);
             --shadow-lg: 0 8px 32px rgba(0,0,0,0.3);
-            --shadow-glow: 0 0 20px rgba(0,188,212,0.15);
+            --shadow-glow: 0 0 20px rgba(0,153,255,0.15);
+            --shadow-brand: 0 4px 20px rgba(0,153,255,0.25);
 
             /* --- Radii --- */
             --radius-sm: 4px;
@@ -112,18 +158,11 @@
            BASE STYLES
            ============================================ */
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
             background: var(--neutral-950);
             color: var(--neutral-200);
             font-size: var(--text-base);
@@ -133,7 +172,7 @@
         }
 
         ::selection {
-            background: rgba(0, 188, 212, 0.3);
+            background: rgba(0, 153, 255, 0.3);
             color: var(--white);
         }
 
@@ -143,9 +182,7 @@
 
         .nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 100;
             background: rgba(10, 10, 15, 0.85);
             backdrop-filter: blur(20px);
@@ -160,7 +197,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 60px;
+            height: 64px;
         }
 
         .nav-brand {
@@ -171,29 +208,21 @@
             color: var(--white);
         }
 
-        .nav-logo {
-            width: 28px;
-            height: 28px;
-            background: var(--brand-gradient);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: var(--text-sm);
-            color: var(--white);
+        .nav-brand img {
+            height: 32px;
+            width: auto;
         }
 
-        .nav-title {
-            font-size: var(--text-md);
-            font-weight: 600;
-            color: var(--white);
+        .nav-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--neutral-700);
         }
 
         .nav-subtitle {
             font-size: var(--text-sm);
+            font-weight: 500;
             color: var(--neutral-400);
-            margin-left: var(--space-2);
         }
 
         .nav-links {
@@ -219,6 +248,10 @@
             background: var(--neutral-800);
         }
 
+        @media (max-width: 1100px) {
+            .nav-links { display: none; }
+        }
+
         /* ============================================
            HERO
            ============================================ */
@@ -233,13 +266,26 @@
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
+            top: -100px;
             left: 50%;
             transform: translateX(-50%);
-            width: 800px;
-            height: 600px;
-            background: radial-gradient(ellipse, rgba(0,188,212,0.08) 0%, transparent 70%);
+            width: 1000px;
+            height: 700px;
+            background: radial-gradient(ellipse, rgba(0,153,255,0.07) 0%, rgba(34,68,255,0.03) 40%, transparent 70%);
             pointer-events: none;
+        }
+
+        .hero-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--space-8);
+            opacity: 0.9;
+        }
+
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .hero-badge {
@@ -258,13 +304,19 @@
         .hero-badge-dot {
             width: 6px;
             height: 6px;
-            background: var(--brand-cyan);
+            background: var(--brand-solid);
             border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .hero h1 {
             font-size: var(--text-5xl);
-            font-weight: 800;
+            font-weight: 700;
             color: var(--white);
             letter-spacing: -0.03em;
             line-height: 1.1;
@@ -272,7 +324,7 @@
             position: relative;
         }
 
-        .hero h1 span {
+        .hero h1 .gradient-text {
             background: var(--brand-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -285,6 +337,7 @@
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.7;
+            font-weight: 400;
         }
 
         /* ============================================
@@ -302,14 +355,15 @@
             border-top: 1px solid var(--neutral-850);
         }
 
-        .section-header {
-            margin-bottom: var(--space-16);
-        }
+        .section-header { margin-bottom: var(--space-16); }
 
         .section-number {
             font-size: var(--text-sm);
             font-weight: 600;
-            color: var(--brand-cyan);
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: var(--space-3);
@@ -342,9 +396,7 @@
             transition: border-color var(--duration-normal) var(--ease-default);
         }
 
-        .card:hover {
-            border-color: var(--neutral-700);
-        }
+        .card:hover { border-color: var(--neutral-700); }
 
         .card-title {
             font-size: var(--text-lg);
@@ -358,18 +410,12 @@
             line-height: 1.7;
         }
 
-        .card-grid {
-            display: grid;
-            gap: var(--space-6);
-        }
-
+        .card-grid { display: grid; gap: var(--space-6); }
         .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
         .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
 
         @media (max-width: 768px) {
-            .card-grid-2, .card-grid-3 {
-                grid-template-columns: 1fr;
-            }
+            .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
         }
 
         /* ============================================
@@ -381,14 +427,18 @@
             font-weight: 600;
             color: var(--white);
             line-height: 1.5;
-            border-left: 3px solid var(--brand-cyan);
+            border-left: 3px solid;
+            border-image: var(--brand-gradient-vertical) 1;
             padding-left: var(--space-6);
             margin-bottom: var(--space-10);
             max-width: 800px;
         }
 
         .brand-statement em {
-            color: var(--brand-cyan-light);
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-style: normal;
         }
 
@@ -415,6 +465,48 @@
             margin-bottom: var(--space-5);
         }
 
+        /* Logo display */
+        .brand-logo-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-6);
+            margin-top: var(--space-10);
+        }
+
+        .logo-variant {
+            padding: var(--space-10);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-6);
+        }
+
+        .logo-variant img {
+            max-height: 48px;
+            width: auto;
+        }
+
+        .logo-variant-dark {
+            background: var(--neutral-900);
+            border: 1px solid var(--neutral-800);
+        }
+
+        .logo-variant-gradient {
+            background: var(--brand-gradient);
+        }
+
+        .logo-variant-label {
+            font-size: var(--text-xs);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .logo-variant-dark .logo-variant-label { color: var(--neutral-500); }
+        .logo-variant-gradient .logo-variant-label { color: rgba(255,255,255,0.7); }
+
         /* ============================================
            02. DESIGN PRINCIPLES
            ============================================ */
@@ -427,13 +519,11 @@
             border-bottom: 1px solid var(--neutral-850);
         }
 
-        .principle:last-child {
-            border-bottom: none;
-        }
+        .principle:last-child { border-bottom: none; }
 
         .principle-number {
             font-size: var(--text-4xl);
-            font-weight: 800;
+            font-weight: 700;
             background: var(--brand-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -448,10 +538,7 @@
             margin-bottom: var(--space-2);
         }
 
-        .principle-desc {
-            color: var(--neutral-400);
-            line-height: 1.7;
-        }
+        .principle-desc { color: var(--neutral-400); line-height: 1.7; }
 
         .principle-example {
             margin-top: var(--space-4);
@@ -463,7 +550,7 @@
         }
 
         .principle-example strong {
-            color: var(--brand-cyan-light);
+            color: var(--brand-cyan);
             font-weight: 500;
         }
 
@@ -502,41 +589,25 @@
         .persona-avatar.primary { background: var(--brand-gradient); }
         .persona-avatar.secondary { background: linear-gradient(135deg, var(--neutral-600), var(--neutral-500)); }
 
-        .persona-name {
-            font-size: var(--text-lg);
-            font-weight: 600;
-            color: var(--white);
-        }
-
-        .persona-role {
-            font-size: var(--text-sm);
-            color: var(--neutral-400);
-        }
+        .persona-name { font-size: var(--text-lg); font-weight: 600; color: var(--white); }
+        .persona-role { font-size: var(--text-sm); color: var(--neutral-400); }
 
         .persona-badge {
             margin-left: auto;
             padding: var(--space-1) var(--space-3);
-            background: rgba(0, 188, 212, 0.1);
-            border: 1px solid rgba(0, 188, 212, 0.2);
+            background: rgba(0, 153, 255, 0.1);
+            border: 1px solid rgba(0, 153, 255, 0.2);
             border-radius: var(--radius-full);
             font-size: var(--text-xs);
             font-weight: 600;
-            color: var(--brand-cyan-light);
+            color: var(--brand-cyan);
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        .persona-body {
-            padding: var(--space-6) var(--space-8);
-        }
-
-        .persona-section {
-            margin-bottom: var(--space-5);
-        }
-
-        .persona-section:last-child {
-            margin-bottom: 0;
-        }
+        .persona-body { padding: var(--space-6) var(--space-8); }
+        .persona-section { margin-bottom: var(--space-5); }
+        .persona-section:last-child { margin-bottom: 0; }
 
         .persona-section-title {
             font-size: var(--text-sm);
@@ -547,21 +618,16 @@
             margin-bottom: var(--space-2);
         }
 
-        .persona-section p,
-        .persona-section li {
+        .persona-section p, .persona-section li {
             color: var(--neutral-400);
             font-size: var(--text-sm);
             line-height: 1.7;
         }
 
-        .persona-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
+        .persona-section ul { list-style: none; padding: 0; }
         .persona-section li::before {
             content: '→';
-            color: var(--brand-cyan);
+            color: var(--brand-solid);
             margin-right: var(--space-2);
         }
 
@@ -590,9 +656,7 @@
             .tone-spectrum { grid-template-columns: repeat(2, 1fr); }
         }
 
-        .tone-item {
-            text-align: center;
-        }
+        .tone-item { text-align: center; }
 
         .tone-bar {
             height: 4px;
@@ -605,24 +669,14 @@
 
         .tone-bar-fill {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             height: 100%;
-            background: var(--brand-gradient);
+            background: var(--brand-gradient-horizontal);
             border-radius: var(--radius-full);
         }
 
-        .tone-label {
-            font-size: var(--text-sm);
-            font-weight: 600;
-            color: var(--white);
-            margin-bottom: var(--space-1);
-        }
-
-        .tone-range {
-            font-size: var(--text-xs);
-            color: var(--neutral-500);
-        }
+        .tone-label { font-size: var(--text-sm); font-weight: 600; color: var(--white); margin-bottom: var(--space-1); }
+        .tone-range { font-size: var(--text-xs); color: var(--neutral-500); }
 
         .tone-examples {
             display: grid;
@@ -639,22 +693,9 @@
             border-radius: var(--radius-lg);
         }
 
-        .tone-do {
-            background: var(--status-success-bg);
-            border: 1px solid var(--status-success-border);
-        }
-
-        .tone-dont {
-            background: var(--status-error-bg);
-            border: 1px solid var(--status-error-border);
-        }
-
-        .tone-do-title, .tone-dont-title {
-            font-size: var(--text-sm);
-            font-weight: 600;
-            margin-bottom: var(--space-4);
-        }
-
+        .tone-do { background: var(--status-success-bg); border: 1px solid var(--status-success-border); }
+        .tone-dont { background: var(--status-error-bg); border: 1px solid var(--status-error-border); }
+        .tone-do-title, .tone-dont-title { font-size: var(--text-sm); font-weight: 600; margin-bottom: var(--space-4); }
         .tone-do-title { color: var(--status-success); }
         .tone-dont-title { color: var(--status-error); }
 
@@ -665,15 +706,8 @@
             color: var(--neutral-300);
         }
 
-        .tone-example-item:last-child {
-            border-bottom: none;
-        }
-
-        .tone-context {
-            font-size: var(--text-xs);
-            color: var(--neutral-500);
-            margin-bottom: var(--space-1);
-        }
+        .tone-example-item:last-child { border-bottom: none; }
+        .tone-context { font-size: var(--text-xs); color: var(--neutral-500); margin-bottom: var(--space-1); }
 
         /* ============================================
            05. COLOUR PALETTE
@@ -688,6 +722,10 @@
             display: flex;
             align-items: center;
             gap: var(--space-8);
+        }
+
+        @media (max-width: 768px) {
+            .colour-philosophy { flex-direction: column; }
         }
 
         .colour-philosophy-visual {
@@ -708,39 +746,32 @@
 
         .colour-philosophy-visual .pop {
             position: absolute;
-            width: 16px;
-            height: 16px;
             border-radius: 50%;
         }
 
         .colour-philosophy-visual .pop-1 {
-            background: var(--brand-cyan);
-            top: 30px;
-            left: 60px;
-            box-shadow: 0 0 12px rgba(0,188,212,0.4);
+            background: var(--brand-solid);
+            width: 16px; height: 16px;
+            top: 30px; left: 60px;
+            box-shadow: 0 0 12px rgba(0,153,255,0.5);
         }
 
         .colour-philosophy-visual .pop-2 {
             background: var(--status-success);
-            top: 55px;
-            left: 120px;
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
+            top: 55px; left: 120px;
             box-shadow: 0 0 8px rgba(52,211,153,0.4);
         }
 
         .colour-philosophy-visual .pop-3 {
             background: var(--status-error);
-            top: 75px;
-            left: 45px;
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
+            top: 75px; left: 45px;
             box-shadow: 0 0 8px rgba(248,113,113,0.4);
         }
 
-        .colour-group {
-            margin-bottom: var(--space-12);
-        }
+        .colour-group { margin-bottom: var(--space-12); }
+        .colour-group:last-child { margin-bottom: 0; }
 
         .colour-group-title {
             font-size: var(--text-lg);
@@ -776,21 +807,10 @@
             transition: transform var(--duration-fast) var(--ease-default);
         }
 
-        .swatch-color:hover {
-            transform: scale(1.05);
-        }
+        .swatch-color:hover { transform: scale(1.05); }
 
-        .swatch-label {
-            font-size: var(--text-xs);
-            font-weight: 500;
-            color: var(--neutral-300);
-        }
-
-        .swatch-hex {
-            font-size: 10px;
-            color: var(--neutral-500);
-            font-family: 'SF Mono', 'Fira Code', monospace;
-        }
+        .swatch-label { font-size: var(--text-xs); font-weight: 500; color: var(--neutral-300); }
+        .swatch-hex { font-size: 10px; color: var(--neutral-500); font-family: 'SF Mono', 'Fira Code', monospace; }
 
         .gradient-swatch {
             width: 100%;
@@ -800,7 +820,6 @@
             margin-bottom: var(--space-3);
         }
 
-        /* Neutral scale — long strip */
         .neutral-strip {
             display: flex;
             border-radius: var(--radius-md);
@@ -820,7 +839,6 @@
             font-family: 'SF Mono', 'Fira Code', monospace;
         }
 
-        /* Status row */
         .status-row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -831,9 +849,7 @@
             .status-row { grid-template-columns: repeat(3, 1fr); }
         }
 
-        .status-item {
-            text-align: center;
-        }
+        .status-item { text-align: center; }
 
         .status-indicator {
             width: 48px;
@@ -846,25 +862,135 @@
             font-size: var(--text-md);
         }
 
-        .status-name {
-            font-size: var(--text-sm);
-            font-weight: 500;
-            color: var(--neutral-200);
-            margin-bottom: var(--space-1);
+        .status-name { font-size: var(--text-sm); font-weight: 500; color: var(--neutral-200); margin-bottom: var(--space-1); }
+        .status-use { font-size: var(--text-xs); color: var(--neutral-500); }
+
+        /* Gradient vs Solid section */
+        .usage-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--space-4);
         }
 
-        .status-use {
+        .usage-table th {
+            text-align: left;
+            padding: var(--space-3) var(--space-4);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--neutral-300);
+            border-bottom: 1px solid var(--neutral-700);
+            background: var(--neutral-850);
+        }
+
+        .usage-table th:first-child {
+            border-radius: var(--radius-md) 0 0 0;
+        }
+
+        .usage-table th:last-child {
+            border-radius: 0 var(--radius-md) 0 0;
+        }
+
+        .usage-table td {
+            padding: var(--space-3) var(--space-4);
+            font-size: var(--text-sm);
+            color: var(--neutral-400);
+            border-bottom: 1px solid var(--neutral-850);
+        }
+
+        .usage-table tr:last-child td { border-bottom: none; }
+
+        .usage-gradient {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            background: var(--brand-gradient);
+            vertical-align: middle;
+            margin-right: var(--space-2);
+        }
+
+        .usage-solid {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            background: var(--brand-solid);
+            vertical-align: middle;
+            margin-right: var(--space-2);
+        }
+
+        /* Grouping demo */
+        .grouping-demo {
+            background: var(--neutral-900);
+            border: 1px solid var(--neutral-800);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+        }
+
+        .group-parent {
+            background: var(--group-l1);
+            border: 1px solid var(--group-l1-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+        }
+
+        .group-parent-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--brand-cyan);
+            margin-bottom: var(--space-3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .group-children {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            padding-left: var(--space-6);
+        }
+
+        .group-child {
+            background: var(--neutral-850);
+            border: 1px solid var(--neutral-700);
+            border-radius: var(--radius-sm);
+            padding: var(--space-3) var(--space-4);
+            font-size: var(--text-sm);
+            color: var(--neutral-300);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .group-child-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .group-nested {
+            background: var(--group-l2);
+            border: 1px solid var(--group-l2-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3) var(--space-4);
+            margin-top: var(--space-2);
+            margin-left: var(--space-6);
+        }
+
+        .group-nested-label {
             font-size: var(--text-xs);
-            color: var(--neutral-500);
+            font-weight: 600;
+            color: var(--neutral-400);
+            margin-bottom: var(--space-2);
         }
 
         /* ============================================
            06. TYPOGRAPHY
            ============================================ */
 
-        .type-specimen {
-            margin-bottom: var(--space-12);
-        }
+        .type-specimen { margin-bottom: var(--space-12); }
 
         .type-sample {
             padding: var(--space-8) 0;
@@ -876,36 +1002,17 @@
         }
 
         @media (max-width: 768px) {
-            .type-sample {
-                grid-template-columns: 1fr;
-                gap: var(--space-2);
-            }
+            .type-sample { grid-template-columns: 1fr; gap: var(--space-2); }
         }
 
-        .type-meta {
-            font-size: var(--text-sm);
-            color: var(--neutral-500);
-        }
-
-        .type-meta strong {
-            display: block;
-            color: var(--neutral-300);
-            font-weight: 500;
-        }
-
-        .type-meta code {
-            font-size: var(--text-xs);
-            color: var(--neutral-500);
-            font-family: 'SF Mono', 'Fira Code', monospace;
-        }
-
-        .type-demo {
-            color: var(--white);
-        }
+        .type-meta { font-size: var(--text-sm); color: var(--neutral-500); }
+        .type-meta strong { display: block; color: var(--neutral-300); font-weight: 500; }
+        .type-meta code { font-size: var(--text-xs); color: var(--neutral-500); font-family: 'SF Mono', 'Fira Code', monospace; }
+        .type-demo { color: var(--white); }
 
         .weight-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: var(--space-4);
         }
 
@@ -921,22 +1028,9 @@
             border-radius: var(--radius-md);
         }
 
-        .weight-demo {
-            font-size: var(--text-2xl);
-            color: var(--white);
-            margin-bottom: var(--space-2);
-        }
-
-        .weight-name {
-            font-size: var(--text-xs);
-            color: var(--neutral-400);
-        }
-
-        .weight-value {
-            font-size: 10px;
-            color: var(--neutral-600);
-            font-family: 'SF Mono', 'Fira Code', monospace;
-        }
+        .weight-demo { font-size: var(--text-2xl); color: var(--white); margin-bottom: var(--space-2); }
+        .weight-name { font-size: var(--text-xs); color: var(--neutral-400); }
+        .weight-value { font-size: 10px; color: var(--neutral-600); font-family: 'SF Mono', 'Fira Code', monospace; }
 
         /* ============================================
            07. ICONOGRAPHY
@@ -962,13 +1056,10 @@
             transition: border-color var(--duration-fast) var(--ease-default);
         }
 
-        .icon-item:hover {
-            border-color: var(--neutral-600);
-        }
+        .icon-item:hover { border-color: var(--neutral-600); }
 
         .icon-item svg {
-            width: 24px;
-            height: 24px;
+            width: 24px; height: 24px;
             stroke: var(--neutral-300);
             fill: none;
             stroke-width: 1.5;
@@ -976,10 +1067,7 @@
             stroke-linejoin: round;
         }
 
-        .icon-item span {
-            font-size: 10px;
-            color: var(--neutral-500);
-        }
+        .icon-item span { font-size: 10px; color: var(--neutral-500); }
 
         /* ============================================
            08. SPACING & LAYOUT
@@ -1001,8 +1089,8 @@
         }
 
         .spacing-visual {
-            background: rgba(0, 188, 212, 0.15);
-            border: 1px solid rgba(0, 188, 212, 0.3);
+            background: rgba(0, 153, 255, 0.15);
+            border: 1px solid rgba(0, 153, 255, 0.3);
             border-radius: 2px;
             width: 40px;
         }
@@ -1035,32 +1123,12 @@
             text-align: center;
         }
 
-        .elevation-item.flat {
-            background: var(--neutral-900);
-            border: 1px solid var(--neutral-800);
-        }
+        .elevation-item.flat { background: var(--neutral-900); border: 1px solid var(--neutral-800); }
+        .elevation-item.raised { background: var(--neutral-850); box-shadow: var(--shadow-md); }
+        .elevation-item.floating { background: var(--neutral-800); box-shadow: var(--shadow-lg); }
 
-        .elevation-item.raised {
-            background: var(--neutral-850);
-            box-shadow: var(--shadow-md);
-        }
-
-        .elevation-item.floating {
-            background: var(--neutral-800);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .elevation-name {
-            font-size: var(--text-sm);
-            font-weight: 600;
-            color: var(--white);
-            margin-bottom: var(--space-1);
-        }
-
-        .elevation-use {
-            font-size: var(--text-xs);
-            color: var(--neutral-500);
-        }
+        .elevation-name { font-size: var(--text-sm); font-weight: 600; color: var(--white); margin-bottom: var(--space-1); }
+        .elevation-use { font-size: var(--text-xs); color: var(--neutral-500); }
 
         /* ============================================
            10. MOTION
@@ -1093,129 +1161,23 @@
         }
 
         .motion-dot {
-            width: 16px;
-            height: 16px;
-            background: var(--brand-cyan);
+            width: 16px; height: 16px;
+            background: var(--brand-solid);
             border-radius: 50%;
         }
 
-        .motion-demo-card:hover .motion-dot-fast {
-            transform: translateX(40px);
-            transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .motion-demo-card:hover .motion-dot-fast { transform: translateX(40px); transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .motion-dot-fast { transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1); }
 
-        .motion-dot-fast {
-            transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .motion-demo-card:hover .motion-dot-normal { transform: translateX(40px); transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .motion-dot-normal { transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1); }
 
-        .motion-demo-card:hover .motion-dot-normal {
-            transform: translateX(40px);
-            transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .motion-demo-card:hover .motion-dot-slow { transform: translateX(40px); transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .motion-dot-slow { transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1); }
 
-        .motion-dot-normal {
-            transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .motion-demo-card:hover .motion-dot-slow {
-            transform: translateX(40px);
-            transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .motion-dot-slow {
-            transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .motion-name {
-            font-size: var(--text-sm);
-            font-weight: 600;
-            color: var(--white);
-            margin-bottom: var(--space-1);
-        }
-
-        .motion-detail {
-            font-size: var(--text-xs);
-            color: var(--neutral-500);
-            font-family: 'SF Mono', 'Fira Code', monospace;
-        }
-
-        .motion-use {
-            font-size: var(--text-xs);
-            color: var(--neutral-400);
-            margin-top: var(--space-2);
-        }
-
-        /* ============================================
-           PARENT-CHILD GROUPING DEMO
-           ============================================ */
-
-        .grouping-demo {
-            background: var(--neutral-900);
-            border: 1px solid var(--neutral-800);
-            border-radius: var(--radius-lg);
-            padding: var(--space-6);
-            margin-bottom: var(--space-6);
-        }
-
-        .group-parent {
-            background: var(--group-l1);
-            border: 1px solid var(--group-l1-border);
-            border-radius: var(--radius-md);
-            padding: var(--space-4);
-            margin-bottom: var(--space-3);
-        }
-
-        .group-parent-label {
-            font-size: var(--text-sm);
-            font-weight: 600;
-            color: var(--brand-cyan-light);
-            margin-bottom: var(--space-3);
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-        }
-
-        .group-children {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-2);
-            padding-left: var(--space-6);
-        }
-
-        .group-child {
-            background: var(--neutral-850);
-            border: 1px solid var(--neutral-700);
-            border-radius: var(--radius-sm);
-            padding: var(--space-3) var(--space-4);
-            font-size: var(--text-sm);
-            color: var(--neutral-300);
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-        }
-
-        .group-child-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .group-nested {
-            background: var(--group-l2);
-            border: 1px solid var(--group-l2-border);
-            border-radius: var(--radius-md);
-            padding: var(--space-3) var(--space-4);
-            margin-top: var(--space-2);
-            margin-left: var(--space-6);
-        }
-
-        .group-nested-label {
-            font-size: var(--text-xs);
-            font-weight: 600;
-            color: var(--neutral-400);
-            margin-bottom: var(--space-2);
-        }
+        .motion-name { font-size: var(--text-sm); font-weight: 600; color: var(--white); margin-bottom: var(--space-1); }
+        .motion-detail { font-size: var(--text-xs); color: var(--neutral-500); font-family: 'SF Mono', 'Fira Code', monospace; }
+        .motion-use { font-size: var(--text-xs); color: var(--neutral-400); margin-top: var(--space-2); }
 
         /* ============================================
            FOOTER
@@ -1227,19 +1189,9 @@
             text-align: center;
         }
 
-        .footer p {
-            font-size: var(--text-sm);
-            color: var(--neutral-500);
-        }
-
-        .footer a {
-            color: var(--brand-cyan);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
+        .footer p { font-size: var(--text-sm); color: var(--neutral-500); }
+        .footer a { color: var(--brand-solid); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
 
         /* ============================================
            UTILITY
@@ -1248,7 +1200,9 @@
         .mt-4 { margin-top: var(--space-4); }
         .mt-8 { margin-top: var(--space-8); }
         .mb-4 { margin-bottom: var(--space-4); }
+        .mb-6 { margin-bottom: var(--space-6); }
         .mb-8 { margin-bottom: var(--space-8); }
+        .mb-12 { margin-bottom: var(--space-12); }
         .text-muted { color: var(--neutral-500); }
         .text-sm { font-size: var(--text-sm); }
 
@@ -1258,7 +1212,7 @@
             background: var(--neutral-850);
             padding: 2px 6px;
             border-radius: var(--radius-sm);
-            color: var(--brand-cyan-light);
+            color: var(--brand-cyan);
         }
     </style>
 </head>
@@ -1270,9 +1224,9 @@
     <nav class="nav">
         <div class="nav-inner">
             <a href="#" class="nav-brand">
-                <div class="nav-logo">DF</div>
-                <span class="nav-title">DeepFlow</span>
-                <span class="nav-subtitle">Design Guidelines v1.0</span>
+                <img src="assets/iconmark-white.png" alt="DeepFlow" style="height: 28px; width: auto;">
+                <span class="nav-divider"></span>
+                <span class="nav-subtitle">Design Guidelines v1.1</span>
             </a>
             <ul class="nav-links">
                 <li><a href="#brand">Brand</a></li>
@@ -1280,6 +1234,7 @@
                 <li><a href="#personas">Personas</a></li>
                 <li><a href="#tone">Tone</a></li>
                 <li><a href="#colour">Colour</a></li>
+                <li><a href="#gradient-usage">Gradient</a></li>
                 <li><a href="#typography">Typography</a></li>
                 <li><a href="#icons">Icons</a></li>
                 <li><a href="#spacing">Spacing</a></li>
@@ -1294,11 +1249,14 @@
          ========================================== -->
     <header class="hero">
         <div class="container">
+            <div class="hero-logo">
+                <img src="assets/iconmark-white.png" alt="DeepFlow icon">
+            </div>
             <div class="hero-badge">
                 <span class="hero-badge-dot"></span>
                 Living Document — Phase 1: Foundations
             </div>
-            <h1>Design <span>Guidelines</span></h1>
+            <h1>Design <span class="gradient-text">Guidelines</span></h1>
             <p class="hero-sub">
                 The visual language for DeepFlow — an AI orchestration platform where clarity isn't optional, it's infrastructure. Monochrome base. Purposeful colour. Every pixel earns its place.
             </p>
@@ -1342,6 +1300,25 @@
                     <p class="card-text">Enterprise capability, approachable interface. The user describes intent in plain language; the platform handles decomposition, sequencing, and execution.</p>
                 </div>
             </div>
+
+            <!-- Logo Display -->
+            <div class="brand-logo-display">
+                <div class="logo-variant logo-variant-dark">
+                    <img src="assets/full-logo-gradient.png" alt="DeepFlow logo — gradient on dark">
+                    <span class="logo-variant-label">Gradient on Dark — Primary</span>
+                </div>
+                <div class="logo-variant logo-variant-gradient">
+                    <img src="assets/full-logo-white.png" alt="DeepFlow logo — white on gradient">
+                    <span class="logo-variant-label">White on Gradient — Hero / Marketing</span>
+                </div>
+            </div>
+
+            <div class="card mt-8">
+                <div class="card-title">Brand Name Usage</div>
+                <p class="card-text">
+                    The wordmark logo renders "deepflow" in lowercase as a single word — this is correct for the logo image. When used as <strong style="color: var(--white);">text</strong> (in UI labels, documentation, marketing copy, or conversation), always write <strong style="color: var(--white);">DeepFlow</strong> with capital D and F for legibility. Never "Deepflow", "deepflow", or "Deep Flow" in running text.
+                </p>
+            </div>
         </section>
 
         <!-- ==========================================
@@ -1358,12 +1335,8 @@
                 <div class="principle-number">01</div>
                 <div>
                     <div class="principle-title">Calm by Default, Vivid by Exception</div>
-                    <p class="principle-desc">
-                        The interface is monochrome. Colour is reserved for information that demands attention: status changes, actionable items, brand moments. If everything is colourful, nothing is. Restrained palette = stronger signal.
-                    </p>
-                    <div class="principle-example">
-                        <strong>In practice →</strong> A graph of 50 nodes is rendered in neutral grays. The 3 nodes that need attention glow with status colour. Your eye goes exactly where it should.
-                    </div>
+                    <p class="principle-desc">The interface is monochrome. Colour is reserved for information that demands attention: status changes, actionable items, brand moments. If everything is colourful, nothing is.</p>
+                    <div class="principle-example"><strong>In practice →</strong> A graph of 50 nodes is rendered in neutral grays. The 3 nodes that need attention glow with status colour. Your eye goes exactly where it should.</div>
                 </div>
             </div>
 
@@ -1371,12 +1344,8 @@
                 <div class="principle-number">02</div>
                 <div>
                     <div class="principle-title">Show the Structure, Hide the Complexity</div>
-                    <p class="principle-desc">
-                        DeepFlow manages intricate dependency graphs. The UI's job is to make that structure legible — not to expose every node, edge, and metadata field at once. Progressive disclosure: show what matters now, reveal depth on demand.
-                    </p>
-                    <div class="principle-example">
-                        <strong>In practice →</strong> A collapsed parent task shows its name, status, and child count. Expanding it reveals children in a shaded containment area. You drill down when you choose to, not because the UI forced everything on screen.
-                    </div>
+                    <p class="principle-desc">DeepFlow manages intricate dependency graphs. The UI's job is to make that structure legible — not to expose every node, edge, and metadata field at once. Progressive disclosure: show what matters now, reveal depth on demand.</p>
+                    <div class="principle-example"><strong>In practice →</strong> A collapsed parent task shows its name, status, and child count. Expanding it reveals children in a shaded containment area. You drill down when you choose to.</div>
                 </div>
             </div>
 
@@ -1384,12 +1353,8 @@
                 <div class="principle-number">03</div>
                 <div>
                     <div class="principle-title">Status Is Sacred</div>
-                    <p class="principle-desc">
-                        In an orchestration platform, status is the most important piece of information. It must be visible, consistent, and unambiguous in every view — graph, kanban, list, dashboard. One visual language for status, everywhere.
-                    </p>
-                    <div class="principle-example">
-                        <strong>In practice →</strong> Green means complete. Red means failed. Amber means needs attention. Always. In every view, at every zoom level. No exceptions, no "it depends."
-                    </div>
+                    <p class="principle-desc">In an orchestration platform, status is the most important piece of information. It must be visible, consistent, and unambiguous in every view. One visual language for status, everywhere.</p>
+                    <div class="principle-example"><strong>In practice →</strong> Green means complete. Red means failed. Amber means needs attention. Always. In every view, at every zoom level. No exceptions.</div>
                 </div>
             </div>
 
@@ -1397,12 +1362,8 @@
                 <div class="principle-number">04</div>
                 <div>
                     <div class="principle-title">Readable Before Beautiful</div>
-                    <p class="principle-desc">
-                        Users managing 50+ tasks across multiple workstreams cannot afford to squint. Task names are never truncated to invisibility. Labels are always present alongside icons. Contrast meets WCAG AA minimum. Legibility is non-negotiable.
-                    </p>
-                    <div class="principle-example">
-                        <strong>In practice →</strong> If a task name doesn't fit, the container grows — not the text shrinks. Icon-only buttons always have a tooltip, and primary actions always have visible text labels.
-                    </div>
+                    <p class="principle-desc">Users managing 50+ tasks across workstreams cannot afford to squint. Task names are never truncated to invisibility. Labels are always present alongside icons. Contrast meets WCAG AA. Legibility is non-negotiable.</p>
+                    <div class="principle-example"><strong>In practice →</strong> If a task name doesn't fit, the container grows — not the text shrinks. Icon-only buttons always have a tooltip, and primary actions always have visible text labels.</div>
                 </div>
             </div>
 
@@ -1410,12 +1371,8 @@
                 <div class="principle-number">05</div>
                 <div>
                     <div class="principle-title">Human and AI, Visually Distinct</div>
-                    <p class="principle-desc">
-                        DeepFlow uniquely blends human and AI task execution. At a glance, users must always know whether a task is assigned to a person or an agent. This distinction is expressed through shape, never through colour (colour is reserved for status and brand).
-                    </p>
-                    <div class="principle-example">
-                        <strong>In practice →</strong> Circular avatars = human assignees. Hexagonal avatars = AI agents. This shape language persists across graph nodes, list rows, kanban cards, and detail panels.
-                    </div>
+                    <p class="principle-desc">DeepFlow uniquely blends human and AI task execution. At a glance, users must know whether a task is assigned to a person or an agent. This distinction is expressed through shape, never colour.</p>
+                    <div class="principle-example"><strong>In practice →</strong> Circular avatars = human assignees. Hexagonal avatars = AI agents. This shape language persists across graph nodes, list rows, kanban cards, and detail panels.</div>
                 </div>
             </div>
         </section>
@@ -1431,7 +1388,6 @@
             </div>
 
             <div class="persona-grid">
-                <!-- Primary Persona -->
                 <div class="persona-card">
                     <div class="persona-header">
                         <div class="persona-avatar primary">S</div>
@@ -1444,14 +1400,14 @@
                     <div class="persona-body">
                         <div class="persona-section">
                             <div class="persona-section-title">Context</div>
-                            <p>Manages complex multi-step regulatory processes (ICAAP, Basel III reporting) across teams of 8-15 people plus AI agents. Juggles 40-60 active tasks across 3-5 concurrent workflows. Not a developer, but a power user who lives in the tool daily.</p>
+                            <p>Manages complex multi-step regulatory processes (ICAAP, Basel III reporting) across teams of 8–15 people plus AI agents. Juggles 40–60 active tasks across 3–5 concurrent workflows. Not a developer, but a power user who lives in the tool daily.</p>
                         </div>
                         <div class="persona-section">
                             <div class="persona-section-title">Needs</div>
                             <ul>
                                 <li>At-a-glance status across all active workflows</li>
                                 <li>Instantly see what's blocked, what's ready, what failed</li>
-                                <li>Quickly identify who (human or AI) is responsible for each task</li>
+                                <li>Quickly identify who (human or AI) is responsible</li>
                                 <li>Drill into task detail without losing workflow context</li>
                                 <li>Audit trail for compliance — who did what, when</li>
                             </ul>
@@ -1460,7 +1416,7 @@
                             <div class="persona-section-title">Frustrations</div>
                             <ul>
                                 <li>"I can't tell at a glance which tasks are blocked"</li>
-                                <li>"Task names are truncated — I have to click each one to read it"</li>
+                                <li>"Task names are truncated — I have to click each one"</li>
                                 <li>"When I expand a parent task, I lose track of what level I'm at"</li>
                                 <li>"Too many colours — I can't tell what means what"</li>
                             </ul>
@@ -1468,7 +1424,6 @@
                     </div>
                 </div>
 
-                <!-- Secondary Persona -->
                 <div class="persona-card">
                     <div class="persona-header">
                         <div class="persona-avatar secondary">D</div>
@@ -1486,7 +1441,7 @@
                             <div class="persona-section-title">Needs</div>
                             <ul>
                                 <li>Clear audit trail — timestamped, attributed actions</li>
-                                <li>Obvious approval gate status (approved/pending/rejected)</li>
+                                <li>Obvious approval gate status</li>
                                 <li>Distinguish human vs. AI work at every level</li>
                                 <li>Exportable reports and history</li>
                             </ul>
@@ -1494,7 +1449,6 @@
                     </div>
                 </div>
 
-                <!-- Tertiary Persona -->
                 <div class="persona-card">
                     <div class="persona-header">
                         <div class="persona-avatar secondary">M</div>
@@ -1506,12 +1460,12 @@
                     <div class="persona-body">
                         <div class="persona-section">
                             <div class="persona-section-title">Context</div>
-                            <p>Builds reusable workflow templates ("Agents") for clients. Needs the tool to look professional in demos while being practical for daily use. Creates 2-3 new workflows per week, often from scratch via the prompt interface.</p>
+                            <p>Builds reusable workflow templates ("Agents") for clients. Needs the tool to look professional in demos while being practical for daily use. Creates 2–3 new workflows per week via the prompt interface.</p>
                         </div>
                         <div class="persona-section">
                             <div class="persona-section-title">Needs</div>
                             <ul>
-                                <li>Impressive graph visualisations for client presentations</li>
+                                <li>Impressive graph visualisations for presentations</li>
                                 <li>Quick workflow creation from natural language</li>
                                 <li>Template management and versioning</li>
                                 <li>Professional, polished appearance</li>
@@ -1520,7 +1474,6 @@
                     </div>
                 </div>
 
-                <!-- Executive Persona -->
                 <div class="persona-card">
                     <div class="persona-header">
                         <div class="persona-avatar secondary">J</div>
@@ -1532,7 +1485,7 @@
                     <div class="persona-body">
                         <div class="persona-section">
                             <div class="persona-section-title">Context</div>
-                            <p>Executive stakeholder who reviews dashboards and approves critical gates. Uses DeepFlow briefly but frequently — 5 minutes at a time, multiple times a day. Needs instant clarity, not exploration.</p>
+                            <p>Executive stakeholder who reviews dashboards and approves critical gates. Uses DeepFlow briefly but frequently — 5 minutes at a time, multiple times a day. Needs instant clarity.</p>
                         </div>
                         <div class="persona-section">
                             <div class="persona-section-title">Needs</div>
@@ -1555,10 +1508,9 @@
             <div class="section-header">
                 <div class="section-number">04</div>
                 <h2 class="section-title">Tone of Voice</h2>
-                <p class="section-desc">How DeepFlow speaks to users — in labels, tooltips, empty states, errors, and onboarding. The voice is the brand experienced as language.</p>
+                <p class="section-desc">How DeepFlow speaks to users — in labels, tooltips, empty states, errors, and onboarding.</p>
             </div>
 
-            <!-- Spectrum -->
             <div class="tone-spectrum">
                 <div class="tone-item">
                     <div class="tone-bar"><div class="tone-bar-fill" style="width: 75%"></div></div>
@@ -1586,19 +1538,18 @@
             <div class="card-grid card-grid-3 mb-8">
                 <div class="card">
                     <div class="card-title">Clarity Over Cleverness</div>
-                    <p class="card-text">Users are managing regulated processes. Use plain language. Say "3 tasks are blocked" not "Some tasks need a nudge." Save personality for empty states and onboarding — never in error messages.</p>
+                    <p class="card-text">Users are managing regulated processes. Use plain language. Say "3 tasks are blocked" not "Some tasks need a nudge." Save personality for empty states — never in error messages.</p>
                 </div>
                 <div class="card">
                     <div class="card-title">Action-Oriented</div>
-                    <p class="card-text">Tell the user what to do, not just what happened. "Task failed — retry or reassign" is better than "Task failed." Every message should imply a next step.</p>
+                    <p class="card-text">Tell the user what to do, not just what happened. "Task failed — retry or reassign" beats "Task failed." Every message implies a next step.</p>
                 </div>
                 <div class="card">
                     <div class="card-title">Respect the User's Time</div>
-                    <p class="card-text">No filler. No "Please note that..." or "It appears that..." Get to the point. Sarah has 50 tasks to manage — every word must earn its place.</p>
+                    <p class="card-text">No filler. No "Please note that…" or "It appears that…" Get to the point. Sarah has 50 tasks to manage — every word must earn its place.</p>
                 </div>
             </div>
 
-            <!-- Do / Don't -->
             <div class="tone-examples">
                 <div class="tone-do">
                     <div class="tone-do-title">✓ Write like this</div>
@@ -1619,7 +1570,7 @@
                         "Report generated — V3 ready for review."
                     </div>
                     <div class="tone-example-item">
-                        <div class="tone-context">Navigation label</div>
+                        <div class="tone-context">Navigation</div>
                         "Workflows" · "Team" · "Templates"
                     </div>
                 </div>
@@ -1642,7 +1593,7 @@
                         "Congratulations! 🎉 Your report has been successfully generated!"
                     </div>
                     <div class="tone-example-item">
-                        <div class="tone-context">Navigation label</div>
+                        <div class="tone-context">Navigation</div>
                         "Orchestration Pipelines" · "Human Resources Matrix" · "Agent Configurations"
                     </div>
                 </div>
@@ -1659,7 +1610,6 @@
                 <p class="section-desc">Monochrome + pops of colour. The canvas is calm; colour earns its place by meaning something.</p>
             </div>
 
-            <!-- Philosophy -->
             <div class="colour-philosophy">
                 <div class="colour-philosophy-visual">
                     <div class="mono-base"></div>
@@ -1669,42 +1619,42 @@
                 </div>
                 <div>
                     <div class="card-title mb-4">The Philosophy</div>
-                    <p class="card-text">The interface is built on a monochrome neutral scale — dark backgrounds, light text, subtle borders. Colour appears only for three purposes: <strong style="color: var(--brand-cyan-light)">brand identity</strong> (cyan/blue gradient), <strong style="color: var(--status-success)">semantic status</strong> (success, warning, error), and <strong style="color: var(--white)">parent-child grouping</strong> (subtle containment shading). If a colour doesn't serve one of these three roles, it doesn't belong.</p>
+                    <p class="card-text">The interface is built on a monochrome neutral scale — dark backgrounds, light text, subtle borders. Colour appears only for three purposes: <strong style="color: var(--brand-cyan)">brand identity</strong> (cyan→blue gradient), <strong style="color: var(--status-success)">semantic status</strong> (success, warning, error), and <strong style="color: var(--white)">parent-child grouping</strong> (subtle containment shading). If a colour doesn't serve one of these three roles, it doesn't belong.</p>
                 </div>
             </div>
 
-            <!-- Brand Colours -->
+            <!-- Brand Gradient -->
             <div class="colour-group">
-                <div class="colour-group-title">Brand — Cyan/Blue Gradient</div>
-                <p class="colour-group-desc">The DeepFlow signature. Used for primary actions, interactive elements, links, brand moments, and the hero gradient. This is the only "decorative" colour in the system.</p>
+                <div class="colour-group-title">Brand — Cyan → Blue Gradient</div>
+                <p class="colour-group-desc">The DeepFlow signature. A vibrant sweep from electric cyan through sky blue to deep cobalt. Used for brand moments, hero areas, primary CTAs, and accent highlights.</p>
 
                 <div class="gradient-swatch" style="background: var(--brand-gradient);"></div>
 
-                <div class="swatch-row">
+                <div class="swatch-row mb-6">
                     <div class="swatch">
-                        <div class="swatch-color" style="background: #0097A7;"></div>
-                        <span class="swatch-label">Cyan Dark</span>
-                        <span class="swatch-hex">#0097A7</span>
+                        <div class="swatch-color" style="background: #00E5FF;"></div>
+                        <span class="swatch-label">Cyan Start</span>
+                        <span class="swatch-hex">#00E5FF</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-color" style="background: #00BCD4;"></div>
-                        <span class="swatch-label">Cyan</span>
-                        <span class="swatch-hex">#00BCD4</span>
+                        <div class="swatch-color" style="background: #0099FF;"></div>
+                        <span class="swatch-label">Mid Blue</span>
+                        <span class="swatch-hex">#0099FF</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-color" style="background: #4DD0E1;"></div>
-                        <span class="swatch-label">Cyan Light</span>
-                        <span class="swatch-hex">#4DD0E1</span>
+                        <div class="swatch-color" style="background: #2244FF;"></div>
+                        <span class="swatch-label">Deep Blue</span>
+                        <span class="swatch-hex">#2244FF</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-color" style="background: rgba(0,188,212,0.15); border-color: rgba(0,188,212,0.3);"></div>
-                        <span class="swatch-label">Cyan Wash</span>
-                        <span class="swatch-hex">15% opacity</span>
+                        <div class="swatch-color" style="background: #0099FF;"></div>
+                        <span class="swatch-label">Solid Brand</span>
+                        <span class="swatch-hex">#0099FF</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Neutral Scale -->
+            <!-- Neutrals -->
             <div class="colour-group">
                 <div class="colour-group-title">Neutrals — The Monochrome Base</div>
                 <p class="colour-group-desc">12-step neutral scale from near-black to white. This is 90% of what users see. Backgrounds, text, borders, dividers — all neutral.</p>
@@ -1724,51 +1674,41 @@
                     <div class="neutral-strip-item" style="background: var(--neutral-50); color: var(--neutral-900);">50</div>
                 </div>
 
-                <p class="text-sm text-muted">Note: Neutrals carry a subtle blue-purple undertone (e.g. <code>#1C1C27</code> not <code>#1C1C1C</code>) to harmonise with the cyan brand colour. Pure grays would feel disconnected.</p>
+                <p class="text-sm text-muted">Neutrals carry a subtle blue-purple undertone (e.g. <code>#1C1C27</code> not <code>#1C1C1C</code>) to harmonise with the brand gradient.</p>
             </div>
 
-            <!-- Status Colours -->
+            <!-- Status -->
             <div class="colour-group">
                 <div class="colour-group-title">Status — Semantic Colour</div>
-                <p class="colour-group-desc">Five task states, five colours. Each has a solid variant (for indicators and icons), a background wash (for badges and containers), and a border variant (for emphasis).</p>
+                <p class="colour-group-desc">Five task states, five colours. Each has a solid variant (indicators/icons), a background wash (badges/containers), and a border variant.</p>
 
                 <div class="status-row">
                     <div class="status-item">
-                        <div class="status-indicator" style="background: var(--status-success-bg); border: 2px solid var(--status-success);">
-                            <span style="color: var(--status-success);">✓</span>
-                        </div>
+                        <div class="status-indicator" style="background: var(--status-success-bg); border: 2px solid var(--status-success);"><span style="color: var(--status-success);">✓</span></div>
                         <div class="status-name">Complete</div>
-                        <div class="status-use">Task finished successfully</div>
+                        <div class="status-use">Finished successfully</div>
                         <div class="swatch-hex mt-4" style="color: var(--status-success);">#34D399</div>
                     </div>
                     <div class="status-item">
-                        <div class="status-indicator" style="background: var(--status-info-bg); border: 2px solid var(--status-info);">
-                            <span style="color: var(--status-info);">●</span>
-                        </div>
+                        <div class="status-indicator" style="background: var(--status-info-bg); border: 2px solid var(--status-info);"><span style="color: var(--status-info);">●</span></div>
                         <div class="status-name">In Progress</div>
-                        <div class="status-use">Currently being worked on</div>
+                        <div class="status-use">Currently active</div>
                         <div class="swatch-hex mt-4" style="color: var(--status-info);">#60A5FA</div>
                     </div>
                     <div class="status-item">
-                        <div class="status-indicator" style="background: var(--status-warning-bg); border: 2px solid var(--status-warning);">
-                            <span style="color: var(--status-warning);">!</span>
-                        </div>
+                        <div class="status-indicator" style="background: var(--status-warning-bg); border: 2px solid var(--status-warning);"><span style="color: var(--status-warning);">!</span></div>
                         <div class="status-name">Needs Attention</div>
                         <div class="status-use">Ready or requires action</div>
                         <div class="swatch-hex mt-4" style="color: var(--status-warning);">#FBBF24</div>
                     </div>
                     <div class="status-item">
-                        <div class="status-indicator" style="background: var(--status-error-bg); border: 2px solid var(--status-error);">
-                            <span style="color: var(--status-error);">✕</span>
-                        </div>
+                        <div class="status-indicator" style="background: var(--status-error-bg); border: 2px solid var(--status-error);"><span style="color: var(--status-error);">✕</span></div>
                         <div class="status-name">Failed</div>
                         <div class="status-use">Error, needs intervention</div>
                         <div class="swatch-hex mt-4" style="color: var(--status-error);">#F87171</div>
                     </div>
                     <div class="status-item">
-                        <div class="status-indicator" style="background: var(--status-pending-bg); border: 2px solid var(--neutral-500);">
-                            <span style="color: var(--neutral-500);">○</span>
-                        </div>
+                        <div class="status-indicator" style="background: var(--status-pending-bg); border: 2px solid var(--neutral-500);"><span style="color: var(--neutral-500);">○</span></div>
                         <div class="status-name">Pending</div>
                         <div class="status-use">Dependencies unmet</div>
                         <div class="swatch-hex mt-4" style="color: var(--neutral-500);">#5C5C73</div>
@@ -1779,53 +1719,94 @@
             <!-- Parent-Child Grouping -->
             <div class="colour-group">
                 <div class="colour-group-title">Grouping — Parent-Child Containment</div>
-                <p class="colour-group-desc">When parent tasks are expanded to show children, a subtle tinted background groups them visually. Nesting levels use progressively lighter washes. This replaces the depth-colour rainbow with something calmer and more scalable.</p>
+                <p class="colour-group-desc">Expanded parent tasks use subtle tinted backgrounds to group their children visually. Nesting levels use progressively lighter washes.</p>
 
                 <div class="grouping-demo">
                     <div class="group-parent">
-                        <div class="group-parent-label">
-                            <span style="font-size: var(--text-md);">▾</span>
-                            L1 — ICAAP Document Production
-                        </div>
+                        <div class="group-parent-label"><span style="font-size: var(--text-md);">▾</span> L1 — ICAAP Document Production</div>
                         <div class="group-children">
-                            <div class="group-child">
-                                <div class="group-child-dot" style="background: var(--status-success);"></div>
-                                Data Collection
-                                <span class="text-muted text-sm" style="margin-left: auto;">Complete</span>
-                            </div>
-                            <div class="group-child">
-                                <div class="group-child-dot" style="background: var(--status-info);"></div>
-                                Risk Assessment
-                                <span class="text-muted text-sm" style="margin-left: auto;">In Progress</span>
-                            </div>
-
-                            <!-- Nested group -->
+                            <div class="group-child"><div class="group-child-dot" style="background: var(--status-success);"></div>Data Collection<span class="text-muted text-sm" style="margin-left: auto;">Complete</span></div>
+                            <div class="group-child"><div class="group-child-dot" style="background: var(--status-info);"></div>Risk Assessment<span class="text-muted text-sm" style="margin-left: auto;">In Progress</span></div>
                             <div class="group-nested">
                                 <div class="group-nested-label">▾ L2 — Capital Modelling</div>
                                 <div class="group-children" style="padding-left: 0;">
-                                    <div class="group-child">
-                                        <div class="group-child-dot" style="background: var(--status-success);"></div>
-                                        Run Capital Model
-                                        <span class="text-muted text-sm" style="margin-left: auto;">Complete</span>
-                                    </div>
-                                    <div class="group-child">
-                                        <div class="group-child-dot" style="background: var(--status-warning);"></div>
-                                        Gather Market Data
-                                        <span class="text-muted text-sm" style="margin-left: auto;">Needs Attention</span>
-                                    </div>
+                                    <div class="group-child"><div class="group-child-dot" style="background: var(--status-success);"></div>Run Capital Model<span class="text-muted text-sm" style="margin-left: auto;">Complete</span></div>
+                                    <div class="group-child"><div class="group-child-dot" style="background: var(--status-warning);"></div>Gather Market Data<span class="text-muted text-sm" style="margin-left: auto;">Needs Attention</span></div>
                                 </div>
                             </div>
-
-                            <div class="group-child">
-                                <div class="group-child-dot" style="background: var(--status-pending-bg); border: 1px solid var(--neutral-500);"></div>
-                                Draft Report
-                                <span class="text-muted text-sm" style="margin-left: auto;">Pending</span>
-                            </div>
+                            <div class="group-child"><div class="group-child-dot" style="background: var(--status-pending-bg); border: 1px solid var(--neutral-500);"></div>Draft Report<span class="text-muted text-sm" style="margin-left: auto;">Pending</span></div>
                         </div>
                     </div>
                 </div>
 
-                <p class="text-sm text-muted">Containment uses the brand cyan at very low opacity (6% for L1, 3% for L2) — enough to perceive grouping without competing with status colours. Borders use slightly higher opacity for definition.</p>
+                <p class="text-sm text-muted">Containment uses the brand blue at very low opacity (6% for L1, 3% for L2) — enough to perceive grouping without competing with status colours.</p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             05b. GRADIENT VS SOLID USAGE
+             ========================================== -->
+        <section id="gradient-usage" class="section">
+            <div class="section-header">
+                <div class="section-number">05b</div>
+                <h2 class="section-title">Gradient vs. Solid Colour</h2>
+                <p class="section-desc">The brand gradient is distinctive but expensive — overuse dilutes its impact. These rules define when to use the gradient and when solid brand colour is more appropriate.</p>
+            </div>
+
+            <div class="card-grid card-grid-2 mb-8">
+                <div class="card">
+                    <div style="height: 8px; background: var(--brand-gradient); border-radius: var(--radius-full); margin-bottom: var(--space-5);"></div>
+                    <div class="card-title">Use the Gradient For</div>
+                    <p class="card-text">
+                        Brand-level moments that should feel premium and distinctive. The gradient says "this is DeepFlow" — it's the visual signature.
+                    </p>
+                    <ul style="list-style: none; padding: 0; margin-top: var(--space-4);">
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-gradient"></span>Logo and iconmark (always gradient or white)</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-gradient"></span>Hero sections and landing page headers</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-gradient"></span>Primary CTA button (one per view maximum)</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-gradient"></span>Onboarding and empty-state illustrations</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-gradient"></span>Gradient text for display headings (sparingly)</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0;"><span class="usage-gradient"></span>Loading/progress indicators (the animated edge flow on graph)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div style="height: 8px; background: var(--brand-solid); border-radius: var(--radius-full); margin-bottom: var(--space-5);"></div>
+                    <div class="card-title">Use Solid Brand Colour For</div>
+                    <p class="card-text">
+                        Everyday UI elements where brand presence is needed but the gradient would be too heavy. Solid <code>#0099FF</code> is the workhorse.
+                    </p>
+                    <ul style="list-style: none; padding: 0; margin-top: var(--space-4);">
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-solid"></span>Text links and interactive text</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-solid"></span>Secondary buttons and outline buttons</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-solid"></span>Active/selected states (tabs, sidebar items)</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-solid"></span>Form focus rings and input borders</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0; border-bottom: 1px solid var(--neutral-850);"><span class="usage-solid"></span>Badges and tags (non-status)</li>
+                        <li style="color: var(--neutral-300); font-size: var(--text-sm); padding: var(--space-2) 0;"><span class="usage-solid"></span>Toggles, checkboxes, radio buttons when active</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">The Rule of One</div>
+                <p class="card-text">
+                    In any given view, there should be <strong style="color: var(--white);">at most one gradient element</strong> visible at a time (excluding the logo). This is the "hero" element — typically the primary CTA or a section header. Everything else uses solid brand colour or neutrals. If you're debating whether something should be gradient or solid, it should be solid. The gradient is earned, not defaulted to.
+                </p>
+            </div>
+
+            <!-- Visual demo -->
+            <div class="card-grid card-grid-3 mt-8">
+                <div style="background: var(--neutral-900); border: 1px solid var(--neutral-800); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+                    <div style="display: inline-block; padding: var(--space-3) var(--space-6); background: var(--brand-gradient); border-radius: var(--radius-md); color: white; font-weight: 600; font-size: var(--text-sm); box-shadow: var(--shadow-brand);">Create Workflow</div>
+                    <p class="text-sm text-muted mt-4">Primary CTA — gradient</p>
+                </div>
+                <div style="background: var(--neutral-900); border: 1px solid var(--neutral-800); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+                    <div style="display: inline-block; padding: var(--space-3) var(--space-6); background: var(--brand-solid); border-radius: var(--radius-md); color: white; font-weight: 600; font-size: var(--text-sm);">Add Task</div>
+                    <p class="text-sm text-muted mt-4">Secondary action — solid</p>
+                </div>
+                <div style="background: var(--neutral-900); border: 1px solid var(--neutral-800); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center;">
+                    <div style="display: inline-block; padding: var(--space-3) var(--space-6); background: transparent; border: 1px solid var(--brand-solid); border-radius: var(--radius-md); color: var(--brand-solid); font-weight: 600; font-size: var(--text-sm);">View Details</div>
+                    <p class="text-sm text-muted mt-4">Tertiary action — outline</p>
+                </div>
             </div>
         </section>
 
@@ -1836,13 +1817,12 @@
             <div class="section-header">
                 <div class="section-number">06</div>
                 <h2 class="section-title">Typography</h2>
-                <p class="section-desc">Inter is our typeface — modern, highly legible, and designed for screens. One family, many weights, total consistency.</p>
+                <p class="section-desc">Euclid Circular B is our typeface — geometric, premium, and designed for clarity. One family across all of DeepFlow, from hero headings to table cells.</p>
             </div>
 
-            <!-- Font Family -->
             <div class="card mb-8">
-                <div class="card-title">Inter</div>
-                <p class="card-text mb-4">Designed by Rasmus Andersson specifically for computer screens. Variable font with excellent hinting, tabular numbers, and a wide weight range. Used by Linear, Vercel, and GitHub.</p>
+                <div class="card-title">Euclid Circular B</div>
+                <p class="card-text mb-4">A geometric sans-serif by Swiss Typefaces. Clean, modern, with perfectly circular bowls and generous apertures. Licensed typeface — self-hosted, not loaded from CDN. Fallback stack: <code>-apple-system, BlinkMacSystemFont, 'Inter', sans-serif</code>.</p>
                 <p style="font-size: var(--text-2xl); color: var(--white); font-weight: 400; letter-spacing: -0.01em;">
                     The quick brown fox jumps over the lazy dog
                 </p>
@@ -1851,7 +1831,6 @@
                 </p>
             </div>
 
-            <!-- Weight Scale -->
             <h3 class="card-title mb-4">Weight Scale</h3>
             <div class="weight-grid mb-8">
                 <div class="weight-item">
@@ -1871,7 +1850,7 @@
                 </div>
                 <div class="weight-item">
                     <div class="weight-demo" style="font-weight: 600;">Aa</div>
-                    <div class="weight-name">Semibold</div>
+                    <div class="weight-name">SemiBold</div>
                     <div class="weight-value">600</div>
                 </div>
                 <div class="weight-item">
@@ -1879,99 +1858,65 @@
                     <div class="weight-name">Bold</div>
                     <div class="weight-value">700</div>
                 </div>
-                <div class="weight-item">
-                    <div class="weight-demo" style="font-weight: 800;">Aa</div>
-                    <div class="weight-name">Extra Bold</div>
-                    <div class="weight-value">800</div>
-                </div>
             </div>
 
-            <!-- Type Scale -->
             <h3 class="card-title mb-4">Type Scale</h3>
             <div class="type-specimen">
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Display</strong>
-                        <code>48px / 800</code>
-                    </div>
-                    <div class="type-demo" style="font-size: var(--text-5xl); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;">Design Guidelines</div>
+                    <div class="type-meta"><strong>Display</strong><code>48px / Bold</code></div>
+                    <div class="type-demo" style="font-size: var(--text-5xl); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;">Design Guidelines</div>
                 </div>
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Heading 1</strong>
-                        <code>36px / 700</code>
-                    </div>
+                    <div class="type-meta"><strong>Heading 1</strong><code>36px / Bold</code></div>
                     <div class="type-demo" style="font-size: var(--text-4xl); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;">Workflow Canvas</div>
                 </div>
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Heading 2</strong>
-                        <code>30px / 700</code>
-                    </div>
+                    <div class="type-meta"><strong>Heading 2</strong><code>30px / Bold</code></div>
                     <div class="type-demo" style="font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.02em; line-height: 1.3;">Colour Palette</div>
                 </div>
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Heading 3</strong>
-                        <code>24px / 600</code>
-                    </div>
+                    <div class="type-meta"><strong>Heading 3</strong><code>24px / SemiBold</code></div>
                     <div class="type-demo" style="font-size: var(--text-2xl); font-weight: 600; line-height: 1.4;">Task Dependencies</div>
                 </div>
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Heading 4</strong>
-                        <code>20px / 600</code>
-                    </div>
+                    <div class="type-meta"><strong>Heading 4</strong><code>20px / SemiBold</code></div>
                     <div class="type-demo" style="font-size: var(--text-xl); font-weight: 600; line-height: 1.4;">Status Indicators</div>
                 </div>
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Body Large</strong>
-                        <code>16px / 400</code>
-                    </div>
+                    <div class="type-meta"><strong>Body Large</strong><code>16px / Regular</code></div>
                     <div class="type-demo" style="font-size: var(--text-md); font-weight: 400; line-height: 1.6;">DeepFlow transforms natural language prompts into structured, executable task graphs with dependency and governance.</div>
                 </div>
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Body</strong>
-                        <code>14px / 400</code>
-                    </div>
+                    <div class="type-meta"><strong>Body</strong><code>14px / Regular</code></div>
                     <div class="type-demo" style="font-size: var(--text-base); font-weight: 400; line-height: 1.6;">Tasks can be assigned to humans or AI agents, with the platform managing handoffs, dependencies, and sequencing.</div>
                 </div>
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Small</strong>
-                        <code>13px / 400</code>
-                    </div>
+                    <div class="type-meta"><strong>Small</strong><code>13px / Regular</code></div>
                     <div class="type-demo" style="font-size: var(--text-sm); font-weight: 400; line-height: 1.5; color: var(--neutral-300);">Last updated 2 hours ago · Assigned to Sarah Chen</div>
                 </div>
                 <div class="type-sample">
-                    <div class="type-meta">
-                        <strong>Caption</strong>
-                        <code>12px / 500</code>
-                    </div>
+                    <div class="type-meta"><strong>Caption</strong><code>12px / Medium</code></div>
                     <div class="type-demo" style="font-size: var(--text-xs); font-weight: 500; line-height: 1.5; color: var(--neutral-400); text-transform: uppercase; letter-spacing: 0.05em;">STATUS · ASSIGNEE · DUE DATE</div>
                 </div>
             </div>
 
-            <!-- Usage Rules -->
             <h3 class="card-title mb-4">Usage Rules</h3>
             <div class="card-grid card-grid-2">
                 <div class="card">
                     <div class="card-title">Hierarchy Through Weight</div>
-                    <p class="card-text">Use weight (not size) to create subtle hierarchy within the same size level. Semibold (600) for labels, Regular (400) for values. Bold (700) only for headings. Extra Bold (800) only for display/hero text.</p>
+                    <p class="card-text">Use weight to create subtle hierarchy within the same size. SemiBold (600) for labels, Regular (400) for values. Bold (700) only for headings.</p>
                 </div>
                 <div class="card">
                     <div class="card-title">Negative Letter-Spacing for Large Text</div>
-                    <p class="card-text">Text above 24px uses <code>letter-spacing: -0.02em</code>. Display text uses <code>-0.03em</code>. Body text uses default spacing. This keeps large headings tight and readable.</p>
+                    <p class="card-text">Text above 24px uses <code>-0.02em</code>. Display text uses <code>-0.03em</code>. Body text uses default. Keeps large headings tight and balanced.</p>
                 </div>
                 <div class="card">
                     <div class="card-title">Monospace for Data</div>
-                    <p class="card-text">Use <code>SF Mono</code> / <code>Fira Code</code> for hex values, timestamps, IDs, and code references. This is never a primary typeface — only for technical metadata.</p>
+                    <p class="card-text">Use <code>SF Mono</code> / <code>Fira Code</code> for hex values, timestamps, IDs, and code. Never as a primary typeface — only for technical metadata.</p>
                 </div>
                 <div class="card">
                     <div class="card-title">No Truncation Without Tooltip</div>
-                    <p class="card-text">If text must be truncated (and it should be rare), a tooltip showing the full text is mandatory. Task names should expand their containers before resorting to truncation.</p>
+                    <p class="card-text">If text must be truncated, a tooltip showing full text is mandatory. Task names should expand their containers before resorting to truncation.</p>
                 </div>
             </div>
         </section>
@@ -1989,66 +1934,35 @@
             <div class="card-grid card-grid-3 mb-8">
                 <div class="card">
                     <div class="card-title">Style: Outlined</div>
-                    <p class="card-text">1.5px stroke weight, rounded caps and joins. Consistent with Inter's geometric character. We recommend <strong style="color: var(--white);">Lucide</strong> as the icon set — open source, React-native, and visually aligned with our aesthetic.</p>
+                    <p class="card-text">1.5px stroke, rounded caps and joins. We recommend <strong style="color: var(--white);">Lucide</strong> — open source, React-native, visually aligned with Euclid Circular B's geometric character.</p>
                 </div>
                 <div class="card">
                     <div class="card-title">Sizes</div>
                     <p class="card-text">
                         <strong style="color: var(--white);">16px</strong> — Inline with text, table rows<br>
-                        <strong style="color: var(--white);">20px</strong> — Buttons, nav items, form fields<br>
+                        <strong style="color: var(--white);">20px</strong> — Buttons, nav items<br>
                         <strong style="color: var(--white);">24px</strong> — Section headers, cards<br>
-                        <strong style="color: var(--white);">32px</strong> — Empty states, feature callouts
+                        <strong style="color: var(--white);">32px</strong> — Empty states, callouts
                     </p>
                 </div>
                 <div class="card">
                     <div class="card-title">Labels Are Mandatory</div>
-                    <p class="card-text">Every icon button has a visible text label. The only exception is universally recognised icons (close ✕, search 🔍) in contexts where space is critically constrained — and even these must have tooltips.</p>
+                    <p class="card-text">Every icon button has a visible text label. Only exception: universally recognised icons (close ✕, search 🔍) in tight spaces — and even these must have tooltips.</p>
                 </div>
             </div>
 
-            <!-- Sample icons using SVG -->
             <h3 class="card-title mb-4">Sample Icons (Lucide style)</h3>
             <div class="icon-grid">
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span>Pending</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span>Complete</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <span>Alert</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                    <span>Human</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                    <span>Agent</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    <span>Activity</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                    <span>Kanban</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg>
-                    <span>Dependency</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    <span>Chat</span>
-                </div>
-                <div class="icon-item">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <span>Document</span>
-                </div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Pending</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Complete</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Alert</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>Human</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>Agent</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Activity</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg><span>Kanban</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg><span>Dependency</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Chat</span></div>
+                <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Document</span></div>
             </div>
         </section>
 
@@ -2062,56 +1976,21 @@
                 <p class="section-desc">A 4px base grid creates rhythm and consistency. Every margin, padding, and gap is a multiple of 4.</p>
             </div>
 
-            <!-- Spacing Scale -->
             <h3 class="card-title mb-4">Spacing Scale</h3>
             <div class="spacing-demo">
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 4px;"></div>
-                    <span class="spacing-label">4</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 8px;"></div>
-                    <span class="spacing-label">8</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 12px;"></div>
-                    <span class="spacing-label">12</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 16px;"></div>
-                    <span class="spacing-label">16</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 24px;"></div>
-                    <span class="spacing-label">24</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 32px;"></div>
-                    <span class="spacing-label">32</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 40px;"></div>
-                    <span class="spacing-label">40</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 48px;"></div>
-                    <span class="spacing-label">48</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 64px;"></div>
-                    <span class="spacing-label">64</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 80px;"></div>
-                    <span class="spacing-label">80</span>
-                </div>
-                <div class="spacing-block">
-                    <div class="spacing-visual" style="height: 96px;"></div>
-                    <span class="spacing-label">96</span>
-                </div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 4px;"></div><span class="spacing-label">4</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 8px;"></div><span class="spacing-label">8</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 12px;"></div><span class="spacing-label">12</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 16px;"></div><span class="spacing-label">16</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 24px;"></div><span class="spacing-label">24</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 32px;"></div><span class="spacing-label">32</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 40px;"></div><span class="spacing-label">40</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 48px;"></div><span class="spacing-label">48</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 64px;"></div><span class="spacing-label">64</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 80px;"></div><span class="spacing-label">80</span></div>
+                <div class="spacing-block"><div class="spacing-visual" style="height: 96px;"></div><span class="spacing-label">96</span></div>
             </div>
 
-            <!-- Layout Rules -->
             <div class="card-grid card-grid-2">
                 <div class="card">
                     <div class="card-title">Component Padding</div>
@@ -2119,25 +1998,25 @@
                         <strong style="color: var(--white);">Tight:</strong> 8px — Tags, badges, inline elements<br>
                         <strong style="color: var(--white);">Default:</strong> 16px — Cards, list items, inputs<br>
                         <strong style="color: var(--white);">Comfortable:</strong> 24px — Panels, modals, sections<br>
-                        <strong style="color: var(--white);">Spacious:</strong> 32px — Page-level containers, hero areas
+                        <strong style="color: var(--white);">Spacious:</strong> 32px — Page containers, hero areas
                     </p>
                 </div>
                 <div class="card">
                     <div class="card-title">Grid Gaps</div>
                     <p class="card-text">
-                        <strong style="color: var(--white);">Related items:</strong> 8px — Items in a list, radio options<br>
-                        <strong style="color: var(--white);">Sibling components:</strong> 16px — Cards in a grid, form fields<br>
-                        <strong style="color: var(--white);">Sections:</strong> 24-32px — Between content blocks<br>
-                        <strong style="color: var(--white);">Page sections:</strong> 64-96px — Major page divisions
+                        <strong style="color: var(--white);">Related:</strong> 8px — Items in a list, radio options<br>
+                        <strong style="color: var(--white);">Siblings:</strong> 16px — Cards in a grid, form fields<br>
+                        <strong style="color: var(--white);">Sections:</strong> 24–32px — Between content blocks<br>
+                        <strong style="color: var(--white);">Page:</strong> 64–96px — Major page divisions
                     </p>
                 </div>
                 <div class="card">
                     <div class="card-title">Content Width</div>
                     <p class="card-text">
                         <strong style="color: var(--white);">Max content:</strong> 1200px — Page container<br>
-                        <strong style="color: var(--white);">Readable text:</strong> 680px max-width — Paragraphs, descriptions<br>
+                        <strong style="color: var(--white);">Readable text:</strong> 680px max — Paragraphs<br>
                         <strong style="color: var(--white);">Sidebar:</strong> 56px collapsed / 240px expanded<br>
-                        <strong style="color: var(--white);">Detail panel:</strong> 320-400px
+                        <strong style="color: var(--white);">Detail panel:</strong> 320–400px
                     </p>
                 </div>
                 <div class="card">
@@ -2160,32 +2039,30 @@
             <div class="section-header">
                 <div class="section-number">09</div>
                 <h2 class="section-title">Elevation & Depth</h2>
-                <p class="section-desc">Three tiers of elevation create spatial hierarchy. In dark mode, elevation is expressed through background lightness and shadow — higher = lighter + more shadow.</p>
+                <p class="section-desc">Three tiers of elevation. In dark mode, higher = lighter background + more shadow.</p>
             </div>
 
             <div class="elevation-demo">
                 <div class="elevation-item flat">
                     <div class="elevation-name">Flat</div>
                     <div class="elevation-use">Cards, list items, containers</div>
-                    <p class="text-sm text-muted mt-4">Background: neutral-900<br>Border: 1px neutral-800<br>Shadow: none</p>
+                    <p class="text-sm text-muted mt-4">neutral-900 + 1px border</p>
                 </div>
                 <div class="elevation-item raised">
                     <div class="elevation-name">Raised</div>
                     <div class="elevation-use">Hover states, dropdowns, tooltips</div>
-                    <p class="text-sm text-muted mt-4">Background: neutral-850<br>Border: none<br>Shadow: shadow-md</p>
+                    <p class="text-sm text-muted mt-4">neutral-850 + shadow-md</p>
                 </div>
                 <div class="elevation-item floating">
                     <div class="elevation-name">Floating</div>
                     <div class="elevation-use">Modals, command palette, overlays</div>
-                    <p class="text-sm text-muted mt-4">Background: neutral-800<br>Border: none<br>Shadow: shadow-lg</p>
+                    <p class="text-sm text-muted mt-4">neutral-800 + shadow-lg</p>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-title">Elevation Rules</div>
-                <p class="card-text">
-                    In dark interfaces, shadow alone isn't enough to convey elevation — the eye primarily reads "lighter = closer." Combine background lightness with shadow intensity. Never use more than 3 elevation levels simultaneously in a single view. The page background (neutral-950) is the ground plane; everything sits above it.
-                </p>
+                <p class="card-text">In dark interfaces, shadow alone doesn't convey elevation — the eye reads "lighter = closer." Combine background lightness with shadow intensity. Never use more than 3 levels simultaneously. The page background (neutral-950) is the ground plane.</p>
             </div>
         </section>
 
@@ -2196,33 +2073,27 @@
             <div class="section-header">
                 <div class="section-number">10</div>
                 <h2 class="section-title">Motion & Animation</h2>
-                <p class="section-desc">Motion is functional, not decorative. It communicates state changes, guides attention, and provides spatial continuity. Hover over the cards to preview timing.</p>
+                <p class="section-desc">Motion is functional, not decorative. It communicates state changes and provides spatial continuity. Hover over the cards to preview.</p>
             </div>
 
             <div class="motion-demos mb-8">
                 <div class="motion-demo-card">
-                    <div class="motion-preview">
-                        <div class="motion-dot motion-dot-fast"></div>
-                    </div>
+                    <div class="motion-preview"><div class="motion-dot motion-dot-fast"></div></div>
                     <div class="motion-name">Fast — 150ms</div>
                     <div class="motion-detail">cubic-bezier(0.4, 0, 0.2, 1)</div>
                     <div class="motion-use">Hover states, toggles, small reveals</div>
                 </div>
                 <div class="motion-demo-card">
-                    <div class="motion-preview">
-                        <div class="motion-dot motion-dot-normal"></div>
-                    </div>
+                    <div class="motion-preview"><div class="motion-dot motion-dot-normal"></div></div>
                     <div class="motion-name">Normal — 250ms</div>
                     <div class="motion-detail">cubic-bezier(0.4, 0, 0.2, 1)</div>
                     <div class="motion-use">Panel slides, expand/collapse, status changes</div>
                 </div>
                 <div class="motion-demo-card">
-                    <div class="motion-preview">
-                        <div class="motion-dot motion-dot-slow"></div>
-                    </div>
+                    <div class="motion-preview"><div class="motion-dot motion-dot-slow"></div></div>
                     <div class="motion-name">Slow — 400ms</div>
                     <div class="motion-detail">cubic-bezier(0.4, 0, 0.2, 1)</div>
-                    <div class="motion-use">Page transitions, modal enter/exit, graph layout shifts</div>
+                    <div class="motion-use">Page transitions, modal enter/exit, graph layout</div>
                 </div>
             </div>
 
@@ -2231,17 +2102,17 @@
                     <div class="card-title">Motion Principles</div>
                     <p class="card-text">
                         <strong style="color: var(--white);">Purposeful:</strong> Every animation answers "what changed?"<br>
-                        <strong style="color: var(--white);">Quick:</strong> Default to fast. Only use slow for major transitions.<br>
-                        <strong style="color: var(--white);">Respectful:</strong> Honour <code>prefers-reduced-motion</code> — reduce to opacity-only fades or disable entirely.<br>
-                        <strong style="color: var(--white);">Consistent:</strong> One easing curve for everything. No bouncing, no spring physics.
+                        <strong style="color: var(--white);">Quick:</strong> Default to fast. Slow only for major transitions.<br>
+                        <strong style="color: var(--white);">Respectful:</strong> Honour <code>prefers-reduced-motion</code>.<br>
+                        <strong style="color: var(--white);">Consistent:</strong> One easing curve. No bouncing or spring physics.
                     </p>
                 </div>
                 <div class="card">
                     <div class="card-title">Graph-Specific Motion</div>
                     <p class="card-text">
-                        <strong style="color: var(--white);">Edge flow:</strong> Subtle animated dots along dependency edges indicating data/status flow direction. Speed proportional to zoom level.<br>
-                        <strong style="color: var(--white);">Node entrance:</strong> Fade + slight scale (0.95→1.0) when nodes appear, staggered by 30ms per node.<br>
-                        <strong style="color: var(--white);">Status change:</strong> Brief pulse glow on the node when status updates (150ms).
+                        <strong style="color: var(--white);">Edge flow:</strong> Animated dots along dependency edges. Speed proportional to zoom level.<br>
+                        <strong style="color: var(--white);">Node entrance:</strong> Fade + scale (0.95→1.0), staggered 30ms per node.<br>
+                        <strong style="color: var(--white);">Status change:</strong> Brief pulse glow on node (150ms).
                     </p>
                 </div>
             </div>
@@ -2255,10 +2126,10 @@
     <footer class="footer">
         <div class="container">
             <p style="margin-bottom: var(--space-2);">
-                <strong style="color: var(--white);">DeepFlow Design Guidelines</strong> · v1.0 · Phase 1: Foundations
+                <strong style="color: var(--white);">DeepFlow Design Guidelines</strong> · v1.1 · Phase 1: Foundations
             </p>
             <p>
-                Prepared by <a href="https://enrichedsolutions.com">Enriched Solutions</a> · Phase 2: Component Library (coming next)
+                Prepared by <a href="https://enrichedsolutions.com">Enriched Solutions</a> · Phase 2: Component Library — coming next
             </p>
         </div>
     </footer>
