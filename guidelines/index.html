@@ -970,7 +970,7 @@
 
         .status-row {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: var(--space-4);
         }
 
@@ -2054,6 +2054,12 @@
             background: var(--status-success-bg);
             color: var(--status-success);
             border: 1.5px solid var(--status-success-border);
+        }
+
+        .df-status-approval {
+            background: var(--status-warning-bg);
+            color: var(--status-warning);
+            border: 1.5px solid var(--status-warning-border);
         }
 
         .df-status-failed {
@@ -3737,7 +3743,7 @@
             <!-- Status -->
             <div class="colour-group">
                 <div class="colour-group-title">Status — Semantic Colour</div>
-                <p class="colour-group-desc">Five task states, five colours. Each has a solid variant (indicators/icons), a background wash (badges/containers), and a border variant.</p>
+                <p class="colour-group-desc">Six task states with semantic colours. Each has a solid variant (indicators/icons), a background wash (badges/containers), and a border variant. "Ready" and "Needs Approval" share amber — distinguished by their symbol (▶ vs ❗).</p>
 
                 <div class="status-row">
                     <div class="status-item">
@@ -3756,6 +3762,12 @@
                         <div class="status-indicator" style="background: var(--status-warning-bg); border: 2px solid var(--status-warning);"><span style="color: var(--status-warning);">!</span></div>
                         <div class="status-name">Needs Attention</div>
                         <div class="status-use">Ready or requires action</div>
+                        <div class="swatch-hex mt-4" style="color: var(--status-warning);">#FBBF24</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator" style="background: var(--status-warning-bg); border: 2px solid var(--status-warning);"><span style="color: var(--status-warning);">!</span></div>
+                        <div class="status-name">Needs Approval</div>
+                        <div class="status-use">Human sign-off required</div>
                         <div class="swatch-hex mt-4" style="color: var(--status-warning);">#FBBF24</div>
                     </div>
                     <div class="status-item">
@@ -4291,7 +4303,8 @@
                 <div class="demo-row" style="margin-bottom: var(--space-6);">
                     <span class="df-badge df-badge-success"><span class="df-badge-dot"></span> Complete</span>
                     <span class="df-badge df-badge-info"><span class="df-badge-dot"></span> In Progress</span>
-                    <span class="df-badge df-badge-warning"><span class="df-badge-dot"></span> Needs Attention</span>
+                    <span class="df-badge df-badge-warning"><span class="df-badge-dot"></span> Ready</span>
+                    <span class="df-badge df-badge-warning"><span class="df-badge-dot"></span> Needs Approval</span>
                     <span class="df-badge df-badge-error"><span class="df-badge-dot"></span> Failed</span>
                     <span class="df-badge df-badge-neutral"><span class="df-badge-dot"></span> Pending</span>
                 </div>
@@ -4677,6 +4690,17 @@
                         </div>
                     </div>
 
+                    <!-- Needs Approval: exclamation mark (gate/intervention) -->
+                    <div style="display: flex; align-items: center; gap: var(--space-3);">
+                        <div class="df-status-symbol df-status-approval">
+                            <svg viewBox="0 0 24 24"><line x1="12" y1="8" x2="12" y2="13" stroke-width="2.5"/><circle cx="12" cy="16.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Needs Approval</div>
+                            <div style="font-size: 11px; color: var(--text-tertiary);">❗ Exclamation — user intervention or sign-off required</div>
+                        </div>
+                    </div>
+
                     <!-- Complete: checkmark (done) -->
                     <div style="display: flex; align-items: center; gap: var(--space-3);">
                         <div class="df-status-symbol df-status-complete">
@@ -4736,6 +4760,16 @@
                         <div>
                             <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Data Collection</div>
                             <div style="font-size: 11px; color: var(--text-tertiary);">In progress — tap ✓ to mark complete</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md);">
+                        <div class="df-status-symbol df-status-symbol-lg df-status-approval df-status-action" title="Approve">
+                            <svg viewBox="0 0 24 24"><line x1="12" y1="8" x2="12" y2="13" stroke-width="2.5"/><circle cx="12" cy="16.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Board Sign-Off</div>
+                            <div style="font-size: 11px; color: var(--text-tertiary);">Needs approval — tap ❗ to review & approve</div>
                         </div>
                     </div>
 
@@ -4829,6 +4863,7 @@
                         <strong style="color: var(--text-primary);">○ Pending:</strong> Hollow circle — empty, nothing there yet.<br>
                         <strong style="color: var(--text-primary);">▶ Ready:</strong> Play button — "press play to start." Universal media metaphor.<br>
                         <strong style="color: var(--text-primary);">❚❚ In Progress:</strong> Pause bars — actively running, like a media player mid-track.<br>
+                        <strong style="color: var(--text-primary);">❗ Needs Approval:</strong> Exclamation mark — human intervention, sign-off, or approval gate required. This is a blocker that only a person can resolve.<br>
                         <strong style="color: var(--text-primary);">✓ Complete:</strong> Checkmark — done. The most universal symbol of completion.<br>
                         <strong style="color: var(--text-primary);">✕ Failed:</strong> Cross — error. Universally understood as "something went wrong."
                     </p>

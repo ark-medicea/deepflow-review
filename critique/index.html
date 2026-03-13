@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepFlow — Product Director Critique</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0F1019;
+  --surface: #181924;
+  --surface-raised: #1F2130;
+  --border: rgba(255,255,255,0.08);
+  --text: #E8E9ED;
+  --text-muted: #9499AD;
+  --text-dim: #646980;
+  --accent: #6C7CFF;
+  --accent-soft: rgba(108,124,255,0.12);
+  --red: #FF6B7A;
+  --amber: #FFB347;
+  --green: #5BDA8C;
+  --teal: #4DD9C0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* — Header — */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(108,124,255,0.04) 0%, transparent 100%);
+}
+.site-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+.site-header .subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.site-header .meta {
+  margin-top: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* — Layout — */
+.container {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 6rem;
+}
+
+/* — Table of Contents — */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 3rem;
+}
+.toc-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+.toc ol {
+  list-style: none;
+  counter-reset: toc;
+}
+.toc ol li {
+  counter-increment: toc;
+}
+.toc ol li a {
+  display: block;
+  padding: 0.3rem 0;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+.toc ol li a::before {
+  content: counter(toc) ".";
+  display: inline-block;
+  width: 1.5rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.toc ol li a:hover { color: var(--accent); }
+
+/* — Sections — */
+section { margin-bottom: 3rem; }
+section + section { padding-top: 1rem; }
+
+h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 1.75rem 0 0.75rem;
+  color: var(--text);
+}
+
+p { margin-bottom: 1rem; }
+
+strong { font-weight: 600; color: var(--text); }
+em { font-style: italic; color: var(--text-muted); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* — Executive Summary callout — */
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0 1.5rem;
+}
+.callout p { margin-bottom: 0.5rem; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout-amber {
+  border-left-color: var(--amber);
+}
+.callout-green {
+  border-left-color: var(--green);
+}
+.callout-red {
+  border-left-color: var(--red);
+}
+
+/* — Lists — */
+ul, ol { margin: 0.5rem 0 1rem 1.25rem; }
+li { margin-bottom: 0.35rem; font-size: 0.95rem; }
+li strong { color: var(--text); }
+
+/* — Tables — */
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+th {
+  background: var(--surface-raised);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+td {
+  padding: 0.6rem 0.85rem;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(108,124,255,0.03); }
+
+/* — Verdict blocks — */
+.verdict {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* — Red flags — */
+.flag {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0;
+}
+.flag-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* — Recommendation blocks — */
+.rec-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.15rem 1.35rem;
+}
+.rec-card .num {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+.rec-card h4 {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.rec-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0;
+}
+
+/* — Phase blocks — */
+.phase {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+.phase-header {
+  background: var(--surface-raised);
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.phase-body {
+  padding: 1rem 1.25rem;
+}
+.phase-body ul { margin: 0; list-style: none; padding: 0; }
+.phase-body li {
+  padding: 0.25rem 0;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.phase-body li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+}
+
+/* — MVP box — */
+.mvp-box {
+  background: linear-gradient(135deg, rgba(108,124,255,0.08), rgba(77,217,192,0.06));
+  border: 1px solid rgba(108,124,255,0.2);
+  border-radius: 10px;
+  padding: 1.75rem 1.75rem;
+  margin: 1.5rem 0;
+}
+.mvp-box h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.mvp-box ol {
+  margin: 0.75rem 0 1rem 1.25rem;
+}
+.mvp-box li {
+  margin-bottom: 0.4rem;
+}
+
+/* — Footer note — */
+.final-note {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* — Responsive — */
+@media (max-width: 600px) {
+  .site-header { padding: 2rem 1.25rem 1.75rem; }
+  .site-header h1 { font-size: 1.4rem; }
+  .site-header .meta { flex-direction: column; gap: 0.25rem; }
+  .container { padding: 1.5rem 1rem 4rem; }
+  h2 { font-size: 1.15rem; }
+  .toc { padding: 1.25rem 1.25rem; }
+  table { font-size: 0.8rem; }
+  th, td { padding: 0.5rem 0.6rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>DeepFlow — Product Director Critique</h1>
+  <div class="subtitle">Prepared by Enriched Solutions</div>
+  <div class="meta">
+    <span>13 March 2026</span>
+    <span>Independent Product Assessment</span>
+    <span>Internal Document</span>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#summary">Executive Summary</a></li>
+    <li><a href="#problem">Problem Clarity</a></li>
+    <li><a href="#personas">Target User Validation</a></li>
+    <li><a href="#competition">Competitive Landscape</a></li>
+    <li><a href="#design">Design System Critique</a></li>
+    <li><a href="#gaps">Missing Pieces</a></li>
+    <li><a href="#risks">Risks &amp; Red Flags</a></li>
+    <li><a href="#recommendations">Recommendations</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ -->
+<!-- EXECUTIVE SUMMARY -->
+<!-- ============================================================ -->
+<section id="summary">
+<h2>TL;DR — Executive Summary</h2>
+
+<div class="callout">
+<p><strong>Context:</strong> DeepFlow is not a greenfield build. The DAG engine, chat with @mentions, Slack integration, and the full orchestration pipeline already exist and work. All the functionality described has been found necessary — and more — just to reach usefulness. This critique therefore assesses a <strong>design reskin and strategic repositioning</strong> of a working product, not a startup building from scratch.</p>
+</div>
+
+<p>DeepFlow has a genuinely strong core — natural language → executable dependency graphs with human/AI orchestration — and, critically, it has already built the engine to support it. The existing platform covers DAG execution, chat with @mentions, Slack integration, multi-level decomposition, and more. That is a significant technical achievement.</p>
+
+<p>The challenge is not "can we build this?" — it's <strong>"how do we present and position what already exists?"</strong> The current design skin doesn't do justice to the product's capabilities. The persona spread (solo founder to enterprise compliance officer) dilutes focus, and the design system — while excellent in craft — needs to be reoriented around the product's strongest story.</p>
+
+<p><strong>The honest take:</strong> The underlying product is far more mature than most at this stage. The reskin should double down on the existing strengths: the dependency graph engine, the human/AI orchestration model, and the governance layer. The opportunity is to make a powerful product <em>feel</em> as powerful as it actually is — and to tell a focused story about who it's for.</p>
+
+<div class="callout callout-green">
+<p><strong>Top-line call:</strong> Reskin around the graph + chat workspace for the solo CEO running structured multi-step processes. The functionality is already there — now give it a skin that makes Ravi say "this is my operating system." Expand the enterprise story (Sarah) as the market pull materialises.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PROBLEM CLARITY -->
+<!-- ============================================================ -->
+<section id="problem">
+<h2>1. Problem Clarity</h2>
+
+<h3>Can I state the problem in one sentence?</h3>
+
+<p><strong>Attempt:</strong> "Complex multi-step processes involving both humans and AI agents are hard to coordinate, track, and audit."</p>
+
+<p>That's <em>close</em>, but it's a statement about a category, not about a specific pain. Compare to:</p>
+<ul>
+  <li><strong>Linear:</strong> "Issue tracking for software teams is slow and ugly."</li>
+  <li><strong>Notion:</strong> "Teams need one tool for docs, wikis, and databases."</li>
+  <li><strong>Figma:</strong> "Design collaboration requires everyone in the same file."</li>
+</ul>
+
+<p>DeepFlow's problem statement is more like: "What if you could describe a complex process in English and have it turn into a managed, auditable workflow?" That's a <em>capability pitch</em>, not a <em>problem pitch</em>. It tells me what the tool does, not what pain it kills.</p>
+
+<h3>Is the problem real and painful enough to pay for?</h3>
+
+<p><strong>Yes — and the product's own development proves it.</strong> The fact that all this functionality was required just to be useful validates the problem space. The ICAAP example in the product brief is strong evidence: regulated finance workflows with mixed human/AI execution, approval gates, and audit requirements. Teams today coordinate this via:</p>
+<ul>
+  <li>Jira/Asana for task tracking (no dependency intelligence)</li>
+  <li>Slack/Teams for handoffs (no audit trail)</li>
+  <li>Spreadsheets for status tracking (manual, error-prone)</li>
+  <li>Email for approvals (no governance)</li>
+</ul>
+
+<p>The gap is real. And for a solo operator like Ravi running a consultancy — coordinating client deliverables, AI agents, and personal workflow from one command centre — the pain is equally real, just differently shaped.</p>
+
+<h3>Is "AI orchestration" a feature or a product?</h3>
+
+<div class="verdict">
+<strong>Verdict:</strong> The dependency graph with governance is a product. AI prompt-to-graph is a feature — an impressive hook, but increasingly commoditised as LLMs improve. The daily-use differentiator is the graph engine itself: dependency tracking, mixed human/AI execution, status propagation, and the governance layer. The reskin should emphasise this distinction.
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PERSONAS -->
+<!-- ============================================================ -->
+<section id="personas">
+<h2>2. Target User Validation</h2>
+
+<h3>Are the personas distinct enough?</h3>
+
+<p>The five personas (Sarah, Ravi, David, Maya, James) have significant overlap:</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Persona</th><th>Role</th><th>Frequency</th><th>Core Need</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Sarah</td><td>Ops Manager</td><td>Daily</td><td>Status visibility, audit</td></tr>
+    <tr><td>Ravi</td><td>Solo CEO</td><td>Daily</td><td>Single command centre</td></tr>
+    <tr><td>David</td><td>Compliance Officer</td><td>Weekly</td><td>Audit trail, reports</td></tr>
+    <tr><td>Maya</td><td>Consultant</td><td>Weekly</td><td>Templates, presentation</td></tr>
+    <tr><td>James</td><td>VP Operations</td><td>Brief, frequent</td><td>Dashboard, approvals</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>Overlaps I see:</strong></p>
+<ul>
+  <li><strong>Sarah and James</strong> want the same thing at different altitudes. James is Sarah's manager. This is one persona at two zoom levels, not two distinct users.</li>
+  <li><strong>Maya and Ravi</strong> both need "professional-looking tool for client-facing work." These could collapse.</li>
+  <li><strong>David</strong> is the only truly distinct persona — he's the auditor, not the operator.</li>
+</ul>
+
+<p><strong>Recommendation:</strong> Collapse to three:</p>
+<ol>
+  <li><strong>The Operator</strong> (Ravi) — daily power user, single command centre, the person who lives in DeepFlow</li>
+  <li><strong>The Auditor</strong> (David) — periodic reviewer checking governance</li>
+  <li><strong>The Executive</strong> (James/Sarah) — dashboard consumer, approval gatekeeper, status visibility</li>
+</ol>
+
+<h3>Which persona should the reskin ruthlessly prioritise?</h3>
+
+<div class="callout callout-amber">
+<p><strong>Ravi Patel — the solo CEO running a consultancy.</strong></p>
+</div>
+
+<p>This is a shift from the typical "go enterprise first" advice, and here's why it's right for DeepFlow specifically:</p>
+
+<ol>
+  <li><strong>The product already does what Ravi needs.</strong> DAG engine, chat with @mentions, Slack integration, multi-level workflows — it's all built. Ravi doesn't need SSO, RBAC, or SOC2 compliance. He needs a clean skin on what already exists.</li>
+  <li><strong>Solo operators are the fastest feedback loop.</strong> Ravi can adopt in a day. Enterprise takes 6–12 months. For a reskin, you want fast validation.</li>
+  <li><strong>The "operating system" story is the most compelling narrative.</strong> "DeepFlow isn't a tool Ravi uses; it's his operating system" — that's a powerful positioning statement, and the product can actually deliver on it.</li>
+  <li><strong>Ravi leads to Sarah, not vice versa.</strong> Solo consultants who love the product become champions when they move to or sell into larger organisations. Product-led growth is the natural motion here.</li>
+  <li><strong>The existing functionality already exceeds solo needs.</strong> If the product was built with enough depth to handle regulated enterprise workflows, a solo CEO will find it more than capable. You're overshooting Ravi's needs, which means the skin just needs to make it feel focused and approachable.</li>
+</ol>
+
+<p>Sarah remains an important expansion persona — the enterprise story is strong and the governance features are a genuine moat. But the reskin should feel like it was made for Ravi, with Sarah's needs met as a natural byproduct of the underlying power.</p>
+
+<h3>Is serving enterprise AND solo users dangerous?</h3>
+
+<p><strong>Less dangerous when the product already exists.</strong> The usual advice against serving both segments assumes you're making build decisions. Since the functionality is already built, the question becomes: "can one skin serve both?" The answer is yes, if you lead with the simpler story (Ravi) and let the enterprise capabilities reveal themselves progressively.</p>
+
+<p>What you should <em>not</em> do is design the skin to look enterprise-heavy and then expect solo users to feel welcome. Lead with simplicity. The power is there when people need it.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- COMPETITION -->
+<!-- ============================================================ -->
+<section id="competition">
+<h2>3. Competitive Landscape</h2>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Tool</th><th>Strength vs DeepFlow</th><th>Weakness vs DeepFlow</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Asana</strong></td><td>Mature, huge ecosystem, AI features landing</td><td>No dependency graph engine, no human/AI distinction, weak audit</td></tr>
+    <tr><td><strong>Monday.com</strong></td><td>Flexible, visual, automations</td><td>No DAG, no governance layer, cluttered UI</td></tr>
+    <tr><td><strong>Linear</strong></td><td>Beautiful, fast, developer-loved</td><td>Narrowly scoped to software, no AI orchestration</td></tr>
+    <tr><td><strong>Notion Projects</strong></td><td>Flexible, great docs, huge user base</td><td>Not a workflow engine, no dependency intelligence</td></tr>
+    <tr><td><strong>Microsoft Planner/Project</strong></td><td>Enterprise-embedded, IT-approved</td><td>Ugly, slow, no AI orchestration, painful UX</td></tr>
+    <tr><td><strong>Jira</strong></td><td>Industry standard, deep integrations</td><td>Complex, developer-focused, no AI agents</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>DeepFlow's actual competitive angle:</strong> None of these tools treat the dependency graph as a first-class citizen, and none offer mixed human/AI execution with governance. That's genuinely novel — and it's not vapourware, it's built.</p>
+
+<h3>What's the moat?</h3>
+<p>In order of defensibility:</p>
+<ol>
+  <li><strong>The dependency graph engine</strong> — already built, performant, and functional. This is the real moat.</li>
+  <li><strong>Governance + audit layer</strong> — purpose-built for regulated industries.</li>
+  <li><strong>Human/AI orchestration model</strong> — novel interaction pattern with first-mover advantage.</li>
+  <li><strong>Natural language → graph decomposition</strong> — impressive demo, but increasingly commoditised. Lowest moat.</li>
+</ol>
+
+<h3>Is the graph view a differentiator or a complexity trap?</h3>
+
+<p><strong>Both, and the design system knows it.</strong> The graph IS the differentiator. But graphs are cognitively expensive. The brief mentions 40–60 active tasks across 3–5 workflows. A graph of 60 nodes is not "at a glance" — it's a research project.</p>
+
+<p>The reskin handles this well with progressive disclosure, depth-colour containment groups, multiple views, and minimap navigation. The critical thing: <strong>the graph needs to surface value even when you're not looking at it</strong> — through dependency-aware blocking indicators in list view, smart suggestions in chat, automated status propagation. The underlying engine already does the propagation; the skin needs to surface it everywhere.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- DESIGN SYSTEM -->
+<!-- ============================================================ -->
+<section id="design">
+<h2>4. Design System Critique</h2>
+
+<h3>"Monochrome + pops of colour" — does it work?</h3>
+
+<p><strong>Yes, strongly.</strong> The "Calm by Default, Vivid by Exception" philosophy is exactly right for an orchestration tool managing 50+ tasks. Low-opacity colour washes, blue-tinted neutrals (<code>#1C1C27</code> over pure grey) — smart choices.</p>
+
+<p><strong>Risks to watch:</strong></p>
+<ul>
+  <li><strong>Monotony.</strong> Mitigated by the brand gradient on CTAs and blue-tinted neutrals.</li>
+  <li><strong>Accessibility on the margin.</strong> Low-opacity washes (6% and 3% brand blue) may be invisible on cheap monitors. Test beyond Retina.</li>
+  <li><strong>Dark mode bias.</strong> The colour philosophy still references "dark backgrounds, light text" even though light mode is the default. Ensure light mode gets equal polish.</li>
+</ul>
+
+<h3>Status symbol system</h3>
+
+<p><strong>Strong concept, slightly over-specified.</strong> The five-state model (Pending, Ready, In Progress, Complete, Failed) is clean. The visual treatment provides good accessibility redundancy.</p>
+
+<p><strong>Concern:</strong> Three sizes of status symbols plus dots plus badges is too many options. A developer will wonder: "Do I use <code>df-status-dot</code>, <code>df-status-symbol-sm</code>, or <code>df-badge-success</code>?" for the same need.</p>
+
+<p><strong>Recommendation:</strong> Define one canonical status representation per context: graph nodes get dots, task cards get symbols, list rows get badges, kanban columns get header colour.</p>
+
+<h3>Human (circle) vs AI (hexagon)</h3>
+
+<p><strong>Clever, well-executed.</strong> Shape-based distinction is right over colour-based (since colour is reserved for status). The CSS clip-path implementation is clean.</p>
+
+<p><strong>Watch for:</strong> At zoom levels where avatars shrink below 20px, the shape distinction disappears. And for Ravi managing his own workflows, the more important question might be "whose task is blocked?" rather than "is this human or AI?" — the shape is informative but secondary.</p>
+
+<h3>Is the design system too sophisticated for this stage?</h3>
+
+<p><strong>Recalibrated take:</strong> Given this is a reskin of an existing product (not a v1 from scratch), the depth of the design system is more justified than it would be for a startup finding PMF. You're not over-investing in system at the expense of product — the product exists.</p>
+
+<p><strong>What's proportionate:</strong> Colour palette and tokens, typography scale, status system, button variants, avatar shapes, card components.</p>
+
+<p><strong>What could still be deferred:</strong></p>
+<ul>
+  <li>The full custom property pill system (six colour variants with no semantic meaning)</li>
+  <li>Six sizes of everything (xs through xl) — two or three sizes suffice for the reskin</li>
+  <li>The 12-step neutral scale (consolidate to 6–7 functional stops)</li>
+</ul>
+
+<p>The overall quality is high. For a reskin, this level of system thinking is a strength — it'll pay dividends in implementation consistency.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- GAPS -->
+<!-- ============================================================ -->
+<section id="gaps">
+<h2>5. Missing Pieces</h2>
+
+<h3>Components not yet in the design system</h3>
+<ol>
+  <li><strong>Form components</strong> — inputs, selects, textareas. Users create workflows, edit task details, set due dates.</li>
+  <li><strong>Modal/dialog patterns</strong> — approval gates, confirmation dialogs, task detail overlays.</li>
+  <li><strong>Navigation patterns</strong> — sidebar mentioned (56px/240px) but not specified as a component.</li>
+  <li><strong>Empty states</strong> — great copy in the tone section, but no visual pattern.</li>
+  <li><strong>Loading states</strong> — skeletons, spinners — especially important for AI execution that takes seconds or minutes.</li>
+  <li><strong>Error states</strong> — failed AI task appearance, error boundary patterns.</li>
+  <li><strong>Toast/notification patterns</strong> — status change communication.</li>
+  <li><strong>Table component</strong> — list view described as "hierarchical table" but no table component exists.</li>
+  <li><strong>The three-panel workspace</strong> — described in detail in the brief as the core task view, zero representation in the design system.</li>
+</ol>
+
+<h3>User journeys to design</h3>
+<ol>
+  <li><strong>First-time prompt experience.</strong> User types a goal — what happens? How is the generated graph presented? Can they edit it before executing? This is the make-or-break moment.</li>
+  <li><strong>Dealing with failure.</strong> An AI agent fails mid-workflow. Dependent tasks are blocked. How does the user discover, understand impact, and recover?</li>
+  <li><strong>Handoff from AI to human.</strong> AI generates output; human reviews. How do they approve, request changes, or reject? (The chat + @mentions infrastructure exists — the skin just needs to surface the flow clearly.)</li>
+  <li><strong>Returning user experience.</strong> User opens DeepFlow on Monday morning. What changed? What needs attention? A "what's new" summary surface.</li>
+</ol>
+
+<h3>Onboarding</h3>
+
+<p><strong>Important for the reskin.</strong> Even though the product is mature, the concepts are novel. "Prompt-to-graph orchestration" needs a guided first experience:</p>
+<ul>
+  <li>New user types a prompt. They get a graph. They've never seen a DAG before. <strong>Now what?</strong></li>
+  <li>How do they learn what hexagonal avatars mean?</li>
+  <li>How do they understand dependencies?</li>
+</ul>
+<p><strong>Recommendation:</strong> Design a "first workflow" experience that walks through one complete cycle: prompt → graph → assign → execute → complete. The existing functionality makes this demonstrable — the skin should make it discoverable.</p>
+
+<h3>Collaboration — better than it looks</h3>
+
+<p>The product brief mentions collaboration needs, and it's worth noting: <strong>chat with @mentions and Slack integration already exist.</strong> The design system doesn't yet show these, but the underlying infrastructure is solid. The reskin should surface:</p>
+<ul>
+  <li>Real-time presence indicators</li>
+  <li>@mentions (already functional) with clear visual treatment</li>
+  <li>Activity feed / notification patterns</li>
+  <li>Slack integration surfaces in the UI</li>
+</ul>
+
+<h3>Pricing surface</h3>
+<p>The UI currently shows no usage indicators for AI execution. If the pricing model involves metered AI usage, the skin needs a usage dashboard or at minimum a subtle usage indicator.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- RISKS -->
+<!-- ============================================================ -->
+<section id="risks">
+<h2>6. Risks &amp; Red Flags</h2>
+
+<div class="flag">
+  <div class="flag-title">🚩 Scope perception: DeepFlow looks like it's trying to be too many things</div>
+  <p>The product brief describes a project management tool, a workflow automation engine, an AI agent platform, a document editor, a chat interface, a governance tool, a template marketplace, and a personal operating system. That's eight categories.</p>
+  <p><strong>Recalibrated:</strong> The underlying product actually delivers on most of these — that's the achievement. The risk isn't scope creep in <em>building</em> (it's built), it's scope creep in <em>positioning</em>. The reskin should tell <strong>one story</strong> and let users discover the depth. "Your AI-powered command centre" for Ravi. Not eight products in one.</p>
+</div>
+
+<div class="flag">
+  <div class="flag-title">🚩 The dependency graph engine is technically hard — but it's done</div>
+  <p>Building a performant DAG engine with real-time status propagation, automatic parallelism detection, dynamic re-routing, and multi-level decomposition is a serious engineering challenge. <strong>DeepFlow has already solved it.</strong> This is the moat. The reskin should make this achievement visible and intuitive, not hide it behind layers of abstraction.</p>
+</div>
+
+<div class="flag">
+  <div class="flag-title">🚩 The "AI writes your workflows" promise needs a strong fallback</div>
+  <p>Prompt-to-graph generation requires the AI to understand domains, decompose goals, identify dependencies, and assign roles. Current LLMs will get this wrong enough to erode trust sometimes.</p>
+  <p><strong>The fallback must be strong.</strong> Users need to easily edit, reorder, add, and remove nodes from generated graphs. The reskin should prioritise graph editing interactions as much as graph viewing. Make the graph feel like a living document, not a read-only output.</p>
+</div>
+
+<div class="flag">
+  <div class="flag-title">⚠️ Duplicate design principle</div>
+  <p>Minor but worth noting: Design Principle #05 appears twice in the guidelines — both "Client-Presentable by Default" and "Human and AI, Visually Distinct" are numbered 05. A quick fix, but worth catching before the reskin implementation begins.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- RECOMMENDATIONS -->
+<!-- ============================================================ -->
+<section id="recommendations">
+<h2>7. Recommendations</h2>
+
+<h3>Top 3: Do This in the Reskin</h3>
+
+<div class="rec-grid">
+  <div class="rec-card">
+    <div class="num">Priority 01</div>
+    <h4>Lead with Ravi's story — the solo CEO operating system</h4>
+    <p>The product already does what Ravi needs. The reskin should make it <em>feel</em> that way: clean, focused, powerful-but-approachable. Design every screen asking "would Ravi understand this in 3 seconds?" Enterprise capabilities (audit, RBAC, compliance) live underneath — accessible when needed, invisible when not.</p>
+  </div>
+  <div class="rec-card">
+    <div class="num">Priority 02</div>
+    <h4>Design the first-run experience before adding more components</h4>
+    <p>The most important journey — prompt → graph → first task execution → completion — has no design. This is the product's magic moment. The underlying engine delivers; now make the first experience feel effortless. This is more important than the pill system or breadcrumbs.</p>
+  </div>
+  <div class="rec-card">
+    <div class="num">Priority 03</div>
+    <h4>Define the three-panel workspace as a component</h4>
+    <p>The core task interaction (output panel + chat + details) is the most important screen in the product. It has zero representation in the design system. Chat and @mentions already work — the skin needs to make this workspace feel like the heart of DeepFlow.</p>
+  </div>
+</div>
+
+<h3>Top 3: Deprioritise These</h3>
+
+<div class="rec-grid">
+  <div class="rec-card">
+    <div class="num">Defer</div>
+    <h4>Consolidate the neutral scale</h4>
+    <p>12 stops creates decision paralysis for implementers. Consolidate to 6–7 functional stops (background, surface, border, muted text, secondary text, primary text, ink).</p>
+  </div>
+  <div class="rec-card">
+    <div class="num">Defer</div>
+    <h4>Reduce premature flexibility</h4>
+    <p>Custom property pills, six avatar sizes, five button variants — ship with Medium buttons, two avatar sizes, and zero custom properties. Add flexibility when users request it.</p>
+  </div>
+  <div class="rec-card">
+    <div class="num">Defer</div>
+    <h4>Dark mode as equal priority</h4>
+    <p>If targeting Ravi (solo CEO), he might actually prefer dark mode — but ship one mode well first. The guidelines show signs of dark-mode-first thinking that should be resolved into one coherent default.</p>
+  </div>
+</div>
+
+<h3>Reskin phasing</h3>
+
+<div class="phase">
+  <div class="phase-header">🎯 Phase 1 — Core Reskin</div>
+  <div class="phase-body">
+    <ul>
+      <li>Prompt → graph generation (the hook) — new skin on existing engine</li>
+      <li>Graph view with dependency edges, status propagation, containment groups</li>
+      <li>Three-panel workspace (output + chat + details) — surface existing chat/@mentions</li>
+      <li>Five-state status system with consistent visual treatment</li>
+      <li>Human/AI avatar distinction</li>
+      <li>First-run onboarding flow</li>
+      <li>Clean, focused navigation</li>
+    </ul>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-header">📦 Phase 2 — Expand</div>
+  <div class="phase-body">
+    <ul>
+      <li>List view with hierarchy</li>
+      <li>Kanban board</li>
+      <li>Audit trail surface (History tab)</li>
+      <li>Approval gates UI</li>
+      <li>Notification centre / "what changed" view</li>
+      <li>Dark mode (or second theme)</li>
+      <li>Template management ("Agents")</li>
+    </ul>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-header">🔮 Phase 3 — Enterprise &amp; Scale</div>
+  <div class="phase-body">
+    <ul>
+      <li>Multi-project dashboard</li>
+      <li>Swimlane view</li>
+      <li>Level Hub Dashboard</li>
+      <li>Custom property pills</li>
+      <li>Integration marketplace UI</li>
+      <li>Advanced analytics and reporting</li>
+      <li>Mobile app</li>
+    </ul>
+  </div>
+</div>
+
+<h3>The Absolute Core</h3>
+
+<div class="mvp-box">
+  <h3>One screen. Three panels. One graph.</h3>
+  <p>If I had to cut DeepFlow's reskin to its bare minimum:</p>
+  <ol>
+    <li><strong>A prompt bar</strong> at the top → user types a goal</li>
+    <li><strong>A graph canvas</strong> that shows the generated dependency DAG</li>
+    <li><strong>Click a node</strong> → opens the three-panel workspace</li>
+    <li><strong>Execute button</strong> → assigns task to AI or human</li>
+    <li><strong>Status propagation</strong> → dependents become ready when predecessors complete</li>
+    <li><strong>Chat with @mentions</strong> → already functional, just needs clean skin</li>
+    <li><strong>Audit log</strong> → every action timestamped</li>
+  </ol>
+  <p style="margin-top:1rem;color:var(--text-muted);">The engine does all of this already. The reskin makes it feel inevitable. If that experience is compelling for Ravi and 10 solo operators, the enterprise story follows naturally.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FINAL NOTE -->
+<!-- ============================================================ -->
+<div class="final-note">
+  <p>The craft in this design system is genuinely impressive. The colour philosophy is sound, the status system is well-thought-out, the human/AI shape distinction is clever, and Euclid Circular B is a premium choice. More importantly: <strong>the underlying product is real.</strong> A working DAG engine with human/AI orchestration, chat, @mentions, and Slack integration is not a mockup — it's a competitive advantage.</p>
+  <p style="margin-top:1rem;">The reskin's job is to make what's already powerful feel focused, approachable, and inevitable. The bones are strong. Now give them the skin they deserve.</p>
+  <p style="margin-top:1.5rem;font-style:normal;color:var(--text-dim);font-size:0.75rem;">Prepared as an independent product assessment for Enriched Solutions · Not cheerleading — calibrating</p>
+</div>
+
+</main>
+
+</body>
+</html>
