@@ -1016,9 +1016,9 @@ Select two or more sibling nodes and wrap them in a new parent. The new node tak
 ### Strategies
 - **Code splitting:** React Flow + graph components lazy-loaded (only on graph routes)
 - **Virtualisation:** Task table uses `@tanstack/react-virtual` for 1000+ row lists
-- **Image optimisation:** Next.js `<Image>` for avatars and thumbnails
+- **Image optimisation:** Lazy-loaded `<img>` with `loading="lazy"` + `srcset` for avatars and thumbnails
 - **Font loading:** `font-display: swap`. Subset Euclid Circular B to Latin
-- **Prefetch:** Prefetch adjacent routes on hover (Next.js `<Link>`)
+- **Prefetch:** Prefetch adjacent routes on hover (React Router `prefetch`)
 
 ---
 
@@ -1107,7 +1107,7 @@ The [design guidelines](index.html) define tokens. Map them to Tailwind + CSS va
 ## 15. Phasing
 
 ### Phase 1 — Shell + Core Views (4–6 weeks)
-- [ ] Auth (Keycloak + next-auth)
+- [ ] Auth (Keycloak + keycloak-js + react-oidc-context)
 - [ ] Shell layout (sidebar, chat panel, top bar)
 - [ ] Workspace (dashboard)
 - [ ] Gallery (project browser)
