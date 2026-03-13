@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepFlow — Product Director Critique v2</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0F1019;
+  --surface: #181924;
+  --surface-raised: #1F2130;
+  --border: rgba(255,255,255,0.08);
+  --text: #E8E9ED;
+  --text-muted: #9499AD;
+  --text-dim: #646980;
+  --accent: #6C7CFF;
+  --accent-soft: rgba(108,124,255,0.12);
+  --red: #FF6B7A;
+  --amber: #FFB347;
+  --green: #5BDA8C;
+  --teal: #4DD9C0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* — Header — */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(108,124,255,0.04) 0%, transparent 100%);
+}
+.site-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+.site-header .subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.site-header .meta {
+  margin-top: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* — Layout — */
+.container {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 6rem;
+}
+
+/* — Table of Contents — */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 3rem;
+}
+.toc-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+.toc ol {
+  list-style: none;
+  counter-reset: toc;
+}
+.toc ol li {
+  counter-increment: toc;
+}
+.toc ol li a {
+  display: block;
+  padding: 0.3rem 0;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+.toc ol li a::before {
+  content: counter(toc) ".";
+  display: inline-block;
+  width: 1.5rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.toc ol li a:hover { color: var(--accent); }
+
+/* — Sections — */
+section { margin-bottom: 3rem; }
+section + section { padding-top: 1rem; }
+
+h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 1.75rem 0 0.75rem;
+  color: var(--text);
+}
+h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--text);
+}
+
+p { margin-bottom: 1rem; }
+
+strong { font-weight: 600; color: var(--text); }
+em { font-style: italic; color: var(--text-muted); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* — Callouts — */
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0 1.5rem;
+}
+.callout p { margin-bottom: 0.5rem; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout-amber { border-left-color: var(--amber); }
+.callout-green { border-left-color: var(--green); }
+.callout-red { border-left-color: var(--red); }
+.callout-teal { border-left-color: var(--teal); }
+
+/* — Lists — */
+ul, ol { margin: 0.5rem 0 1rem 1.25rem; }
+li { margin-bottom: 0.35rem; font-size: 0.95rem; }
+li strong { color: var(--text); }
+
+/* — Tables — */
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+th {
+  background: var(--surface-raised);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+td {
+  padding: 0.6rem 0.85rem;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(108,124,255,0.03); }
+
+/* — Verdict blocks — */
+.verdict {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* — Problem statement box — */
+.problem-box {
+  background: linear-gradient(135deg, rgba(255,107,122,0.08), rgba(255,179,71,0.06));
+  border: 1px solid rgba(255,107,122,0.2);
+  border-radius: 10px;
+  padding: 1.75rem;
+  margin: 1.5rem 0;
+}
+.problem-box h3 {
+  margin-top: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.problem-box .statement {
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0.75rem 0;
+  padding: 1rem 1.25rem;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  border-left: 3px solid var(--red);
+}
+
+/* — Answer box — */
+.answer-box {
+  background: linear-gradient(135deg, rgba(108,124,255,0.08), rgba(77,217,192,0.06));
+  border: 1px solid rgba(108,124,255,0.2);
+  border-radius: 10px;
+  padding: 1.75rem;
+  margin: 1.5rem 0;
+}
+.answer-box h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* — Scenario blocks — */
+.scenario {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0;
+}
+.scenario-time {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.35rem;
+}
+.scenario p { margin-bottom: 0.5rem; }
+.scenario p:last-child { margin-bottom: 0; }
+
+/* — Triage grid — */
+.triage-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1.15rem;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+.triage-item .emoji {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+.triage-item .content {
+  flex: 1;
+}
+.triage-item .feature {
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.triage-item .rationale {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+.triage-item.essential { border-left: 3px solid var(--green); }
+.triage-item.nice { border-left: 3px solid var(--amber); }
+.triage-item.defer { border-left: 3px solid var(--red); }
+
+/* — Onboarding steps — */
+.onboard-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem 1rem 3.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  counter-increment: onboard;
+}
+.onboard-step::before {
+  content: counter(onboard);
+  position: absolute;
+  left: 1.25rem;
+  top: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--accent-soft);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: center;
+  line-height: 1.5rem;
+}
+.onboard-step strong { display: block; margin-bottom: 0.25rem; }
+.onboard-step p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+
+/* — Critique blocks — */
+.critique-block {
+  background: linear-gradient(135deg, rgba(255,107,122,0.06), rgba(255,179,71,0.04));
+  border: 1px solid rgba(255,107,122,0.15);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+.critique-block h4 {
+  margin-top: 0;
+  color: var(--amber);
+}
+
+/* — Flag blocks — */
+.flag {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0;
+}
+.flag-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* — Rec cards — */
+.rec-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.15rem 1.35rem;
+}
+.rec-card .num {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+.rec-card h4 {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.rec-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0;
+}
+
+/* — Footer — */
+.final-note {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* — Responsive — */
+@media (max-width: 600px) {
+  .site-header { padding: 2rem 1.25rem 1.75rem; }
+  .site-header h1 { font-size: 1.4rem; }
+  .site-header .meta { flex-direction: column; gap: 0.25rem; }
+  .container { padding: 1.5rem 1rem 4rem; }
+  h2 { font-size: 1.15rem; }
+  .toc { padding: 1.25rem 1.25rem; }
+  table { font-size: 0.8rem; }
+  th, td { padding: 0.5rem 0.6rem; }
+  .problem-box, .answer-box { padding: 1.25rem; }
+  .onboard-step { padding-left: 3rem; }
+  .onboard-step::before { left: 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>DeepFlow — Product Director Critique v2</h1>
+  <div class="subtitle">The Solo Founder Problem</div>
+  <div class="meta">
+    <span>13 March 2026</span>
+    <span>Enriched Solutions</span>
+    <span>Internal Document</span>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#changed">What Changed Since v1</a></li>
+    <li><a href="#problem">The Problem (Deep Dive)</a></li>
+    <li><a href="#statement">The Problem Statement</a></li>
+    <li><a href="#answer">DeepFlow's Answer</a></li>
+    <li><a href="#triage">The Prioritisation Consequence</a></li>
+    <li><a href="#onboarding">The Onboarding Moment</a></li>
+    <li><a href="#positioning">Competitive Positioning</a></li>
+    <li><a href="#self-critique">Self-Critique</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ -->
+<!-- 1. WHAT CHANGED -->
+<!-- ============================================================ -->
+<section id="changed">
+<h2>1. What Changed Since v1</h2>
+
+<p>The v1 critique assessed the design system and positioning. It landed on "lead with Ravi" but never defined <em>what Ravi's actual problem is</em>. Since then, four significant pieces of work have shipped:</p>
+
+<ul>
+  <li><strong>Chat-as-Primary-Interface architecture</strong> — a full document making the case that DeepFlow's chat panel is a non-blocking command centre, not a chatbot. This is the product's strongest architectural insight.</li>
+  <li><strong>Agent Execution Architecture</strong> — per-task isolated runtimes with skill/tool separation. Docker-for-AI-execution. Powerful, but enterprise-grade complexity.</li>
+  <li><strong>Triggers &amp; Integrations spec</strong> — Slack, webhooks, cron, Pipedream-backed auth. How DeepFlow connects to the real world.</li>
+  <li><strong>Design guidelines expansion</strong> — status indicators, permissions &amp; access control, form inputs, tables, sidebar navigation, tabs, toasts, empty states, loading states, dialogs &amp; panels. The component library is now comprehensive (~28 sections).</li>
+</ul>
+
+<p><strong>What v1 got right:</strong> Lead with Ravi. The graph engine is the moat. Progressive disclosure. The three-panel workspace is the most important undesigned screen.</p>
+
+<p><strong>What v1 ducked:</strong> It never said what problem Ravi is paying to solve. It described what DeepFlow does (orchestration, governance, DAGs) but not what pain it kills. This v2 exists to fix that.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- 2. THE PROBLEM (DEEP DIVE) -->
+<!-- ============================================================ -->
+<section id="problem">
+<h2>2. The Problem (Deep Dive)</h2>
+
+<h3>Ravi's actual day</h3>
+
+<p>Ravi Mehta runs a 4-person fintech consultancy. He's the CEO, the lead consultant, the sales team, the operations manager, and (when the intern is off) the admin. His day doesn't have blocks — it has interruptions separated by brief windows of focus.</p>
+
+<div class="scenario">
+<div class="scenario-time">7:30 AM — Before the day starts</div>
+<p>Ravi opens his laptop intending to write a proposal for a new client. Instead he spends 40 minutes catching up: 23 Slack messages across 4 client channels, 6 emails (one urgent), a Linear ticket flagged overnight, and a reminder that the ICAAP draft is due to the client tomorrow. The proposal doesn't get started.</p>
+</div>
+
+<div class="scenario">
+<div class="scenario-time">9:15 AM — Context switch #1</div>
+<p>He opens ChatGPT to brainstorm the ICAAP structure. Gets a decent outline. Copies it into Notion. Starts breaking it into tasks. Realises two of the tasks depend on data his analyst hasn't delivered yet. Switches to Slack to chase the analyst. Switches to Linear to create a blocker ticket. Switches back to Notion to update the project status. Switches to Google Sheets to update the client tracker. Four tools. One piece of information. Twenty minutes gone.</p>
+</div>
+
+<div class="scenario">
+<div class="scenario-time">11:00 AM — The real cost</div>
+<p>Client call. The client asks: "What's the status of the risk assessment?" Ravi checks Notion — it says "In Progress" but that was last week's update. He checks Slack — the analyst mentioned something about data quality issues three days ago but Ravi missed it. He checks Linear — there's a ticket from the analyst marked "Blocked" that Ravi hasn't seen. He tells the client "it's progressing well" and privately panics. After the call, he spends 30 minutes doing forensic archaeology across four tools to understand what actually happened.</p>
+</div>
+
+<div class="scenario">
+<div class="scenario-time">2:00 PM — The AI promise, broken</div>
+<p>Ravi wants to draft the executive summary for the ICAAP report. He opens ChatGPT, spends 15 minutes providing context (the risk assessment findings, the capital model outputs, the regulatory requirements), gets a decent first draft. But it doesn't reference the actual data tables his team produced. He copies data from Google Sheets, pastes it into ChatGPT, re-prompts. The output is better but still disconnected from the project context. He'll end up manually stitching it together in Google Docs.</p>
+</div>
+
+<div class="scenario">
+<div class="scenario-time">5:30 PM — The strategic void</div>
+<p>The proposal for the new client still hasn't been started. Ravi's day was consumed by execution — chasing updates, stitching tools together, manually propagating status, re-contextualising AI sessions. He knows he should be thinking about pricing strategy, hiring, and the pipeline for Q3. He hasn't done any strategic work in two weeks. He doesn't even have time to figure out <em>what</em> the strategic work should be.</p>
+</div>
+
+<h3>Ravi's current toolkit</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Tool</th><th>What Ravi uses it for</th><th>Where it fails him</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>ChatGPT / Claude</strong></td><td>Thinking partner: brainstorming, drafting, analysis</td><td>Stateless. Every session starts from zero. Can't access his project data. Output is disconnected from his workflow.</td></tr>
+<tr><td><strong>Notion</strong></td><td>Project tracking, client wikis, internal docs</td><td>No dependency intelligence. Statuses are manually updated (so they're always stale). No AI execution — it's a database, not an engine.</td></tr>
+<tr><td><strong>Linear / Asana</strong></td><td>Task management for his team</td><td>Designed for software teams. Doesn't model multi-level workflows. No AI delegation. Another surface to manually update.</td></tr>
+<tr><td><strong>Slack</strong></td><td>Client comms, team coordination</td><td>Information evaporates. Status updates drown in chatter. No structure, no audit trail, no governance.</td></tr>
+<tr><td><strong>Google Sheets</strong></td><td>Client tracker, financial models, everything else</td><td>The universal fallback for when no tool fits. Manually maintained. Breaks at scale. No intelligence.</td></tr>
+<tr><td><strong>Google Docs</strong></td><td>Deliverables, proposals, reports</td><td>Disconnected from project context. AI features are bolted-on, not native. Manual stitching required.</td></tr>
+<tr><td><strong>Zapier / Make</strong></td><td>Basic automation between tools</td><td>Glue code for symptoms. Doesn't address the root cause: fragmented context and manual orchestration.</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Where Ravi actually loses time</h3>
+
+<p>It's not in any single tool. It's in the <strong>gaps between them.</strong></p>
+
+<ol>
+  <li><strong>Manual status propagation.</strong> When something changes in one tool, Ravi has to manually update three others. He doesn't. Nobody does. So statuses are perpetually stale and he can't answer "what's actually happening?" without doing investigative work.</li>
+  <li><strong>Re-contextualising AI sessions.</strong> Every time Ravi opens ChatGPT, he spends 10-15 minutes explaining who he is, what the project is, where it stands, and what he needs. The AI has no memory of his workflow. It's brilliant but amnesiac.</li>
+  <li><strong>Dependency blindness.</strong> Ravi knows Task B depends on Task A, but his tools don't. When Task A is blocked, nothing alerts him that Task B (and C, and D) are also delayed. He discovers this in client calls.</li>
+  <li><strong>Translation overhead.</strong> Ravi thinks in goals ("deliver the ICAAP report by Friday"). His tools think in atomic tasks ("create Notion page", "assign Linear ticket", "update Sheets row", "send Slack message"). He's constantly translating between levels of abstraction.</li>
+  <li><strong>Execution eating strategy.</strong> The sum of all the above: Ravi spends his entire day on execution mechanics and has zero time left for the thinking that actually grows his business.</li>
+</ol>
+
+<h3>The "hair on fire" moment</h3>
+
+<p>Ravi doesn't Google "AI orchestration platform" on a random Tuesday. He searches for something like this when:</p>
+
+<ul>
+  <li>A client asks "what's the status?" and he can't answer without 20 minutes of digging</li>
+  <li>He realises he's spent the entire week doing project management instead of actual consulting work</li>
+  <li>A deliverable slips because a dependency was blocked and nobody noticed</li>
+  <li>He tries to delegate to AI (ChatGPT) and realises he's spending more time managing the AI interaction than doing the work himself</li>
+  <li>He's on his third tool-stack migration in two years and each one promises to be "the one system" — none deliver</li>
+</ul>
+
+<p>The common thread: <strong>Ravi feels like his company's project manager, not its CEO.</strong> He started a business to do expert work and make strategic decisions. Instead he's a human middleware layer between disconnected tools.</p>
+
+<h3>What would make Ravi pay $50-200/month?</h3>
+
+<p>Not features. Not integrations. Not a prettier UI than Notion.</p>
+
+<p><strong>Ravi would pay to get his strategic time back.</strong> Specifically, he'd pay for a tool where:</p>
+<ul>
+  <li>He can describe a client deliverable in plain English and get a structured, dependency-aware plan he can actually execute against</li>
+  <li>Status propagates automatically — when one task completes, the next one becomes ready, and when one blocks, everything downstream is flagged</li>
+  <li>AI can execute tasks within the context of his project (not from a blank slate), producing outputs that are immediately usable</li>
+  <li>He can answer "what's the status of everything?" in one glance, not after 20 minutes of forensic archaeology across five tools</li>
+  <li>The tool feels like a command centre, not another surface to manually update</li>
+</ul>
+
+<p>The value proposition isn't "better project management." It's: <strong>"Stop being the slowest component in your own company."</strong></p>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3. THE PROBLEM STATEMENT -->
+<!-- ============================================================ -->
+<section id="statement">
+<h2>3. The Problem Statement</h2>
+
+<div class="problem-box">
+<h3>One sentence.</h3>
+<div class="statement">
+Solo founders drown in execution mechanics — manually coordinating work across disconnected tools, re-contextualising stateless AI, and propagating status by hand — leaving zero time for the strategic thinking that actually grows their business.
+</div>
+
+<h3>Why existing tools don't solve it</h3>
+
+<p>Every tool in Ravi's stack solves a piece of this problem and none solve the whole. <strong>Notion</strong> tracks tasks but doesn't understand dependencies, can't execute work, and relies entirely on manual status updates. <strong>ChatGPT/Claude</strong> can think and draft but starts from zero every session, can't see the project state, and produces output disconnected from any workflow. <strong>Linear/Asana</strong> manage work items but are designed for software development teams, not multi-level business workflows with mixed human/AI execution. <strong>Zapier/Make</strong> automate point-to-point triggers but don't model dependency graphs, can't make intelligent decisions, and turn into spaghetti at scale. The gap is structural: no existing tool combines <em>dependency-aware planning</em>, <em>context-aware AI execution</em>, <em>automatic status propagation</em>, and <em>a single source of truth</em> into one surface. Ravi is the glue holding it all together. That's the problem.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 4. DEEPFLOW'S ANSWER -->
+<!-- ============================================================ -->
+<section id="answer">
+<h2>4. DeepFlow's Answer</h2>
+
+<h3>How this product solves THIS problem</h3>
+
+<p>DeepFlow replaces Ravi as the middleware layer. Not by being a better task tracker, and not by being a better AI chatbot — by being the system that connects thinking to execution to status in one loop.</p>
+
+<div class="answer-box">
+<h3>The core loop: Describe → Decompose → Delegate → Monitor → Deliver</h3>
+<ol>
+  <li><strong>Describe.</strong> Ravi types: "Prepare the ICAAP report for Meridian Capital. Data collection due Tuesday, risk assessment by Thursday, draft report by next Monday." Natural language. No form-filling. No template selection.</li>
+  <li><strong>Decompose.</strong> DeepFlow generates a dependency graph. Data Collection → Risk Assessment → Capital Model (AI) + Market Data (AI, parallel) → Draft Report → Internal Review → Client Submission. Ravi sees the structure, adjusts if needed, and approves.</li>
+  <li><strong>Delegate.</strong> Each task is assigned: some to Ravi, some to his analyst, some to AI agents. The assignments carry context — the AI agent drafting the report can see the outputs from the risk assessment and capital model. No re-contextualising. No copy-paste.</li>
+  <li><strong>Monitor.</strong> Status propagates automatically. When the analyst completes data collection, risk assessment becomes ready. When the capital model runs, the draft task is alerted that a dependency is met. When something blocks, everything downstream turns amber. Ravi opens DeepFlow and sees truth — not last-week's-manually-updated-Notion.</li>
+  <li><strong>Deliver.</strong> The draft report is assembled in DeepFlow's workspace, with AI output, human review, and approval gates all in one place. The audit trail is automatic. The deliverable is client-presentable.</li>
+</ol>
+</div>
+
+<h3>What makes this different from "ChatGPT + Notion"?</h3>
+
+<p>Three things, and they're all structural:</p>
+
+<ol>
+  <li><strong>The graph engine understands dependencies.</strong> Notion has databases. DeepFlow has a DAG. That means status propagation is automatic. When Task A completes, Task B becomes ready — not because someone updated a dropdown, but because the engine computed it. This is the single biggest differentiator. It eliminates manual status propagation entirely.</li>
+  <li><strong>AI executes within project context.</strong> ChatGPT is brilliant but amnesiac. DeepFlow's per-task runtimes receive upstream outputs as context. The AI agent drafting the ICAAP summary has already seen the risk assessment findings and the capital model output. It doesn't need Ravi to copy-paste anything. The orchestrator mediates context flow.</li>
+  <li><strong>Chat is a control surface, not a conversation.</strong> The chat-as-primary-interface architecture is DeepFlow's best insight. It's not a chatbot sidebar — it's a non-blocking command centre. Ravi can fire off instructions to multiple agents, receive streamed updates, steer mid-execution, and issue new commands without waiting. One prompt, multiple responses, asynchronous delivery.</li>
+</ol>
+
+<div class="verdict">
+<strong>The one-line pitch:</strong> ChatGPT gives Ravi a thinking partner. Notion gives him a database. DeepFlow gives him an engine that thinks, executes, and tracks — so he can stop being his company's project manager and start being its CEO again.
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 5. PRIORITISATION CONSEQUENCE -->
+<!-- ============================================================ -->
+<section id="triage">
+<h2>5. The Prioritisation Consequence</h2>
+
+<p>Here's where the problem statement has teeth. If the problem is "solo founder drowning in execution mechanics across disconnected tools," then every feature must be evaluated against one question: <strong>does this reduce the time between Ravi describing what he wants and getting it done?</strong></p>
+
+<p>If it doesn't, it's not v1.</p>
+
+<h3>🟢 Essential for v1 — solves the core problem</h3>
+
+<div class="triage-item essential">
+<span class="emoji">🟢</span>
+<div class="content">
+<span class="feature">Chat Panel (non-blocking, command centre model)</span>
+<p class="rationale">This is the product. The chat-as-primary-interface architecture doc makes the case compellingly. Ravi's primary interaction is typing commands in natural language and receiving streamed results. Non-blocking execution, @mentions as execution directives, task-scoped context. Without this, DeepFlow is just Notion with edges drawn between pages.</p>
+</div>
+</div>
+
+<div class="triage-item essential">
+<span class="emoji">🟢</span>
+<div class="content">
+<span class="feature">Graph View (dependency visualisation + status propagation)</span>
+<p class="rationale">The graph IS the differentiator. But for v1, it needs to be read-optimised, not edit-optimised. Ravi should see the dependency structure, see status propagate in real-time, and click nodes to enter the workspace. Advanced graph editing (drag-to-reorder, visual node creation) can come later — the AI generates the graph, Ravi validates it.</p>
+</div>
+</div>
+
+<div class="triage-item essential">
+<span class="emoji">🟢</span>
+<div class="content">
+<span class="feature">Three-Panel Workspace (output + chat + details)</span>
+<p class="rationale">Where work actually happens. AI streams output into the left panel, Ravi steers via chat in the centre, details/subtasks/history live on the right. This is the screen Ravi lives in. It's also — as v1 noted — completely undesigned as a component in the guidelines. Design it first.</p>
+</div>
+</div>
+
+<div class="triage-item essential">
+<span class="emoji">🟢</span>
+<div class="content">
+<span class="feature">Status System (five-state: Pending → Ready → In Progress → Done → Failed)</span>
+<p class="rationale">Automatic status propagation is Ravi's biggest unlock. He stops manually updating statuses. The engine computes them from dependency resolution. The status system design in the guidelines is solid — five states, clear visual treatment, accessibility-redundant. Ship it.</p>
+</div>
+</div>
+
+<div class="triage-item essential">
+<span class="emoji">🟢</span>
+<div class="content">
+<span class="feature">Prompt → Graph Generation</span>
+<p class="rationale">The onramp. Ravi types a goal, gets a structured plan. This is the "magic moment" — the 30-second experience that makes Ravi understand what DeepFlow is. The AI decomposition doesn't need to be perfect; it needs to be editable and 70% right. That's enough to be dramatically faster than manually creating tasks in Notion.</p>
+</div>
+</div>
+
+<div class="triage-item essential">
+<span class="emoji">🟢</span>
+<div class="content">
+<span class="feature">Sidebar Navigation</span>
+<p class="rationale">Ravi needs to move between projects. The sidebar spec (56px collapsed / 240px expanded) is fine. Ship the minimal version: project list, "New Project" prompt bar, maybe a "My Tasks" shortcut. Don't over-design.</p>
+</div>
+</div>
+
+<div class="triage-item essential">
+<span class="emoji">🟢</span>
+<div class="content">
+<span class="feature">Human/AI Avatar Distinction (circle vs hexagon)</span>
+<p class="rationale">Ravi needs to instantly see which tasks are his (human), which are his team's (human), and which are the AI's (hexagon). Shape distinction is clever and already designed. Keep it.</p>
+</div>
+</div>
+
+<h3>🟡 v1.5 — valuable but not the hook</h3>
+
+<div class="triage-item nice">
+<span class="emoji">🟡</span>
+<div class="content">
+<span class="feature">List View</span>
+<p class="rationale">Useful for Ravi when the graph gets dense (40+ nodes). But the graph view + workspace is the core experience. List view is a "second mode" for scanning — important but not what sells the product. Ship after the graph experience is tight.</p>
+</div>
+</div>
+
+<div class="triage-item nice">
+<span class="emoji">🟡</span>
+<div class="content">
+<span class="feature">Triggers &amp; Integrations (Slack, webhooks, cron)</span>
+<p class="rationale">The triggers doc is excellent architecture. But Ravi's "hair on fire" moment is about project execution, not automation. He'll want Slack notifications first (push delivery for non-blocking chat), and that's a v1 essential. But cron triggers, webhook listeners, and the full Pipedream-backed integration layer? That's what turns Ravi from a user into a champion — v1.5, after he's already sold on the core loop.</p>
+</div>
+</div>
+
+<div class="triage-item nice">
+<span class="emoji">🟡</span>
+<div class="content">
+<span class="feature">Templates / "Agents" (saved workflows)</span>
+<p class="rationale">Ravi will absolutely want to save his ICAAP workflow as a template and re-use it. But he needs to <em>build</em> the first one before he needs to <em>save</em> it. Template management is a retention feature, not an acquisition feature.</p>
+</div>
+</div>
+
+<div class="triage-item nice">
+<span class="emoji">🟡</span>
+<div class="content">
+<span class="feature">Toasts &amp; Notifications</span>
+<p class="rationale">Designed nicely in the guidelines (success/error/warning/info variants, auto-dismiss). Needed for the product to feel responsive, but not the differentiator. Implement a simple version for v1; the full spec (action buttons, stacking, notification centre) is v1.5.</p>
+</div>
+</div>
+
+<div class="triage-item nice">
+<span class="emoji">🟡</span>
+<div class="content">
+<span class="feature">Form Inputs (the full spec)</span>
+<p class="rationale">The guidelines now include text inputs, selects, textareas, date pickers, toggles, checkboxes. Ravi needs basic task editing (title, description, assignee, due date). He doesn't need the full form component library on day one. Build what the workspace needs, componentise later.</p>
+</div>
+</div>
+
+<div class="triage-item nice">
+<span class="emoji">🟡</span>
+<div class="content">
+<span class="feature">Breadcrumbs</span>
+<p class="rationale">Useful for navigating multi-level hierarchies (L1 → L2 → L3). But if Ravi mostly operates from the graph view + workspace, breadcrumbs are secondary navigation. Nice to have, not critical path.</p>
+</div>
+</div>
+
+<div class="triage-item nice">
+<span class="emoji">🟡</span>
+<div class="content">
+<span class="feature">Loading &amp; Empty States</span>
+<p class="rationale">The guidelines spec skeleton screens, pulse animations, and smart empty state copy. These matter hugely for perceived quality but aren't the hook. A functional loading spinner is fine for v1. The polished skeletons come when you're retaining users, not acquiring them.</p>
+</div>
+</div>
+
+<div class="triage-item nice">
+<span class="emoji">🟡</span>
+<div class="content">
+<span class="feature">Tables Component (for List View)</span>
+<p class="rationale">Well-specified in the guidelines (sortable, selectable, expandable). But tables are the List View's implementation detail. Defer until List View ships.</p>
+</div>
+</div>
+
+<h3>🔴 v2+ — deprioritise for Ravi</h3>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Permissions &amp; Access Control</span>
+<p class="rationale">The guidelines now include a full RBAC model: Owner, Admin, Editor, Commenter, Viewer roles with granular permissions matrices. Ravi is a solo founder with maybe 2-3 team members. He doesn't need RBAC. He needs "me and my analyst can both use this." Per-task isolated runtimes with role-scoped permissions (from the agent architecture doc) is enterprise architecture. Defer entirely. Ship with a simple "owner + member" model.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Approval Gates</span>
+<p class="rationale">Designed for regulated workflows: "Board Approval — 0/3 sign-offs." Ravi doesn't have a board. He doesn't need multi-party approval flows. If he wants to review AI output before it's final, that's just a human-in-the-loop button in the workspace, not a governance system. The full approval gate spec is enterprise — defer it.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Gallery View</span>
+<p class="rationale">Not mentioned in the product brief but implied by multi-view philosophy. A visual grid of task cards? Ravi has the graph and (later) the list. Gallery is a "nice to see" view for specific use cases (design reviews, content calendars). Not Ravi's world. v2+.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Kanban Board</span>
+<p class="rationale">I know this is heresy. Kanban is the default view in every PM tool. But DeepFlow's differentiator is the <em>graph</em>, not columns. Kanban flattens dependencies into status buckets — it's literally the opposite of DeepFlow's value proposition. For v1, the graph view IS the status board. If Ravi wants columns, he can use the list view sorted by status. Dedicated Kanban is a v2 concession to convention, not a v1 necessity.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Swimlane View</span>
+<p class="rationale">Multi-level grouping by depth layer. Useful when you have 50+ people across departments. Ravi has 4 people. This is a James/Sarah view, not a Ravi view. v2+.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Level Hub Dashboard</span>
+<p class="rationale">Per-level analytics, donut charts, top assignees, completion metrics. This is a management dashboard for someone managing managers. Ravi IS the manager. He sees his tasks in the graph. The dashboard adds no value until the team scales past ~10 people. v2+.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Custom Property Pills</span>
+<p class="rationale">Six colour variants with configurable labels. The guidelines spec them beautifully. But they're metadata decoration. Ravi needs status, assignee, and due date. Custom properties ("Priority: High", "Client: Meridian", "Department: Risk") are organisational overhead for a 4-person team. Defer.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Health Meters</span>
+<p class="rationale">Visual indicators of workflow health — completeness, risk, progress. Valuable for dashboards. But Ravi can see the health of his workflow by looking at the graph colours. Red nodes = problems. Green nodes = done. That IS the health meter. A separate analytics surface is enterprise reporting. v2+.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Mobile App</span>
+<p class="rationale">Ravi would love to check status from his phone. But building a native mobile app for v1 is a resource trap. A responsive web app that surfaces the graph and workspace on tablet is sufficient. Push notifications to Slack (or mobile browser) close the gap. Dedicated mobile is v2.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Collaboration Features (presence indicators, real-time co-editing)</span>
+<p class="rationale">Ravi's team is 4 people. They're not co-editing a graph in real-time. They're each doing their assigned tasks and reporting back. Presence indicators, cursor sharing, and real-time multiplayer are Figma problems — they solve for teams of 20+. Ravi needs task assignment and status visibility, which the core product already provides.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Per-Task Isolated Runtimes (the full agent architecture)</span>
+<p class="rationale">The agent architecture doc is impressive engineering. Docker-for-AI-execution with skill/tool separation, namespaced permissions, ephemeral teardown. But for Ravi? He's running 2-3 AI agents in a trusted environment. He doesn't need per-task isolation — he needs the AI to work. The single-runtime model (like OpenClaw) is sufficient for solo use. Ship the simpler model, add isolation when enterprise customers demand it.</p>
+</div>
+</div>
+
+<div class="triage-item defer">
+<span class="emoji">🔴</span>
+<div class="content">
+<span class="feature">Dialogs &amp; Panels (full modal system)</span>
+<p class="rationale">The guidelines now spec confirmation dialogs, side panels, and full modals with backdrop blur. For v1, the three-panel workspace IS the panel. Task details live in the right panel, not in a modal. Confirmation dialogs for destructive actions — yes, minimal. The full dialog component library — defer.</p>
+</div>
+</div>
+
+<div class="callout callout-red">
+<p><strong>The uncomfortable count:</strong> Of the ~28 design guideline sections, roughly 12 are essential or near-essential for v1. The other 16 are v1.5 or v2+. The design system is beautiful and comprehensive — but it's been built for a product that serves Sarah and James, not just Ravi. The v1 skin should use a subset of the system. That's not waste; it's discipline.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 6. THE ONBOARDING MOMENT -->
+<!-- ============================================================ -->
+<section id="onboarding">
+<h2>6. The Onboarding Moment</h2>
+
+<div class="flag">
+<div class="flag-title">🚨 This is the most important missing piece in the entire product</div>
+<p>The design guidelines cover 28 component sections. The architecture docs cover chat interaction, agent runtimes, and trigger systems. There is zero design work on what happens when Ravi opens DeepFlow for the first time. No wireframe. No flow. No copy. Nothing.</p>
+<p>This is where Ravi decides if he's staying or leaving. Every other design decision is downstream of this one.</p>
+</div>
+
+<h3>What Ravi's first 5 minutes should look like</h3>
+
+<div style="counter-reset: onboard;">
+
+<div class="onboard-step">
+<strong>Ravi lands on an empty state with a prompt bar</strong>
+<p>Not a dashboard. Not a tutorial carousel. One input field, centre-screen: "What are you working on?" No signup friction — he's already authenticated. The empty state is the onboarding.</p>
+</div>
+
+<div class="onboard-step">
+<strong>He types a real goal</strong>
+<p>"Prepare the Q2 ICAAP report for Meridian Capital. Need data collection, risk assessment, capital modelling, and executive summary. Due in 3 weeks."</p>
+</div>
+
+<div class="onboard-step">
+<strong>DeepFlow generates a graph — and explains it</strong>
+<p>The dependency graph appears with a brief chat message: "I've broken this into 6 tasks across 3 phases. Data Collection and Market Research can run in parallel. The Executive Summary depends on the Risk Assessment and Capital Model both completing. Want me to adjust anything?"</p>
+<p>This is the magic moment. Ravi sees his goal <em>structured</em>. Dependencies visible. Parallelism identified. Not a flat list — a plan.</p>
+</div>
+
+<div class="onboard-step">
+<strong>Ravi clicks a task node — the workspace opens</strong>
+<p>Three panels appear. The AI says: "This task is about collecting historical loss data and capital ratios. Want me to start drafting the data request template, or will you handle this one?" Ravi sees: the task has context, the AI knows what it's about, and he can delegate or do it himself with one click.</p>
+</div>
+
+<div class="onboard-step">
+<strong>He delegates one task to the AI</strong>
+<p>"Run the capital model with the standard stress scenarios." The hexagonal AI avatar takes the task. Ravi sees it move to "In Progress." He's free to do something else — the chat will notify him when it's done.</p>
+</div>
+
+</div>
+
+<p><strong>Total time: 3-4 minutes.</strong> Ravi has a structured project with dependencies, has seen the workspace, has delegated one task to AI, and understands the core loop. He hasn't read a tutorial, watched a video, or configured settings.</p>
+
+<div class="callout callout-amber">
+<p><strong>Design recommendation:</strong> The first-run experience should be the FIRST wireframe produced in the reskin. Not the graph view. Not the sidebar. Not the component library. The onboarding. Because if this doesn't work, nothing else matters.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 7. COMPETITIVE POSITIONING -->
+<!-- ============================================================ -->
+<section id="positioning">
+<h2>7. Competitive Positioning</h2>
+
+<h3>The positioning statement</h3>
+
+<div class="answer-box">
+<h3 style="margin-bottom:0.5rem;font-size:1.15rem;">DeepFlow is the execution engine for people who are tired of being their company's project manager.</h3>
+<p style="margin-bottom:0;color:var(--text-muted);">Describe what you need. DeepFlow plans it, tracks it, and executes the parts AI can handle — so you can focus on the parts only you can do.</p>
+</div>
+
+<h3>Why not a feature matrix</h3>
+
+<p>DeepFlow does not win a feature-by-feature comparison against Notion, Asana, Monday, or Linear. Each of those tools has years of polish in their respective domains. DeepFlow wins on a dimension none of them compete on: <strong>the combination of dependency intelligence, AI execution within project context, and automatic status propagation.</strong></p>
+
+<p>The competitive positioning isn't "we're better than Notion" — it's "we replace the duct tape between your tools." Ravi's competitor set isn't project management software. It's the 2-3 hours per day he spends being the glue between his existing tools.</p>
+
+<h3>The landscape in one table</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Capability</th><th>Notion</th><th>Linear</th><th>Asana</th><th>ChatGPT</th><th>Zapier</th><th>DeepFlow</th></tr>
+</thead>
+<tbody>
+<tr><td>Dependency graph</td><td>—</td><td>Basic</td><td>Basic</td><td>—</td><td>—</td><td><strong>Core</strong></td></tr>
+<tr><td>Auto status propagation</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>Core</strong></td></tr>
+<tr><td>AI execution in context</td><td>Bolt-on</td><td>—</td><td>Bolt-on</td><td>Stateless</td><td>—</td><td><strong>Core</strong></td></tr>
+<tr><td>NL → structured plan</td><td>—</td><td>—</td><td>—</td><td>Unstructured</td><td>—</td><td><strong>Core</strong></td></tr>
+<tr><td>Non-blocking multi-agent</td><td>—</td><td>—</td><td>—</td><td>—</td><td>Sequential</td><td><strong>Core</strong></td></tr>
+<tr><td>Task management</td><td>Good</td><td>Excellent</td><td>Excellent</td><td>—</td><td>—</td><td>Good</td></tr>
+<tr><td>Docs / wiki</td><td>Excellent</td><td>Basic</td><td>Basic</td><td>—</td><td>—</td><td>Per-task</td></tr>
+<tr><td>Team collaboration</td><td>Good</td><td>Good</td><td>Good</td><td>—</td><td>—</td><td>Basic (v1)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The top five rows are DeepFlow's unique territory. The bottom three are table stakes where established tools are stronger. <strong>Don't compete on the bottom three in v1.</strong> Be sufficient there, dominant in the top five.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- 8. SELF-CRITIQUE -->
+<!-- ============================================================ -->
+<section id="self-critique">
+<h2>8. Self-Critique</h2>
+
+<p>Intellectual honesty demands I challenge my own argument. Here's where I might be wrong.</p>
+
+<div class="critique-block">
+<h4>What if Ravi isn't the right first user?</h4>
+<p>The strongest counter-argument: solo founders are famously terrible customers. They churn fast, pay little, and have idiosyncratic needs. Maybe the right first user IS Sarah — the ops manager at a 50-person company with budget authority and a real team coordination problem. The per-task isolated runtime architecture and the permissions system were clearly designed for Sarah's world, not Ravi's. If you go enterprise-first, half the "defer" items above become essential and the product story changes entirely.</p>
+<p><strong>My rebuttal:</strong> Sarah's sales cycle is 6-12 months. Ravi adopts in a day. For a product that needs to validate its positioning and UX, fast feedback from real users matters more than a few enterprise contracts. But I acknowledge this is a bet, not a certainty.</p>
+</div>
+
+<div class="critique-block">
+<h4>What if the problem statement is too abstract?</h4>
+<p>"Drowning in execution mechanics" is a real pain but it's not a moment. Compare: "I need to prepare a board deck by Friday and I have nothing" — that's a trigger. "I'm generally overwhelmed" is a therapy topic, not a product trigger. The problem statement might be correct-but-too-general to drive acute purchase intent.</p>
+<p><strong>My rebuttal:</strong> The trigger moments listed in Section 2 are acute. The problem statement is the underlying condition; the triggers are the symptoms. Marketing should lead with triggers ("Can't answer 'what's the status?' without 20 minutes of digging?"). The product solves the underlying condition.</p>
+</div>
+
+<div class="critique-block">
+<h4>What if "prompt → graph" is a gimmick?</h4>
+<p>The AI-generated dependency graph is the demo moment. But if the AI gets the decomposition wrong 40% of the time, Ravi spends more time fixing the graph than he would have spent creating tasks manually. The value of prompt-to-graph depends entirely on the quality of the decomposition model. If it's not good enough, the "magic moment" becomes a "frustration moment."</p>
+<p><strong>My rebuttal:</strong> The graph only needs to be 70% right to be useful. Ravi can adjust 3-4 nodes faster than he can create 15 from scratch. But this is a core product risk — if decomposition quality is poor, the whole positioning collapses. Test it with 20 real prompts before investing in the skin.</p>
+</div>
+
+<div class="critique-block">
+<h4>What if DeepFlow is building a platform when it should build a tool?</h4>
+<p>The architecture docs describe a sophisticated platform: per-task runtimes, skill/tool separation, orchestrator-mediated message bus, Pipedream-backed integrations, trigger routers, execution run managers. This is beautiful engineering. It's also platform-level complexity that might be premature if the core product experience isn't validated yet. There's a risk of building the infrastructure for 10,000 users when you need to delight the first 10.</p>
+<p><strong>My rebuttal:</strong> The engine already exists and works. The question isn't "should we build this?" — it's "should we expose all of it in the skin?" And the answer is no. The v1 skin should be simple. The engine's power is the ceiling, not the floor.</p>
+</div>
+
+<div class="critique-block">
+<h4>What if Ravi just uses Cursor/Claude to automate his workflow?</h4>
+<p>The AI coding assistant space is evolving fast. A technically savvy solo founder might decide to build their own lightweight orchestration with Claude + a few scripts + Notion API. It's bespoke, it's fragile, it works <em>well enough</em>. DeepFlow needs to be enough better than the DIY approach that Ravi chooses "buy" over "build." That means the graph visualization, the status propagation, and the workspace have to be genuinely delightful — not just functional.</p>
+<p><strong>No rebuttal:</strong> This is a real competitive threat and DeepFlow needs to outrun it on UX, not just capability. The design quality of the reskin isn't cosmetic — it's competitive.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FINAL NOTE -->
+<!-- ============================================================ -->
+<div class="final-note">
+  <p>v1 said "lead with Ravi." v2 says <em>why</em> Ravi pays. The problem is specific: solo founders losing hours daily to manual orchestration across disconnected tools. The answer is specific: a dependency-aware engine with contextual AI execution and automatic status propagation. The consequence is specific: half the designed features are v2+, and that's fine — because the half that remains solves the actual problem.</p>
+  <p style="margin-top:0.75rem;">The most important piece of design work is still unstarted: the first 5 minutes. Everything else is downstream.</p>
+  <p style="margin-top:1.5rem;font-style:normal;color:var(--text-dim);font-size:0.75rem;">Prepared by <a href="https://enriched.solutions" style="color:var(--text-dim);">Enriched Solutions</a> · Product Director Critique v2 · Not cheerleading — calibrating</p>
+</div>
+
+</main>
+
+</body>
+</html>
