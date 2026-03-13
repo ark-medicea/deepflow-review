@@ -300,22 +300,27 @@ interface GraphStore {
 | **Mobile** | < 768px | Single-panel view. Bottom nav. Chat as full-screen. No graph canvas (List view default) |
 
 ### Panel Behaviour by Breakpoint
-| Panel | Desktop | Tablet | Mobile |
+| Panel | Desktop (≥1200) | Small window / Tablet (768–1199) | Mobile (<768) |
 |-------|---------|--------|--------|
-| Sidebar | 56px fixed | Hidden, hamburger overlay | Hidden, bottom nav replaces |
-| Chat | 320px fixed | Toggleable drawer from left | Full-screen modal |
+| Sidebar | 56px fixed | 56px fixed (mouse present) or hidden (touch-only) | Hidden, bottom tab bar replaces |
+| Chat | 320px fixed | 280px fixed (if mouse) or toggleable drawer (touch) | Full-screen tab |
 | Top Bar | Full width | Full width | Simplified (no breadcrumbs) |
 | Hub Bar | Collapsible | Collapsed-only, expand = overlay | Sticky card header |
-| Graph Canvas | Inline | Inline (wider, no sidebar) | **Not shown** — defaults to List |
+| Graph Canvas | Inline | Inline — full editing if mouse detected | **Not shown** — defaults to List |
 | Detail Panel | 360px inline | Full-screen overlay | Bottom sheet |
 | Task Table | Full width | Horizontal scroll, fewer columns | Card layout |
 
+### Key Decision: Small Viewports ≠ Touch-Only
+Many users run laptops with multiple windows at ~1024px. A small viewport with a mouse pointer is NOT the same as a tablet with touch. Detect input method (`pointer: fine` media query) to decide:
+- **Mouse present at small viewport:** keep sidebar (56px), keep chat panel (280px), enable graph editing
+- **Touch-only at small viewport:** hide sidebar (hamburger), chat as drawer, graph is read-only
+
 ### Implementation
-- **CSS:** Tailwind responsive prefixes (`md:`, `lg:`, `xl:`)
-- **Layout detection:** `useMediaQuery` hook → drives Zustand layout store
+- **CSS:** Tailwind responsive prefixes (`md:`, `lg:`, `xl:`) + `@media (pointer: fine)` for input detection
+- **Layout detection:** `useMediaQuery` hook → drives Zustand layout store. Separate `pointer` and `viewport` states
 - **Conditional rendering:** Graph canvas component not mounted on mobile (not just hidden). Saves memory/CPU
-- **Touch:** Graph canvas supports pinch-to-zoom and two-finger pan on tablet
-- **Bottom navigation (mobile):** Home, Projects, Chat, Notifications, Profile
+- **Touch:** Graph canvas supports pinch-to-zoom and two-finger pan on touch devices (read-only navigation)
+- **Bottom tab bar (mobile):** Home, Tasks, Chat, Notifications, You
 
 ---
 
@@ -338,7 +343,7 @@ interface GraphStore {
 ### Key Components
 | Component | Responsibilities |
 |-----------|-----------------|
-| `Sidebar` | Org switcher, nav icons, project list (expanded), user menu. `aria-label="Main navigation"` |
+| `Sidebar` | **Top zone:** Org switcher (logo + name, dropdown to switch). **Mid zone:** Dashboard, Tasks & Projects (expandable → pinned/recent projects), Agents & Automations (expandable → active agents with status dots). **Bottom zone:** Notification bell (dot badge collapsed, count expanded), Settings, User profile/avatar. Collapsed: 56px icon-only with tooltips + hover flyout mini-panels. Expanded: 240px (auto-expand in Settings view only). `aria-label="Main navigation"` |
 | `ChatPanel` | Message list, input, context badge, action chips. Subscribes to WS for new messages. `aria-label="AI chat"` |
 | `TopBar` | Breadcrumbs (driven by route), view switcher (Graph/Kanban/List), filter button, search. Dynamic per view |
 | `HubBar` | Collapsed: progress + stats. Expanded: donut, breakdown, due dates, assignees. Animated toggle |
@@ -467,18 +472,18 @@ The [design guidelines](index.html) define tokens. Map them to Tailwind + CSS va
 
 ---
 
-## 13. Open Questions
+## 13. Decisions (Resolved)
 
-| # | Question | Impact | Default if unresolved |
-|---|----------|--------|-----------------------|
-| 1 | **Kanban view** — listed in view switcher but no wireframe yet. Build it? | Medium | Defer to Phase 2. Grey out in switcher |
-| 2 | **Collaboration cursors** — show other users' cursors on graph? | Low | Presence indicators only (avatars in top bar), no cursors |
-| 3 | **Offline support** — should the app work offline via service worker? | High | No. Online-required. IndexedDB is cache only |
-| 4 | **Chat history** — stored per-task, per-project, or global? | High | Per-task context, but user can view full project chat history |
-| 5 | **Mobile app** — PWA sufficient or native needed? | Medium | PWA for Phase 1. Evaluate native post-launch |
-| 6 | **Graph editing on tablet** — allow node creation/connection on touch? | Medium | Read-only graph on tablet. Editing desktop-only |
-| 7 | **Notification system** — in-app only, or also push/email? | Medium | In-app + email. Push notifications Phase 2 |
-| 8 | **Backend API spec** — does one exist, or do we define contracts here? | Blocking | Define TypeScript interfaces. Backend team builds to match |
+| # | Question | Decision |
+|---|----------|----------|
+| 1 | **Kanban view** | Defer to Phase 2. Keep placeholder in view switcher (greyed out). Also add **Map view** as a future placeholder |
+| 2 | **Collaboration cursors** | Phase 3. Build presence indicators first (avatars in top bar). Cursors are higher-frequency WS events on the same infrastructure — add as polish. Throttle to 10fps, canvas-space coordinates, fade after 3s idle |
+| 3 | **Offline support** | Online-only. Chat requires connection. IndexedDB is local cache for preferences only |
+| 4 | **Chat history** | Stored in backend DB. Frontend fetches via API with pagination. Context scoped per-task in UI but full history queryable |
+| 5 | **Mobile app** | Native app needed long-term. Phase 1: responsive web. Phase 2: evaluate React Native / Expo. Layout must support native from the start |
+| 6 | **Tablet / small viewport** | Full mouse support at tablet sizes. Many users run laptop with multiple windows at ~1024px. Not touch-only — graph editing enabled if mouse is present. Responsive breakpoints accommodate small-windowed desktop, not just tablets |
+| 7 | **Notifications** | Multi-channel: in-app bell + email + Slack. Configurable per notification type per user in Settings. With native mobile app, also push notifications. Settings UI: matrix of notification types × channels |
+| 8 | **Backend API spec** | Assume it exists. A separate agent will extract API contracts from the repo. Frontend defines TypeScript interfaces; backend is source of truth |
 
 ---
 
@@ -504,11 +509,15 @@ The [design guidelines](index.html) define tokens. Map them to Tailwind + CSS va
 - [ ] Active task view
 - [ ] Graph keyboard navigation
 
-### Phase 3 — Chat + Polish (3–4 weeks)
+### Phase 3 — Chat + Collaboration + Polish (4–5 weeks)
 - [ ] Chat panel (message rendering, action chips, context switching)
 - [ ] Optimistic updates
+- [ ] Collaboration presence (user avatars in top bar showing who's viewing)
+- [ ] Collaboration cursors (canvas-space coordinates, 10fps throttle, 3s fade)
+- [ ] Notification settings UI (matrix: notification types × channels: in-app/email/Slack/push)
 - [ ] Accessibility audit + fixes
 - [ ] Performance optimisation (code splitting, virtualisation)
 - [ ] Visual regression tests
 - [ ] Additional locales (if needed)
-- [ ] Kanban view (if prioritised)
+- [ ] Kanban view placeholder → implementation (if prioritised)
+- [ ] Map view placeholder (Phase 4+)
