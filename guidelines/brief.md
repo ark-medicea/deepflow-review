@@ -686,6 +686,86 @@ Properties are defined per project via API. Four types:
 - Chat can create/modify properties: "Add a 'Regulatory Ref' property to this project"
 - Node display: users configure which properties appear on graph nodes (project-level setting). Order is drag-sortable in settings.
 
+### Bulk Editing
+
+Multi-select nodes via **shift+click** or **drag-select** (rubber band) on the graph canvas, or checkbox selection in list view.
+
+**The detail panel becomes a bulk editor:**
+```
+┌─────────────────────────────────┐
+│ 5 tasks selected             ✕  │ ← count + deselect all
+├─────────────────────────────────┤
+│ Status: [Multiple ▾]           │ ← shows "Multiple" if values differ
+│ Assignee: [👤 Ravi Mehta ▾]    │ ← shows value if all selected share it
+│ Due: [Multiple 📅]             │
+│ Priority: [● High ▾]           │ ← all 5 are High, so shows "High"
+├─────────────────────────────────┤
+│ Properties                      │
+│ Risk Rating: [Multiple ▾]      │
+│ Tags: [capital] [+]            │ ← shows intersection of shared tags
+├─────────────────────────────────┤
+│ [🗑 Delete selected]           │ ← confirmation dialog before executing
+└─────────────────────────────────┘
+```
+
+**Behaviour:**
+- If all selected tasks share the same value → show that value
+- If values differ → show "Multiple" (greyed placeholder)
+- Changing any field applies **immediately** to all selected tasks (optimistic update, revert on error)
+- Delete: confirmation dialog showing count + warning if any are parent nodes ("This will also delete N child tasks")
+- Available in both graph and list view
+
+### List View — Drag & Drop
+
+The list view supports drag-and-drop for reparenting tasks:
+
+| Action | Result |
+|--------|--------|
+| Drag row onto a parent row | Task moves to end of that parent's children |
+| Drag row between expanded children | Task inserts at that position |
+| Drag row onto a leaf row | Leaf is promoted to parent, dragged task becomes its child |
+| Drag multi-selected rows | All selected tasks move together (same rules apply) |
+
+**Visual feedback during drag:**
+- Dragged row(s) shown as ghost card following cursor
+- Valid drop targets highlighted with blue border
+- Insert position shown with a horizontal blue line between rows
+- Invalid drops (e.g. dropping a parent into its own child) shown with red indicator
+
+### Task Operations — Flow, Fuse, Delete
+
+#### Flow (Leaf → Parent)
+Convert a leaf node into a parent with a sub-workflow. Two modes:
+
+**Flow to blank:**
+- Leaf becomes an empty parent node
+- User manually adds children via chat, detail panel, or graph
+
+**Flow to AI:**
+- AI reads the task description and generates suggested child nodes + dependencies
+- Children are created immediately (no preview dialog)
+- User reviews and edits via chat: "Remove the third step", "Add a data validation step before report"
+- Accessible via: right-click context menu → "Flow…", or command palette, or chat ("flow this task")
+
+#### Fuse (Wrap siblings in new parent)
+Select two or more sibling nodes and wrap them in a new parent. The new node takes their place in the dependency chain.
+
+**Example:** A → B → C → D. Select B & C, Fuse:
+- Result: A → **[New Parent]** → D
+- [New Parent] contains B → C as children
+- AI suggests the new parent's name based on the children's descriptions
+- User can rename inline after creation
+
+**Constraints:**
+- Selected nodes must be siblings (same parent) or sequential in the dependency chain
+- The new parent inherits the upstream dependencies of the first selected node and passes downstream dependencies from the last selected node
+
+#### Delete
+- **Single node:** Disconnects from all dependencies (upstream and downstream become orphaned), then deletes. Downstream nodes lose their upstream connection — they do NOT auto-reconnect.
+- **Parent node:** Deletes the parent AND all children recursively. Confirmation dialog warns: "This will delete [Node] and N child tasks. This cannot be undone."
+- **Bulk delete:** Confirmation dialog with count. If any selected nodes are parents, warns about cascading child deletion.
+- All deletes require confirmation dialog. No undo (server-side delete is permanent), but tasks could be soft-deleted/archived in a future phase.
+
 ---
 
 ## 10. Data Flow
