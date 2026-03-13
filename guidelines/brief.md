@@ -549,6 +549,143 @@ The shell uses **react-resizable-panels** for a flexible, resizable panel layout
 | `TaskTable` | Virtualized table (TanStack Table). Expandable rows. Sticky headers. Sortable columns. Row selection |
 | `ProjectCard` | Health meter, progress bar, status counts, avatar stack. Click → navigate to project |
 
+### Graph Node — Visual Design
+
+**Shape:** Rounded rectangle, consistent size across all nodes (approx 180×72px at 100% zoom).
+
+**Parent vs leaf distinction:**
+- **Parent nodes** (have children): stacked card effect — subtle second card shadow behind, plus a child count badge (circled number, bottom-right corner). Double-click to drill in.
+- **Leaf nodes**: flat single card. No stack, no badge. Double-click to open Workspace.
+
+**Parallel nodes** (execute per-input, fan-out): fork icon (⑂) in top-right corner. When running, shows live instance count: "⑂ 3/7" (3 of 7 complete). When idle, fork icon only.
+
+**Visible data on node (at default zoom):**
+| Element | Position | Notes |
+|---------|----------|-------|
+| Status symbol | Left edge | ○ pending · ▶ in-progress · ❚❚ paused · ❗ blocked · ✓ complete · ✕ failed — coloured by status. Not a dot — a recognisable symbol |
+| Task name | Centre | Truncated with ellipsis if too long. Bold |
+| Assignee avatar | Right edge | Circle = human, hexagon = AI agent |
+| Progress count | Below name | Only shown when in-progress: "3/7 sub-tasks" |
+| User-selected properties | Below progress | Configurable per project — user picks which properties show on nodes. If they don't fit, show "…" (tooltip reveals full list on hover) |
+| Parent badge | Bottom-right | Child count in a small circle (parent nodes only) |
+| Parallel icon | Top-right | ⑂ icon + instance count when running (parallel nodes only) |
+
+**Node states (visual):**
+| State | Visual treatment |
+|-------|-----------------|
+| Default | White card, thin border |
+| Hovered | Subtle shadow lift. Tooltip appears with full detail (all properties, description preview, dependencies) |
+| Selected (single-click) | Blue border + glow. Opens detail panel |
+| Multi-selected | Blue border (no glow). Part of selection group |
+| Overdue | Red accent on due date property (if visible). Red dot on top-left corner |
+| Gated/locked | Lock icon overlay. Muted opacity until gate condition met |
+| Agent running | Hexagon avatar pulses. Progress count animates |
+
+**Interaction model:**
+| Action | Result |
+|--------|--------|
+| Hover | Tooltip with full task detail |
+| Single click | Select node → opens detail panel |
+| Double click | Drill in (parent) or open Workspace (leaf) |
+| Shift+click | Add to multi-selection |
+| Drag-select (rubber band) | Multi-select all nodes in rectangle |
+| Right-click | Context menu: Edit, Assign, Change status, Duplicate, Delete, Move to… |
+| Drag node | Reposition on canvas (saved to backend) |
+
+### Detail Panel — Specification
+
+The detail panel (360px, resizable to 320–480px) appears when a node is selected. All fields are **editable inline** — no modals.
+
+**Panel layout varies by node type:**
+
+#### Leaf Node Detail Panel
+```
+┌─────────────────────────────────┐
+│ [Task Name]                  ✕  │ ← editable title, close button
+├─────────────────────────────────┤
+│ Status: [▶ In Progress ▾]      │ ← dropdown, coloured pill
+│ Assignee: [👤 Ravi Mehta ▾]    │ ← dropdown with search
+│ Due: [15 Mar 2026 📅]          │ ← date picker
+│ Priority: [● High ▾]           │ ← dropdown, coloured
+├─────────────────────────────────┤
+│ Properties                      │
+│ Risk Rating: [Critical ▾]      │ ← single-select (coloured pills)
+│ Reg Ref: [CRR-123          ]   │ ← free text
+│ Tags: [capital] [stress] [+]   │ ← multi-select
+│ + Add property                  │
+├─────────────────────────────────┤
+│ ┌─────┬────┬────┬────┬─────┐   │
+│ │ Desc│File│Cmts│Deps│ Hist│   │ ← tabs
+│ └─────┴────┴────┴────┴─────┘   │
+│                                 │
+│ [Active tab content below]      │
+└─────────────────────────────────┘
+```
+
+#### Parent Node Detail Panel
+Same header + properties as leaf, but the default tab is **Sub-tasks** instead of Description:
+
+**Sub-tasks tab (parent nodes):**
+```
+┌─────────────────────────────────┐
+│ Sub-tasks (4)              ▶ All│
+├─────────────────────────────────┤
+│ ✓ Data Collection    👤RM  Done │ ← click → drills into subflow
+│ ▶ Risk Assessment    ⬡AI  Run  │
+│ ○ Stress Testing     👤JS  Pend │
+│ ○ Report Draft       ⬡AI  Pend │
+├─────────────────────────────────┤
+│ Progress: ████░░░░ 1/4 (25%)   │
+│ Blocked: 0  │  Overdue: 0      │
+└─────────────────────────────────┘
+```
+Each row: status symbol + task name + assignee avatar + status label. Click a row → drills into that node's subflow and selects it.
+
+#### Tab Details
+
+**Description tab:**
+- Rich text (markdown rendered)
+- Editable inline (click to edit)
+
+**Files tab:**
+- Attached files: icon + name + size + date + download link
+- URL links: title + favicon preview + URL (auto-fetched via unfurl)
+- Upload dropzone ("Drag files or click to upload")
+- "+ Add URL" button
+- **Inheritance note:** "Files on this task are passed to sub-tasks. Files on the workflow hub are summarised into each task."
+
+**Comments tab:**
+- Thread: avatar + name + time + rich text message
+- @mentions: users, files, other tasks (autocomplete on @)
+- Reactions on comments (emoji picker, click to add — API extension needed)
+- No file attachments in comments (yet)
+- Input: rich text editor with @ autocomplete
+
+**Dependencies tab:**
+- Upstream: list with status symbols + task names (clickable → navigate to that node)
+- Downstream: same format
+- "+ Add dependency" with task search
+
+**History tab:**
+- Timeline: timestamp + actor avatar + action description
+- Includes AI actions: "AI inserted content", "Agent completed task", "Property changed by DeepFlow AI"
+- Filter: All / Human / AI
+
+### Custom Properties System
+
+Properties are defined per project via API. Four types:
+
+| Type | UI Control | On Node |
+|------|-----------|---------|
+| **Free text** | Inline text input | Truncated with "…" |
+| **Numeric** | Number input with optional unit | Value shown |
+| **Single select** | Dropdown with coloured options | Coloured pill |
+| **Multi-select** | Tag input with coloured options | Coloured pills, "…" overflow |
+
+- Users can add new select values (and colours) on the fly from the dropdown: "Type to add…"
+- Chat can create/modify properties: "Add a 'Regulatory Ref' property to this project"
+- Node display: users configure which properties appear on graph nodes (project-level setting). Order is drag-sortable in settings.
+
 ---
 
 ## 10. Data Flow
