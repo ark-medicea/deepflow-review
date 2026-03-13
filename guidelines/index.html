@@ -1361,6 +1361,741 @@
             background: #111118 !important;
             border-color: #1C1C27 !important;
         }
+
+        /* ============================================
+           PHASE 2: COMPONENT LIBRARY
+           ============================================ */
+
+        .phase-divider {
+            padding: var(--space-16) 0;
+            text-align: center;
+            border-top: 2px solid var(--brand-solid);
+            position: relative;
+        }
+
+        .phase-divider::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--brand-gradient-horizontal);
+        }
+
+        .phase-divider-label {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-6);
+            background: var(--surface-page);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--brand-solid);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: relative;
+            top: -48px;
+        }
+
+        /* --- COMPONENT DEMO CONTAINERS --- */
+
+        .component-demo {
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            margin-bottom: var(--space-6);
+        }
+
+        .component-demo-label {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: var(--space-4);
+        }
+
+        .demo-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+
+        .demo-row-start {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+
+        /* --- 11. BUTTONS --- */
+
+        .df-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            font-family: 'Euclid Circular B', sans-serif;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            transition: all var(--duration-fast) var(--ease-default);
+            white-space: nowrap;
+        }
+
+        /* Sizes */
+        .df-btn-sm {
+            padding: 6px 12px;
+            font-size: var(--text-xs);
+            border-radius: var(--radius-sm);
+        }
+
+        .df-btn-md {
+            padding: 10px 20px;
+            font-size: var(--text-sm);
+        }
+
+        .df-btn-lg {
+            padding: 14px 28px;
+            font-size: var(--text-base);
+        }
+
+        /* Primary — gradient */
+        .df-btn-primary {
+            background: var(--brand-gradient);
+            color: white;
+            box-shadow: var(--shadow-brand);
+        }
+
+        .df-btn-primary:hover {
+            box-shadow: 0 6px 24px rgba(0,119,221,0.35);
+            transform: translateY(-1px);
+        }
+
+        .df-btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Secondary — solid */
+        .df-btn-secondary {
+            background: var(--brand-solid);
+            color: white;
+        }
+
+        .df-btn-secondary:hover {
+            background: var(--brand-solid-hover);
+        }
+
+        /* Tertiary — outline */
+        .df-btn-tertiary {
+            background: transparent;
+            color: var(--brand-solid);
+            border: 1px solid var(--brand-solid);
+        }
+
+        .df-btn-tertiary:hover {
+            background: rgba(0,119,221,0.06);
+        }
+
+        /* Ghost */
+        .df-btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--surface-card-border);
+        }
+
+        .df-btn-ghost:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        /* Destructive */
+        .df-btn-destructive {
+            background: var(--status-error);
+            color: white;
+        }
+
+        .df-btn-destructive:hover {
+            opacity: 0.9;
+        }
+
+        /* Disabled */
+        .df-btn[disabled] {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Icon button */
+        .df-btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .df-btn-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* --- 12. BADGES & TAGS --- */
+
+        .df-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 600;
+            font-family: 'Euclid Circular B', sans-serif;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .df-badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .df-badge-success {
+            background: var(--status-success-bg);
+            color: var(--status-success);
+            border: 1px solid var(--status-success-border);
+        }
+        .df-badge-success .df-badge-dot { background: var(--status-success); }
+
+        .df-badge-info {
+            background: var(--status-info-bg);
+            color: var(--status-info);
+            border: 1px solid var(--status-info-border);
+        }
+        .df-badge-info .df-badge-dot { background: var(--status-info); }
+
+        .df-badge-warning {
+            background: var(--status-warning-bg);
+            color: var(--status-warning);
+            border: 1px solid var(--status-warning-border);
+        }
+        .df-badge-warning .df-badge-dot { background: var(--status-warning); }
+
+        .df-badge-error {
+            background: var(--status-error-bg);
+            color: var(--status-error);
+            border: 1px solid var(--status-error-border);
+        }
+        .df-badge-error .df-badge-dot { background: var(--status-error); }
+
+        .df-badge-neutral {
+            background: var(--status-pending-bg);
+            color: var(--text-tertiary);
+            border: 1px solid var(--surface-card-border);
+        }
+        .df-badge-neutral .df-badge-dot { background: var(--text-tertiary); }
+
+        .df-badge-brand {
+            background: rgba(0,119,221,0.08);
+            color: var(--brand-solid);
+            border: 1px solid rgba(0,119,221,0.2);
+        }
+
+        /* Count badge */
+        .df-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'Euclid Circular B', sans-serif;
+            background: var(--brand-solid);
+            color: white;
+        }
+
+        .df-count-muted {
+            background: var(--surface-card-border);
+            color: var(--text-tertiary);
+        }
+
+        /* Tag */
+        .df-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+            font-family: 'Euclid Circular B', sans-serif;
+            background: var(--surface-raised);
+            color: var(--text-secondary);
+            border: 1px solid var(--surface-card-border);
+        }
+
+        /* --- 13. AVATARS --- */
+
+        .df-avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Euclid Circular B', sans-serif;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .df-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Human — circular */
+        .df-avatar-human {
+            border-radius: 50%;
+        }
+
+        /* AI — hexagonal via clip-path */
+        .df-avatar-ai {
+            clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+        }
+
+        /* Sizes */
+        .df-avatar-xs { width: 24px; height: 24px; font-size: 10px; }
+        .df-avatar-sm { width: 32px; height: 32px; font-size: 12px; }
+        .df-avatar-md { width: 40px; height: 40px; font-size: 14px; }
+        .df-avatar-lg { width: 48px; height: 48px; font-size: 16px; }
+        .df-avatar-xl { width: 64px; height: 64px; font-size: 20px; }
+
+        /* Colours */
+        .df-avatar-blue { background: #3B82F6; }
+        .df-avatar-teal { background: #14B8A6; }
+        .df-avatar-purple { background: #8B5CF6; }
+        .df-avatar-amber { background: #F59E0B; }
+        .df-avatar-rose { background: #F43F5E; }
+        .df-avatar-gradient { background: var(--brand-gradient); }
+
+        /* Avatar stack */
+        .df-avatar-stack {
+            display: flex;
+        }
+
+        .df-avatar-stack .df-avatar {
+            border: 2px solid var(--surface-page);
+            margin-left: -8px;
+        }
+
+        .df-avatar-stack .df-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .df-avatar-overflow {
+            background: var(--surface-card-border);
+            color: var(--text-tertiary);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* --- 14. TASK CARDS --- */
+
+        .df-task-card {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+            transition: border-color var(--duration-fast) var(--ease-default),
+                        box-shadow var(--duration-fast) var(--ease-default);
+            cursor: pointer;
+            width: 320px;
+        }
+
+        .df-task-card:hover {
+            border-color: var(--neutral-600);
+            box-shadow: var(--shadow-md);
+        }
+
+        .df-task-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
+        }
+
+        .df-task-card-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .df-task-card-title {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .df-task-card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-3);
+            margin-top: var(--space-3);
+            padding-top: var(--space-3);
+            border-top: 1px solid var(--surface-card-border);
+        }
+
+        .df-task-card-meta-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .df-task-card-meta-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .df-task-card-due {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .df-task-card-id {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* Dependencies indicator */
+        .df-task-deps {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .df-task-deps svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        /* --- 15. GRAPH NODES --- */
+
+        .df-graph-demo {
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-10);
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+        }
+
+        .df-node {
+            background: var(--surface-card);
+            border: 2px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3) var(--space-4);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-3);
+            min-width: 200px;
+            position: relative;
+            transition: all var(--duration-fast) var(--ease-default);
+            cursor: pointer;
+        }
+
+        .df-node:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--neutral-600);
+        }
+
+        .df-node-selected {
+            border-color: var(--brand-solid) !important;
+            box-shadow: 0 0 0 3px rgba(0,119,221,0.15);
+        }
+
+        .df-node-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .df-node-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .df-node-title {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .df-node-subtitle {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .df-node-avatar {
+            width: 28px;
+            height: 28px;
+            font-size: 11px;
+        }
+
+        /* Node handles (connection points) */
+        .df-node-handle {
+            width: 8px;
+            height: 8px;
+            background: var(--surface-card-border);
+            border: 2px solid var(--surface-card);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .df-node-handle-left {
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .df-node-handle-right {
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* --- 16. GRAPH EDGES --- */
+
+        .df-edge-demos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-6);
+        }
+
+        @media (max-width: 768px) {
+            .df-edge-demos { grid-template-columns: 1fr; }
+        }
+
+        .df-edge-demo-item {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-6);
+            text-align: center;
+        }
+
+        .df-edge-preview {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-4);
+        }
+
+        .df-edge-line {
+            width: 120px;
+            height: 2px;
+            position: relative;
+        }
+
+        .df-edge-dot-start,
+        .df-edge-dot-end {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: absolute;
+            top: -3px;
+        }
+
+        .df-edge-dot-start { left: 0; }
+        .df-edge-dot-end { right: 0; }
+
+        .df-edge-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .df-edge-desc {
+            font-size: var(--text-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* Animated flow dots */
+        @keyframes flowDot {
+            0% { left: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: calc(100% - 4px); opacity: 0; }
+        }
+
+        .df-edge-flow-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            position: absolute;
+            top: -1px;
+            animation: flowDot 2s linear infinite;
+        }
+
+        /* --- 17. STATUS INDICATORS --- */
+
+        .df-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .df-status-dot-lg {
+            width: 10px;
+            height: 10px;
+        }
+
+        /* Progress bar */
+        .df-progress {
+            width: 100%;
+            height: 4px;
+            background: var(--surface-card-border);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .df-progress-fill {
+            height: 100%;
+            border-radius: var(--radius-full);
+            transition: width var(--duration-normal) var(--ease-default);
+        }
+
+        .df-progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-2);
+        }
+
+        .df-progress-text {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .df-progress-pct {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* Health meter (multi-segment) */
+        .df-health {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+        }
+
+        .df-health-segment {
+            flex: 1;
+            height: 6px;
+            border-radius: 1px;
+            background: var(--surface-card-border);
+        }
+
+        .df-health-segment.active {
+            background: var(--status-success);
+        }
+
+        .df-health-segment.warning {
+            background: var(--status-warning);
+        }
+
+        .df-health-segment.error {
+            background: var(--status-error);
+        }
+
+        /* --- 18. BREADCRUMBS --- */
+
+        .df-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-size: var(--text-sm);
+            flex-wrap: wrap;
+        }
+
+        .df-breadcrumb-item {
+            color: var(--brand-solid);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            transition: background var(--duration-fast) var(--ease-default);
+        }
+
+        .df-breadcrumb-item:hover {
+            background: rgba(0,119,221,0.06);
+        }
+
+        .df-breadcrumb-current {
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 2px 6px;
+        }
+
+        .df-breadcrumb-separator {
+            color: var(--text-tertiary);
+            font-size: 12px;
+            user-select: none;
+        }
+
+        .df-breadcrumb-level {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            padding: 1px 5px;
+            border-radius: var(--radius-sm);
+            margin-right: 2px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
     </style>
 </head>
 <body>
@@ -1387,6 +2122,13 @@
                 <li><a href="#spacing">Spacing</a></li>
                 <li><a href="#elevation">Elevation</a></li>
                 <li><a href="#motion">Motion</a></li>
+                <li style="color: var(--surface-card-border);">|</li>
+                <li><a href="#buttons">Buttons</a></li>
+                <li><a href="#badges">Badges</a></li>
+                <li><a href="#avatars">Avatars</a></li>
+                <li><a href="#task-cards">Cards</a></li>
+                <li><a href="#graph-nodes">Nodes</a></li>
+                <li><a href="#breadcrumbs">Breadcrumbs</a></li>
             </ul>
             <div class="theme-toggle" role="radiogroup" aria-label="Theme switcher">
                 <button class="theme-toggle-option active" data-theme-value="light" aria-checked="true" role="radio">☀️ Light</button>
@@ -2337,15 +3079,613 @@
     </div>
 
     <!-- ==========================================
+         PHASE 2 DIVIDER
+         ========================================== -->
+    <div class="container">
+        <div class="phase-divider">
+            <span class="phase-divider-label">Phase 2 — Component Library</span>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- ==========================================
+             11. BUTTONS
+             ========================================== -->
+        <section id="buttons" class="section">
+            <div class="section-header">
+                <div class="section-number">11</div>
+                <h2 class="section-title">Buttons</h2>
+                <p class="section-desc">Five variants, three sizes. The gradient is reserved for the single most important action per view. Everything else uses solid or outline.</p>
+            </div>
+
+            <!-- Variants -->
+            <div class="component-demo">
+                <div class="component-demo-label">Variants</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <button class="df-btn df-btn-md df-btn-primary">Create Workflow</button>
+                    <button class="df-btn df-btn-md df-btn-secondary">Add Task</button>
+                    <button class="df-btn df-btn-md df-btn-tertiary">View Details</button>
+                    <button class="df-btn df-btn-md df-btn-ghost">Cancel</button>
+                    <button class="df-btn df-btn-md df-btn-destructive">Delete</button>
+                </div>
+
+                <div class="component-demo-label">Sizes</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <button class="df-btn df-btn-sm df-btn-secondary">Small</button>
+                    <button class="df-btn df-btn-md df-btn-secondary">Medium</button>
+                    <button class="df-btn df-btn-lg df-btn-secondary">Large</button>
+                </div>
+
+                <div class="component-demo-label">With Icons</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <button class="df-btn df-btn-md df-btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        New Workflow
+                    </button>
+                    <button class="df-btn df-btn-md df-btn-tertiary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        Filter
+                    </button>
+                    <button class="df-btn df-btn-icon df-btn-ghost" title="More options">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </button>
+                    <button class="df-btn df-btn-icon df-btn-ghost" title="Search">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </button>
+                </div>
+
+                <div class="component-demo-label">Disabled</div>
+                <div class="demo-row">
+                    <button class="df-btn df-btn-md df-btn-primary" disabled>Create Workflow</button>
+                    <button class="df-btn df-btn-md df-btn-secondary" disabled>Add Task</button>
+                    <button class="df-btn df-btn-md df-btn-tertiary" disabled>View Details</button>
+                </div>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <div class="card-title">Hierarchy Rules</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">Primary (gradient):</strong> One per view. The main action — "Create Workflow", "Execute Task."<br>
+                        <strong style="color: var(--text-primary);">Secondary (solid):</strong> Supporting actions — "Add Task", "Assign."<br>
+                        <strong style="color: var(--text-primary);">Tertiary (outline):</strong> Lower-priority — "View Details", "Filter."<br>
+                        <strong style="color: var(--text-primary);">Ghost (border only):</strong> Cancel, dismiss, or paired alongside a primary/secondary.<br>
+                        <strong style="color: var(--text-primary);">Destructive (red):</strong> Delete, remove. Always requires confirmation.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Sizing Rules</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">Small:</strong> Inside cards, table rows, compact toolbars.<br>
+                        <strong style="color: var(--text-primary);">Medium:</strong> Default for all standard UI contexts.<br>
+                        <strong style="color: var(--text-primary);">Large:</strong> Hero CTAs, onboarding, empty states.<br>
+                        <strong style="color: var(--text-primary);">Icon-only:</strong> Toolbars and compact contexts only. Must always have a tooltip.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             12. BADGES & TAGS
+             ========================================== -->
+        <section id="badges" class="section">
+            <div class="section-header">
+                <div class="section-number">12</div>
+                <h2 class="section-title">Badges & Tags</h2>
+                <p class="section-desc">Status badges use semantic colour. Category tags are neutral. Count badges highlight quantities. Each has a single, consistent visual form.</p>
+            </div>
+
+            <div class="component-demo">
+                <div class="component-demo-label">Status Badges</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <span class="df-badge df-badge-success"><span class="df-badge-dot"></span> Complete</span>
+                    <span class="df-badge df-badge-info"><span class="df-badge-dot"></span> In Progress</span>
+                    <span class="df-badge df-badge-warning"><span class="df-badge-dot"></span> Needs Attention</span>
+                    <span class="df-badge df-badge-error"><span class="df-badge-dot"></span> Failed</span>
+                    <span class="df-badge df-badge-neutral"><span class="df-badge-dot"></span> Pending</span>
+                </div>
+
+                <div class="component-demo-label">Brand & Category</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <span class="df-badge df-badge-brand">AI Agent</span>
+                    <span class="df-badge df-badge-brand">Template</span>
+                    <span class="df-tag">Finance</span>
+                    <span class="df-tag">ICAAP</span>
+                    <span class="df-tag">Q1 2026</span>
+                </div>
+
+                <div class="component-demo-label">Count Badges</div>
+                <div class="demo-row">
+                    <span class="df-count">3</span>
+                    <span class="df-count">12</span>
+                    <span class="df-count">99+</span>
+                    <span class="df-count df-count-muted">0</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Usage Rules</div>
+                <p class="card-text">
+                    Status badges include a coloured dot + text label — both are required for accessibility. The dot provides rapid visual scanning; the text provides unambiguous meaning. Never use a status badge without text. Count badges are for numerical quantities only (task counts, notification counts). Tags are for categorisation and metadata — always neutral coloured.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             13. AVATARS & ASSIGNEES
+             ========================================== -->
+        <section id="avatars" class="section">
+            <div class="section-header">
+                <div class="section-number">13</div>
+                <h2 class="section-title">Avatars & Assignees</h2>
+                <p class="section-desc">The most important visual distinction in DeepFlow: circles for humans, hexagons for AI agents. Shape carries meaning — it's never just decoration.</p>
+            </div>
+
+            <div class="component-demo">
+                <div class="component-demo-label">Human Avatars (Circular)</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <div class="df-avatar df-avatar-human df-avatar-xs df-avatar-blue">S</div>
+                    <div class="df-avatar df-avatar-human df-avatar-sm df-avatar-blue">SC</div>
+                    <div class="df-avatar df-avatar-human df-avatar-md df-avatar-teal">DO</div>
+                    <div class="df-avatar df-avatar-human df-avatar-lg df-avatar-purple">MT</div>
+                    <div class="df-avatar df-avatar-human df-avatar-xl df-avatar-amber">JW</div>
+                </div>
+
+                <div class="component-demo-label">AI Agent Avatars (Hexagonal)</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <div class="df-avatar df-avatar-ai df-avatar-xs df-avatar-gradient">D</div>
+                    <div class="df-avatar df-avatar-ai df-avatar-sm df-avatar-gradient">DF</div>
+                    <div class="df-avatar df-avatar-ai df-avatar-md df-avatar-gradient">AI</div>
+                    <div class="df-avatar df-avatar-ai df-avatar-lg df-avatar-gradient">DB</div>
+                    <div class="df-avatar df-avatar-ai df-avatar-xl df-avatar-gradient">DF</div>
+                </div>
+
+                <div class="component-demo-label">Avatar Stacks (Teams)</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <div class="df-avatar-stack">
+                        <div class="df-avatar df-avatar-human df-avatar-sm df-avatar-blue">SC</div>
+                        <div class="df-avatar df-avatar-human df-avatar-sm df-avatar-teal">DO</div>
+                        <div class="df-avatar df-avatar-ai df-avatar-sm df-avatar-gradient">DF</div>
+                        <div class="df-avatar df-avatar-human df-avatar-sm df-avatar-overflow">+3</div>
+                    </div>
+                </div>
+
+                <div class="component-demo-label">Side-by-Side Comparison</div>
+                <div class="demo-row">
+                    <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md);">
+                        <div class="df-avatar df-avatar-human df-avatar-md df-avatar-blue">SC</div>
+                        <div><div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Sarah Chen</div><div style="font-size: 11px; color: var(--text-tertiary);">Human · Ops Manager</div></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md);">
+                        <div class="df-avatar df-avatar-ai df-avatar-md df-avatar-gradient">DF</div>
+                        <div><div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">DeepFlow Agent</div><div style="font-size: 11px; color: var(--text-tertiary);">AI · Autonomous</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <div class="card-title">Shape Rules</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">Circle = Human.</strong> Always. No exceptions.<br>
+                        <strong style="color: var(--text-primary);">Hexagon = AI Agent.</strong> Always. No exceptions.<br>
+                        This distinction must be maintained across every context: graph nodes, cards, lists, detail panels, comments, and audit trails. Users should never need to read a label to know if they're looking at a human or AI assignee.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Colour Assignment</div>
+                    <p class="card-text">
+                        Human avatars use a set of distinct background colours assigned per-user (deterministic hash of user ID). AI agents always use the brand gradient — this reinforces their connection to DeepFlow's identity. The overflow indicator (+3) uses neutral colours.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             14. TASK CARDS
+             ========================================== -->
+        <section id="task-cards" class="section">
+            <div class="section-header">
+                <div class="section-number">14</div>
+                <h2 class="section-title">Task Cards</h2>
+                <p class="section-desc">The atomic unit of DeepFlow. Task cards appear in kanban boards, lists, graph tooltips, and search results. One component, many contexts.</p>
+            </div>
+
+            <div class="component-demo">
+                <div class="component-demo-label">Card States</div>
+                <div class="demo-row-start">
+                    <!-- Complete -->
+                    <div class="df-task-card">
+                        <div class="df-task-card-header">
+                            <div class="df-task-card-status" style="background: var(--status-success);"></div>
+                            <div class="df-task-card-title">Data Collection & Validation</div>
+                            <div class="df-avatar df-avatar-human df-avatar-xs df-avatar-blue">SC</div>
+                        </div>
+                        <div class="df-task-card-meta">
+                            <div class="df-task-card-meta-left">
+                                <span class="df-badge df-badge-success" style="font-size: 10px; padding: 2px 8px;"><span class="df-badge-dot" style="width: 5px; height: 5px;"></span> Complete</span>
+                            </div>
+                            <div class="df-task-card-meta-right">
+                                <span class="df-task-card-id">DF-142</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- In Progress -->
+                    <div class="df-task-card">
+                        <div class="df-task-card-header">
+                            <div class="df-task-card-status" style="background: var(--status-info);"></div>
+                            <div class="df-task-card-title">Risk Assessment & Stress Testing</div>
+                            <div class="df-avatar df-avatar-human df-avatar-xs df-avatar-teal">DO</div>
+                        </div>
+                        <div class="df-task-card-meta">
+                            <div class="df-task-card-meta-left">
+                                <span class="df-badge df-badge-info" style="font-size: 10px; padding: 2px 8px;"><span class="df-badge-dot" style="width: 5px; height: 5px;"></span> In Progress</span>
+                                <span class="df-task-deps"><svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg> 2</span>
+                            </div>
+                            <div class="df-task-card-meta-right">
+                                <span class="df-task-card-due">Due Mar 15</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Agent Task -->
+                    <div class="df-task-card">
+                        <div class="df-task-card-header">
+                            <div class="df-task-card-status" style="background: var(--status-warning);"></div>
+                            <div class="df-task-card-title">Run Capital Adequacy Model</div>
+                            <div class="df-avatar df-avatar-ai df-avatar-xs df-avatar-gradient">DF</div>
+                        </div>
+                        <div class="df-task-card-meta">
+                            <div class="df-task-card-meta-left">
+                                <span class="df-badge df-badge-warning" style="font-size: 10px; padding: 2px 8px;"><span class="df-badge-dot" style="width: 5px; height: 5px;"></span> Needs Attention</span>
+                            </div>
+                            <div class="df-task-card-meta-right">
+                                <span class="df-badge df-badge-brand" style="font-size: 10px; padding: 2px 6px;">AI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Failed -->
+                    <div class="df-task-card" style="border-left: 3px solid var(--status-error);">
+                        <div class="df-task-card-header">
+                            <div class="df-task-card-status" style="background: var(--status-error);"></div>
+                            <div class="df-task-card-title">Gather Market Data Feed</div>
+                            <div class="df-avatar df-avatar-ai df-avatar-xs df-avatar-gradient">DB</div>
+                        </div>
+                        <div class="df-task-card-meta">
+                            <div class="df-task-card-meta-left">
+                                <span class="df-badge df-badge-error" style="font-size: 10px; padding: 2px 8px;"><span class="df-badge-dot" style="width: 5px; height: 5px;"></span> Failed</span>
+                            </div>
+                            <div class="df-task-card-meta-right">
+                                <span class="df-task-card-due" style="color: var(--status-error);">Overdue</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <div class="card-title">Card Anatomy</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">Status dot:</strong> Top-left, always visible. Colour matches task state.<br>
+                        <strong style="color: var(--text-primary);">Title:</strong> Full task name — never truncated below 2 lines. Wraps if needed.<br>
+                        <strong style="color: var(--text-primary);">Avatar:</strong> Top-right. Circle (human) or hexagon (AI). Shows assignee initials.<br>
+                        <strong style="color: var(--text-primary);">Meta row:</strong> Status badge, dependency count, due date, task ID.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Error State</div>
+                    <p class="card-text">
+                        Failed tasks receive a coloured left border (3px, <code>status-error</code>) in addition to the status dot and badge. This is the one case where we add a card-level colour accent — failure must be impossible to miss. The "Overdue" label also turns red.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             15. GRAPH NODES
+             ========================================== -->
+        <section id="graph-nodes" class="section">
+            <div class="section-header">
+                <div class="section-number">15</div>
+                <h2 class="section-title">Graph Nodes</h2>
+                <p class="section-desc">Nodes on the workflow canvas. Rectangular cards with status indicators, assignee avatars, and connection handles. The graph is DeepFlow's centrepiece — nodes must be legible at every zoom level.</p>
+            </div>
+
+            <div class="df-graph-demo">
+                <!-- Row of nodes simulating a graph -->
+                <div style="display: flex; align-items: center; gap: 60px; flex-wrap: wrap;">
+                    <!-- Node 1: Complete -->
+                    <div class="df-node" style="position: relative;">
+                        <div class="df-node-handle df-node-handle-left" style="background: var(--status-success);"></div>
+                        <div class="df-node-status" style="background: var(--status-success);"></div>
+                        <div class="df-node-content">
+                            <div class="df-node-title">Data Collection</div>
+                            <div class="df-node-subtitle">Sarah Chen · Complete</div>
+                        </div>
+                        <div class="df-avatar df-avatar-human df-avatar-sm df-avatar-blue" style="font-size: 11px;">SC</div>
+                        <div class="df-node-handle df-node-handle-right" style="background: var(--status-success);"></div>
+                    </div>
+
+                    <!-- Node 2: In Progress -->
+                    <div class="df-node" style="position: relative;">
+                        <div class="df-node-handle df-node-handle-left" style="background: var(--status-info);"></div>
+                        <div class="df-node-status" style="background: var(--status-info);"></div>
+                        <div class="df-node-content">
+                            <div class="df-node-title">Risk Assessment</div>
+                            <div class="df-node-subtitle">David Okafor · In Progress</div>
+                        </div>
+                        <div class="df-avatar df-avatar-human df-avatar-sm df-avatar-teal" style="font-size: 11px;">DO</div>
+                        <div class="df-node-handle df-node-handle-right" style="background: var(--status-info);"></div>
+                    </div>
+
+                    <!-- Node 3: AI Agent -->
+                    <div class="df-node df-node-selected" style="position: relative;">
+                        <div class="df-node-handle df-node-handle-left" style="background: var(--brand-solid);"></div>
+                        <div class="df-node-status" style="background: var(--status-warning);"></div>
+                        <div class="df-node-content">
+                            <div class="df-node-title">Run Capital Model</div>
+                            <div class="df-node-subtitle">DeepFlow Agent · Needs Attention</div>
+                        </div>
+                        <div class="df-avatar df-avatar-ai df-avatar-sm df-avatar-gradient" style="font-size: 11px;">DF</div>
+                        <div class="df-node-handle df-node-handle-right" style="background: var(--brand-solid);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-grid card-grid-3 mt-8">
+                <div class="card">
+                    <div class="card-title">Node Structure</div>
+                    <p class="card-text">Rectangular card with rounded corners. Left: status dot. Centre: task name + subtitle. Right: assignee avatar (circle/hexagon). Connection handles on left and right edges.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Selection State</div>
+                    <p class="card-text">Selected nodes get a brand-coloured border and a subtle glow ring (3px spread, brand at 15% opacity). This makes the active node immediately visible even in dense graphs.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Zoom Behaviour</div>
+                    <p class="card-text">At high zoom, show full node detail. At medium zoom, show title + avatar only. At low zoom, collapse to a coloured dot (status colour) with a miniature avatar. Never show empty rectangles.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             16. GRAPH EDGES
+             ========================================== -->
+        <section id="graph-edges" class="section">
+            <div class="section-header">
+                <div class="section-number">16</div>
+                <h2 class="section-title">Graph Edges</h2>
+                <p class="section-desc">Dependency lines between nodes. Edges show direction, status of the upstream node, and animated flow to indicate active data movement.</p>
+            </div>
+
+            <div class="df-edge-demos">
+                <div class="df-edge-demo-item">
+                    <div class="df-edge-preview">
+                        <div class="df-edge-line" style="background: var(--status-success);">
+                            <div class="df-edge-dot-start" style="background: var(--status-success);"></div>
+                            <div class="df-edge-dot-end" style="background: var(--status-success);"></div>
+                        </div>
+                    </div>
+                    <div class="df-edge-label">Complete → Ready</div>
+                    <div class="df-edge-desc">Upstream done. Downstream can proceed. Solid line, success colour.</div>
+                </div>
+
+                <div class="df-edge-demo-item">
+                    <div class="df-edge-preview">
+                        <div class="df-edge-line" style="background: var(--status-info);">
+                            <div class="df-edge-dot-start" style="background: var(--status-info);"></div>
+                            <div class="df-edge-dot-end" style="background: var(--status-info);"></div>
+                            <div class="df-edge-flow-dot" style="background: var(--status-info);"></div>
+                            <div class="df-edge-flow-dot" style="background: var(--status-info); animation-delay: 0.7s;"></div>
+                            <div class="df-edge-flow-dot" style="background: var(--status-info); animation-delay: 1.4s;"></div>
+                        </div>
+                    </div>
+                    <div class="df-edge-label">Active Flow</div>
+                    <div class="df-edge-desc">Upstream in progress. Animated dots show live data flow direction.</div>
+                </div>
+
+                <div class="df-edge-demo-item">
+                    <div class="df-edge-preview">
+                        <div class="df-edge-line" style="background: var(--surface-card-border);">
+                            <div class="df-edge-dot-start" style="background: var(--surface-card-border);"></div>
+                            <div class="df-edge-dot-end" style="background: var(--surface-card-border);"></div>
+                        </div>
+                    </div>
+                    <div class="df-edge-label">Pending</div>
+                    <div class="df-edge-desc">Upstream not started. Neutral/muted line. No animation.</div>
+                </div>
+
+                <div class="df-edge-demo-item">
+                    <div class="df-edge-preview">
+                        <div class="df-edge-line" style="background: var(--status-error); opacity: 0.7;">
+                            <div class="df-edge-dot-start" style="background: var(--status-error);"></div>
+                            <div class="df-edge-dot-end" style="background: var(--status-error);"></div>
+                        </div>
+                    </div>
+                    <div class="df-edge-label">Blocked</div>
+                    <div class="df-edge-desc">Upstream failed. Error colour. Downstream tasks visually blocked.</div>
+                </div>
+            </div>
+
+            <div class="card mt-8">
+                <div class="card-title">Edge Rules</div>
+                <p class="card-text">
+                    Edges inherit the status colour of their <strong style="color: var(--text-primary);">upstream</strong> (source) node. This tells the user "what's feeding into this task?" at a glance. Flow animation (dots moving along the edge) only appears on active edges — never on pending or complete. Edge curves use smooth bezier paths, never sharp angles. All edges flow left-to-right to reinforce sequential reading direction.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             17. STATUS INDICATORS
+             ========================================== -->
+        <section id="status-indicators" class="section">
+            <div class="section-header">
+                <div class="section-number">17</div>
+                <h2 class="section-title">Status Indicators</h2>
+                <p class="section-desc">Dots, progress bars, and health meters. Multiple ways to show status at different levels of detail — from a single dot to a full progress breakdown.</p>
+            </div>
+
+            <div class="component-demo">
+                <div class="component-demo-label">Status Dots</div>
+                <div class="demo-row" style="margin-bottom: var(--space-6);">
+                    <div style="display: flex; align-items: center; gap: var(--space-2);"><div class="df-status-dot" style="background: var(--status-success);"></div><span style="font-size: var(--text-sm); color: var(--text-secondary);">Complete</span></div>
+                    <div style="display: flex; align-items: center; gap: var(--space-2);"><div class="df-status-dot" style="background: var(--status-info);"></div><span style="font-size: var(--text-sm); color: var(--text-secondary);">In Progress</span></div>
+                    <div style="display: flex; align-items: center; gap: var(--space-2);"><div class="df-status-dot" style="background: var(--status-warning);"></div><span style="font-size: var(--text-sm); color: var(--text-secondary);">Needs Attention</span></div>
+                    <div style="display: flex; align-items: center; gap: var(--space-2);"><div class="df-status-dot" style="background: var(--status-error);"></div><span style="font-size: var(--text-sm); color: var(--text-secondary);">Failed</span></div>
+                    <div style="display: flex; align-items: center; gap: var(--space-2);"><div class="df-status-dot" style="background: var(--status-pending);"></div><span style="font-size: var(--text-sm); color: var(--text-secondary);">Pending</span></div>
+                </div>
+
+                <div class="component-demo-label">Progress Bars</div>
+                <div style="max-width: 400px; margin-bottom: var(--space-6);">
+                    <div class="df-progress-label">
+                        <span class="df-progress-text">ICAAP Document</span>
+                        <span class="df-progress-pct">68%</span>
+                    </div>
+                    <div class="df-progress">
+                        <div class="df-progress-fill" style="width: 68%; background: var(--brand-gradient-horizontal);"></div>
+                    </div>
+                </div>
+                <div style="max-width: 400px; margin-bottom: var(--space-6);">
+                    <div class="df-progress-label">
+                        <span class="df-progress-text">Risk Assessment</span>
+                        <span class="df-progress-pct">100%</span>
+                    </div>
+                    <div class="df-progress">
+                        <div class="df-progress-fill" style="width: 100%; background: var(--status-success);"></div>
+                    </div>
+                </div>
+                <div style="max-width: 400px; margin-bottom: var(--space-6);">
+                    <div class="df-progress-label">
+                        <span class="df-progress-text">Capital Modelling</span>
+                        <span class="df-progress-pct" style="color: var(--status-error);">Blocked</span>
+                    </div>
+                    <div class="df-progress">
+                        <div class="df-progress-fill" style="width: 35%; background: var(--status-error);"></div>
+                    </div>
+                </div>
+
+                <div class="component-demo-label">Health Meters</div>
+                <div style="display: flex; align-items: center; gap: var(--space-4); max-width: 400px;">
+                    <div class="df-health" style="flex: 1;">
+                        <div class="df-health-segment active"></div>
+                        <div class="df-health-segment active"></div>
+                        <div class="df-health-segment active"></div>
+                        <div class="df-health-segment active"></div>
+                        <div class="df-health-segment"></div>
+                    </div>
+                    <span style="font-size: var(--text-xs); font-weight: 600; color: var(--status-success);">Healthy</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: var(--space-4); max-width: 400px; margin-top: var(--space-3);">
+                    <div class="df-health" style="flex: 1;">
+                        <div class="df-health-segment warning"></div>
+                        <div class="df-health-segment warning"></div>
+                        <div class="df-health-segment"></div>
+                        <div class="df-health-segment"></div>
+                        <div class="df-health-segment"></div>
+                    </div>
+                    <span style="font-size: var(--text-xs); font-weight: 600; color: var(--status-warning);">At Risk</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: var(--space-4); max-width: 400px; margin-top: var(--space-3);">
+                    <div class="df-health" style="flex: 1;">
+                        <div class="df-health-segment error"></div>
+                        <div class="df-health-segment"></div>
+                        <div class="df-health-segment"></div>
+                        <div class="df-health-segment"></div>
+                        <div class="df-health-segment"></div>
+                    </div>
+                    <span style="font-size: var(--text-xs); font-weight: 600; color: var(--status-error);">Critical</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">When to Use What</div>
+                <p class="card-text">
+                    <strong style="color: var(--text-primary);">Status dot:</strong> Individual task status in compact contexts (table rows, card headers, node indicators).<br>
+                    <strong style="color: var(--text-primary);">Progress bar:</strong> Workflow or phase completion as a percentage. Use the brand gradient for normal progress, status colours for complete (green) or blocked (red).<br>
+                    <strong style="color: var(--text-primary);">Health meter:</strong> Dashboard-level project health. Five segments representing overall workflow health. For James (exec persona) and Ravi's (solo CEO) command centre view.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             18. BREADCRUMBS
+             ========================================== -->
+        <section id="breadcrumbs" class="section">
+            <div class="section-header">
+                <div class="section-number">18</div>
+                <h2 class="section-title">Breadcrumbs</h2>
+                <p class="section-desc">Multi-level navigation through the task hierarchy. Breadcrumbs answer "where am I?" — critical when drilling from L1 objectives down to L4 subtasks.</p>
+            </div>
+
+            <div class="component-demo">
+                <div class="component-demo-label">Standard Breadcrumb</div>
+                <div style="margin-bottom: var(--space-6);">
+                    <nav class="df-breadcrumb">
+                        <a href="#" class="df-breadcrumb-item">All Projects</a>
+                        <span class="df-breadcrumb-separator">›</span>
+                        <a href="#" class="df-breadcrumb-item">ICAAP 2026</a>
+                        <span class="df-breadcrumb-separator">›</span>
+                        <a href="#" class="df-breadcrumb-item">Capital Modelling</a>
+                        <span class="df-breadcrumb-separator">›</span>
+                        <span class="df-breadcrumb-current">Run Capital Model</span>
+                    </nav>
+                </div>
+
+                <div class="component-demo-label">With Level Indicators</div>
+                <div style="margin-bottom: var(--space-6);">
+                    <nav class="df-breadcrumb">
+                        <a href="#" class="df-breadcrumb-item"><span class="df-breadcrumb-level">L1</span> ICAAP Document Production</a>
+                        <span class="df-breadcrumb-separator">›</span>
+                        <a href="#" class="df-breadcrumb-item"><span class="df-breadcrumb-level">L2</span> Capital Modelling</a>
+                        <span class="df-breadcrumb-separator">›</span>
+                        <span class="df-breadcrumb-current"><span class="df-breadcrumb-level">L3</span> Run Capital Adequacy Model</span>
+                    </nav>
+                </div>
+
+                <div class="component-demo-label">Compact (for narrow panels)</div>
+                <div>
+                    <nav class="df-breadcrumb">
+                        <a href="#" class="df-breadcrumb-item">…</a>
+                        <span class="df-breadcrumb-separator">›</span>
+                        <a href="#" class="df-breadcrumb-item">Capital Modelling</a>
+                        <span class="df-breadcrumb-separator">›</span>
+                        <span class="df-breadcrumb-current">Run Capital Model</span>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <div class="card-title">Level Indicators</div>
+                    <p class="card-text">
+                        Optional <code>L1</code>, <code>L2</code>, <code>L3</code> badges preceding each breadcrumb item. Use these in the workflow canvas and task detail views where hierarchy depth matters. Omit them in simpler contexts (settings, account pages) where depth isn't relevant.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Overflow</div>
+                    <p class="card-text">
+                        When the breadcrumb trail is longer than 3 items in a narrow panel, collapse middle items into "…" (ellipsis). Always show: the root context, the immediate parent, and the current item. The ellipsis is clickable and reveals a dropdown with the full path.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ==========================================
          FOOTER
          ========================================== -->
     <footer class="footer">
         <div class="container">
             <p style="margin-bottom: var(--space-2);">
-                <strong style="color: var(--text-primary);">DeepFlow Design Guidelines</strong> · v1.2 · Phase 1: Foundations
+                <strong style="color: var(--text-primary);">DeepFlow Design Guidelines</strong> · v2.0 · Foundations + Component Library
             </p>
             <p>
-                Prepared by <a href="https://enriched.solutions">Enriched Solutions</a> · Phase 2: Component Library — coming next
+                Prepared by <a href="https://enriched.solutions">Enriched Solutions</a> · Phase 2b: Tables, Modals, Forms, Empty States — coming next
             </p>
         </div>
     </footer>
