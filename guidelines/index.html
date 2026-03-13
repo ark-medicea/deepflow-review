@@ -3251,6 +3251,7 @@
                         <li><a href="#toasts"><span class="idx-num">24</span> Toasts & Notifications</a></li>
                         <li><a href="#empty-states"><span class="idx-num">25</span> Empty States</a></li>
                         <li><a href="#loading-states"><span class="idx-num">26</span> Loading States</a></li>
+                        <li><a href="#permissions"><span class="idx-num">27</span> Permissions & Access</a></li>
                     </ul>
                     <div style="margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--surface-card-border);">
                         <div class="section-index-group-title">Phase 3 — Views & Mobile</div>
@@ -5644,6 +5645,127 @@
             </div>
         </section>
 
+        <!-- ==========================================
+             27. PERMISSIONS & ACCESS CONTROL
+             ========================================== -->
+        <section id="permissions" class="section">
+            <div class="section-header">
+                <div class="section-number">27</div>
+                <h2 class="section-title">Permissions & Access Control</h2>
+                <p class="section-desc">DeepFlow serves teams handling regulated, sensitive data. The permission model is hierarchical, level-scoped, and applies equally to humans and AI agents. This section defines how permissions are surfaced in the UI.</p>
+            </div>
+
+            <!-- The Model -->
+            <div class="card mb-8">
+                <div class="card-title">The Permission Model</div>
+                <p class="card-text" style="margin-bottom: var(--space-4);">
+                    Permissions are granted <strong style="color: var(--text-primary);">at a specific level of the project hierarchy</strong> and automatically cascade to all sub-levels. A user with access at L2 can see L2, L3, L4 — but <strong style="color: var(--text-primary);">not necessarily L1</strong> (the parent). This is critical for regulated environments where a contractor may work on a specific workstream without seeing the full project scope.
+                </p>
+                <div style="background: var(--surface-raised); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-6); margin-top: var(--space-4); font-family: 'SF Mono', 'Fira Code', monospace; font-size: var(--text-sm); color: var(--text-secondary); line-height: 2;">
+                    <span style="color: var(--text-tertiary);">L1</span> ICAAP 2026 <span style="color: var(--text-tertiary);">─── Sarah (Owner), James (Read-only)</span><br>
+                    <span style="color: var(--text-tertiary);">&nbsp;├─ L2</span> Capital Modelling <span style="color: var(--text-tertiary);">─── David (Editor), DF Agent (Agent)</span><br>
+                    <span style="color: var(--text-tertiary);">&nbsp;│&nbsp;&nbsp;├─ L3</span> Run Model <span style="color: var(--text-tertiary);">─── DF Agent (inherits from L2)</span><br>
+                    <span style="color: var(--text-tertiary);">&nbsp;│&nbsp;&nbsp;└─ L3</span> Validate Output <span style="color: var(--text-tertiary);">─── David (inherits from L2)</span><br>
+                    <span style="color: var(--text-tertiary);">&nbsp;├─ L2</span> Risk Assessment <span style="color: var(--text-tertiary);">─── Maya (Editor) ← no L1 access</span><br>
+                    <span style="color: var(--text-tertiary);">&nbsp;└─ L2</span> Board Approval <span style="color: var(--text-tertiary);">─── James (Approver)</span>
+                </div>
+            </div>
+
+            <!-- Permission Roles -->
+            <div class="component-demo">
+                <div class="component-demo-label">Permission Roles</div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); margin-bottom: var(--space-6);">
+                    <div style="padding: var(--space-4); background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md);">
+                        <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+                            <div class="df-avatar df-avatar-human df-avatar-xs df-avatar-purple">O</div>
+                            <span style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Owner</span>
+                        </div>
+                        <p style="font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6;">Full control. Manage permissions, delete workflow, assign tasks, modify structure. Receives all escalation notifications.</p>
+                    </div>
+                    <div style="padding: var(--space-4); background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md);">
+                        <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+                            <div class="df-avatar df-avatar-human df-avatar-xs df-avatar-blue">E</div>
+                            <span style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Editor</span>
+                        </div>
+                        <p style="font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6;">Create, edit, and advance tasks. Assign sub-tasks. Cannot modify permissions or delete the workflow.</p>
+                    </div>
+                    <div style="padding: var(--space-4); background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md);">
+                        <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+                            <span style="font-size: var(--text-sm); font-weight: 600; color: var(--status-warning); margin-left: 28px;">Approver</span>
+                        </div>
+                        <p style="font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6;">Can approve/reject at gates (❗ status). Can comment. Cannot edit task content or structure. For compliance officers and sign-off authorities.</p>
+                    </div>
+                    <div style="padding: var(--space-4); background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md);">
+                        <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+                            <span style="font-size: var(--text-sm); font-weight: 600; color: var(--text-tertiary); margin-left: 28px;">Read-only</span>
+                        </div>
+                        <p style="font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6;">View tasks, status, and audit trails. Cannot edit, advance, or comment. For executives and external stakeholders who need visibility without interaction.</p>
+                    </div>
+                    <div style="padding: var(--space-4); background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md);">
+                        <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+                            <div class="df-avatar df-avatar-ai df-avatar-xs df-avatar-gradient">A</div>
+                            <span style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Agent</span>
+                        </div>
+                        <p style="font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6;">AI agents inherit the permissions of their logged-in user. Chat and agent actions are scoped to exactly what that user can see and do. No privilege escalation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UI Patterns -->
+            <div class="card-grid card-grid-2 mb-8">
+                <div class="card">
+                    <div class="card-title">Permission Boundaries in the UI</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">Hidden, not greyed out.</strong> If a user doesn't have access to a level, they don't see it at all — the node doesn't render on the graph, the row doesn't appear in the table. There's no "you don't have permission" ghost state. This prevents information leakage even at the metadata level.<br><br>
+                        <strong style="color: var(--text-primary);">Read-only mode</strong> is visually distinct: action buttons (▶ ✓ ❗) render without hover/click affordance. A subtle <span class="df-badge df-badge-neutral" style="font-size: 10px; padding: 2px 6px;">Read-only</span> badge appears in the top bar. Edit icons are hidden. The user sees the full picture but can't touch it.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Sharing & Invite Flow</div>
+                    <p class="card-text">
+                        Permission is granted per-level via a "Share" action on any workflow node. The dialog shows:<br><br>
+                        <strong style="color: var(--text-primary);">1.</strong> User/team search<br>
+                        <strong style="color: var(--text-primary);">2.</strong> Role dropdown (Owner / Editor / Approver / Read-only)<br>
+                        <strong style="color: var(--text-primary);">3.</strong> Scope indicator: "Access to <strong style="color: var(--brand-solid);">Capital Modelling</strong> and all sub-levels"<br>
+                        <strong style="color: var(--text-primary);">4.</strong> Current members list with role badges<br><br>
+                        The scope indicator is crucial — it makes the cascade visible. No hidden side effects.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Notification Escalation -->
+            <div class="card mb-8" style="border-left: 3px solid var(--status-warning);">
+                <div class="card-title">Notification Escalation — "Find the Human"</div>
+                <p class="card-text" style="margin-bottom: var(--space-4);">
+                    When an AI agent fails or a task needs intervention, the notification goes to the <strong style="color: var(--text-primary);">human owner</strong> of that layer/workflow. But if the owner at that level is also an AI agent, the system escalates upward through the hierarchy until it finds a human owner. Notifications never dead-end at an agent.
+                </p>
+                <div style="background: var(--surface-raised); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4); font-size: var(--text-sm); color: var(--text-secondary); line-height: 2;">
+                    <span style="color: var(--status-error);">✕</span> L3 task "Run Model" fails<br>
+                    → L3 owner: <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 14px; height: 14px; background: var(--brand-gradient); clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%); border-radius: 0; font-size: 8px; color: white; text-align: center; line-height: 14px;">D</span> DeepFlow Agent</span> (AI — escalate ↑)<br>
+                    → L2 owner: <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 14px; height: 14px; background: #14B8A6; border-radius: 50%; font-size: 8px; color: white; text-align: center; line-height: 14px;">D</span> David Okafor</span> (Human — <strong style="color: var(--status-warning);">notify ✓</strong>)<br>
+                    <span style="color: var(--text-tertiary); font-size: var(--text-xs);">David receives: "AI execution failed on 'Run Model' — review output and retry or reassign"</span>
+                </div>
+            </div>
+
+            <!-- Agent Permissions -->
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <div class="card-title">AI Agent Permission Scope</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">The chat/agent sees only what its user sees.</strong> When Sarah uses chat to ask "show me blocked tasks," the AI queries only tasks within Sarah's permission scope. When Ravi asks the same question, he gets his own scoped view. There is no "admin AI" — every agent action is bounded by the logged-in user's role and level access.<br><br>
+                        In the UI, the chat panel shows a subtle scope indicator: <span style="font-size: 11px; color: var(--text-tertiary); background: var(--surface-raised); padding: 2px 8px; border-radius: var(--radius-sm); border: 1px solid var(--surface-card-border);">🔒 Acting as Sarah Chen · Editor</span>
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Audit Trail & Compliance</div>
+                    <p class="card-text">
+                        Every permission change is logged in the audit trail: who granted access, to whom, at what level, with what role, and when. Permission changes are <strong style="color: var(--text-primary);">never</strong> silent.<br><br>
+                        For David (compliance officer), the audit trail surfaces a dedicated "Permissions" filter showing all access changes chronologically. This is essential for regulated industries where "who had access to what, when" is an audit requirement.
+                    </p>
+                </div>
+            </div>
+        </section>
+
     </div>
 
     <!-- ==========================================
@@ -5652,10 +5774,10 @@
     <footer class="footer">
         <div class="container">
             <p style="margin-bottom: var(--space-2);">
-                <strong style="color: var(--text-primary);">DeepFlow Design Guidelines</strong> · v2.1 · Foundations + Component Library (Complete)
+                <strong style="color: var(--text-primary);">DeepFlow Design Guidelines</strong> · v2.2 · Foundations + Component Library + Permissions
             </p>
             <p>
-                Prepared by <a href="https://enriched.solutions">Enriched Solutions</a> · Phase 2 complete: 26 sections covering foundations, components, and interaction patterns
+                Prepared by <a href="https://enriched.solutions">Enriched Solutions</a> · 27 sections covering foundations, components, interaction patterns, and access control
             </p>
         </div>
     </footer>
