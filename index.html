@@ -3,1598 +3,360 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DeepFlow — UI/UX Review & Recommendations</title>
+<title>DeepFlow — Project Index</title>
+<meta name="robots" content="noindex, nofollow">
 <style>
-  :root {
-    --df-cyan: #3BB8D6;
-    --df-dark: #1a1a2e;
-    --df-darker: #12121f;
-    --df-accent: #F97316;
-    --df-green: #22c55e;
-    --df-amber: #f59e0b;
-    --df-red: #ef4444;
-    --df-grey: #6b7280;
-    --df-light: #f8fafc;
-    --df-border: #e2e8f0;
-    --df-text: #1e293b;
-    --df-muted: #64748b;
-    --es-blue: #3B8DBD;
-    --es-gold: #F5B731;
-    --es-green: #A2B86B;
-    --es-purple: #8B6BAD;
-    --es-coral: #C75B5B;
-  }
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('guidelines/fonts/EuclidCircularB-Light.ttf') format('truetype');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('guidelines/fonts/EuclidCircularB-Regular.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('guidelines/fonts/EuclidCircularB-Medium.ttf') format('truetype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('guidelines/fonts/EuclidCircularB-SemiBold.ttf') format('truetype');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('guidelines/fonts/EuclidCircularB-Bold.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    color: var(--df-text);
-    background: var(--df-light);
-    line-height: 1.7;
-    font-size: 16px;
-  }
+:root {
+  --bg: #FAFBFC;
+  --surface: #FFFFFF;
+  --surface-raised: #F3F4F6;
+  --border: rgba(0,0,0,0.08);
+  --text: #111827;
+  --text-muted: #6B7280;
+  --text-dim: #9CA3AF;
+  --accent: #0077DD;
+  --accent-soft: rgba(0,119,221,0.08);
+  --accent-gradient: linear-gradient(135deg, #00E5FF 0%, #0099FF 50%, #2244FF 100%);
+  --green: #059669;
+  --amber: #D97706;
+  --red: #DC2626;
+}
 
-  /* Header */
-  .hero {
-    background: linear-gradient(135deg, var(--df-darker) 0%, var(--df-dark) 50%, #1a2744 100%);
-    color: white;
-    padding: 80px 40px 60px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 70%, rgba(59, 184, 214, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 70% 30%, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
-    pointer-events: none;
-  }
-  .hero h1 {
-    font-size: 2.8rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 12px;
-    position: relative;
-  }
-  .hero h1 span { color: var(--df-cyan); }
-  .hero .subtitle {
-    font-size: 1.15rem;
-    color: rgba(255,255,255,0.6);
-    font-weight: 400;
-    max-width: 600px;
-    margin: 0 auto 24px;
-    position: relative;
-  }
-  .hero .meta {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.35);
-    position: relative;
-  }
+[data-theme="dark"] {
+  --bg: #0F1019;
+  --surface: #181924;
+  --surface-raised: #1F2130;
+  --border: rgba(255,255,255,0.08);
+  --text: #E8E9ED;
+  --text-muted: #9499AD;
+  --text-dim: #646980;
+  --accent: #0099FF;
+  --accent-soft: rgba(0,153,255,0.1);
+}
 
-  /* Navigation */
-  .toc {
-    background: white;
-    border-bottom: 1px solid var(--df-border);
-    padding: 20px 40px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .toc-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .toc a {
-    color: var(--df-muted);
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: color 0.2s;
-    white-space: nowrap;
-  }
-  .toc a:hover { color: var(--df-cyan); }
+html { font-size: 16px; scroll-behavior: smooth; }
 
-  /* Main content */
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
+body {
+  font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
 
-  section {
-    padding: 64px 0;
-    border-bottom: 1px solid var(--df-border);
-  }
-  section:last-of-type { border-bottom: none; }
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
 
-  h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-bottom: 8px;
-    color: var(--df-text);
-  }
-  h2 .section-num {
-    color: var(--df-cyan);
-    font-weight: 400;
-    margin-right: 8px;
-  }
-  .section-intro {
-    color: var(--df-muted);
-    font-size: 1.05rem;
-    margin-bottom: 40px;
-    max-width: 750px;
-  }
+/* Header */
+.header {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2.5rem;
+}
 
-  h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 32px 0 16px;
-    color: var(--df-text);
-  }
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
 
-  h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 24px 0 8px;
-  }
+.header-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: contain;
+}
 
-  p { margin-bottom: 16px; }
+.header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
 
-  /* Executive Summary */
-  .exec-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    margin: 32px 0;
-  }
-  .exec-card {
-    background: white;
-    border: 1px solid var(--df-border);
-    border-radius: 12px;
-    padding: 24px;
-    transition: box-shadow 0.2s;
-  }
-  .exec-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-  .exec-card .icon { font-size: 1.5rem; margin-bottom: 12px; }
-  .exec-card h4 { margin: 0 0 8px; font-size: 1rem; }
-  .exec-card p { color: var(--df-muted); font-size: 0.9rem; margin: 0; }
+.header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 560px;
+}
 
-  /* Severity badges */
-  .severity {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-right: 8px;
-    vertical-align: middle;
-  }
-  .severity-critical { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-  .severity-high { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
-  .severity-medium { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
-  .severity-low { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+.header-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
 
-  /* Finding cards */
-  .finding {
-    background: white;
-    border: 1px solid var(--df-border);
-    border-radius: 12px;
-    padding: 28px;
-    margin: 20px 0;
-    border-left: 4px solid var(--df-border);
-  }
-  .finding-critical { border-left-color: #dc2626; }
-  .finding-high { border-left-color: #ea580c; }
-  .finding-medium { border-left-color: #d97706; }
-  .finding-low { border-left-color: #16a34a; }
+/* Theme toggle */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  z-index: 10;
+  transition: background 0.2s;
+}
 
-  .finding h4 {
-    margin: 0 0 12px;
-    font-size: 1.05rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .finding .source {
-    display: inline-flex;
-    gap: 4px;
-    margin-left: auto;
-  }
-  .finding .source span {
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    background: #f1f5f9;
-    border-radius: 4px;
-    color: var(--df-muted);
-    font-weight: 500;
-  }
-  .finding p { font-size: 0.95rem; color: #475569; }
-  .finding .screens {
-    font-size: 0.8rem;
-    color: var(--df-muted);
-    margin-bottom: 8px;
-    font-style: italic;
-  }
+/* Sections */
+.section {
+  margin-bottom: 2.5rem;
+}
 
-  .recommendation {
-    background: #f0f9ff;
-    border: 1px solid #bae6fd;
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin-top: 16px;
-    font-size: 0.9rem;
-  }
-  .recommendation strong {
-    color: #0369a1;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: block;
-    margin-bottom: 4px;
-  }
+.section-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
 
-  /* Quick wins table */
-  .qw-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin: 24px 0;
-    font-size: 0.9rem;
-  }
-  .qw-table th {
-    background: var(--df-dark);
-    color: white;
-    padding: 12px 16px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .qw-table th:first-child { border-radius: 8px 0 0 0; }
-  .qw-table th:last-child { border-radius: 0 8px 0 0; }
-  .qw-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--df-border);
-    vertical-align: top;
-  }
-  .qw-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
-  .qw-table tr:last-child td:last-child { border-radius: 0 0 8px 0; }
-  .qw-table tr:hover td { background: #f8fafc; }
+/* Cards */
+.card-grid {
+  display: grid;
+  gap: 1rem;
+}
 
-  .effort-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  .effort-low { background: #f0fdf4; color: #16a34a; }
-  .effort-medium { background: #fffbeb; color: #d97706; }
-  .effort-high { background: #fef2f2; color: #dc2626; }
+.card-grid-2 { grid-template-columns: 1fr 1fr; }
+.card-grid-1 { grid-template-columns: 1fr; }
 
-  .impact-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    background: #eff6ff;
-    color: #2563eb;
-    white-space: nowrap;
-  }
+@media (max-width: 600px) {
+  .card-grid-2 { grid-template-columns: 1fr; }
+}
 
-  /* Screenshot gallery */
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    margin: 24px 0;
-  }
-  .gallery-item {
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--df-border);
-    background: white;
-  }
-  .gallery-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  .gallery-item .caption {
-    padding: 10px 14px;
-    font-size: 0.8rem;
-    color: var(--df-muted);
-    font-weight: 500;
-  }
+.card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
 
-  /* Roadmap */
-  .roadmap {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 20px;
-    margin: 32px 0;
-  }
-  .phase {
-    background: white;
-    border: 1px solid var(--df-border);
-    border-radius: 12px;
-    padding: 24px;
-    position: relative;
-  }
-  .phase::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    border-radius: 12px 12px 0 0;
-  }
-  .phase-1::before { background: var(--df-cyan); }
-  .phase-2::before { background: var(--df-accent); }
-  .phase-3::before { background: var(--df-green); }
-  .phase-4::before { background: var(--es-purple); }
-  .phase .phase-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
-  }
-  .phase-1 .phase-label { color: var(--df-cyan); }
-  .phase-2 .phase-label { color: var(--df-accent); }
-  .phase-3 .phase-label { color: var(--df-green); }
-  .phase-4 .phase-label { color: var(--es-purple); }
-  .phase h4 { margin: 0 0 12px; font-size: 1.05rem; }
-  .phase ul { padding-left: 18px; margin: 0; }
-  .phase li { font-size: 0.88rem; color: #475569; margin-bottom: 4px; }
-  .phase .duration {
-    margin-top: 12px;
-    font-size: 0.8rem;
-    color: var(--df-muted);
-    font-weight: 500;
-  }
+a.card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(0,119,221,0.08);
+  transform: translateY(-1px);
+}
 
-  /* Strategy cards */
-  .strategy-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin: 24px 0;
-  }
-  .strategy-card {
-    background: white;
-    border: 1px solid var(--df-border);
-    border-radius: 12px;
-    padding: 28px;
-  }
-  .strategy-card h4 { margin: 0 0 12px; }
-  .strategy-card p { font-size: 0.9rem; color: #475569; margin: 0; }
+.card-label {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 0.6rem;
+}
 
-  /* Jargon table */
-  .jargon-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin: 24px 0;
-    font-size: 0.9rem;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--df-border);
-  }
-  .jargon-table th {
-    background: #f8fafc;
-    padding: 10px 16px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid var(--df-border);
-    color: var(--df-muted);
-  }
-  .jargon-table td {
-    padding: 10px 16px;
-    border-bottom: 1px solid #f1f5f9;
-  }
-  .jargon-table tr:last-child td { border-bottom: none; }
-  .jargon-table .old { color: var(--df-red); text-decoration: line-through; opacity: 0.7; }
-  .jargon-table .new { color: #16a34a; font-weight: 600; }
+.label-design { background: rgba(0,119,221,0.1); color: var(--accent); }
+.label-arch { background: rgba(139,92,246,0.1); color: #8B5CF6; }
+.label-review { background: rgba(5,150,105,0.1); color: var(--green); }
+.label-strategy { background: rgba(217,119,6,0.1); color: var(--amber); }
 
-  /* Tech stack */
-  .stack-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-    margin: 24px 0;
-  }
-  .stack-card {
-    background: var(--df-dark);
-    color: white;
-    border-radius: 12px;
-    padding: 24px;
-  }
-  .stack-card h4 {
-    color: var(--df-cyan);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin: 0 0 12px;
-  }
-  .stack-card ul { padding-left: 0; list-style: none; }
-  .stack-card li {
-    font-size: 0.88rem;
-    padding: 4px 0;
-    color: rgba(255,255,255,0.8);
-  }
-  .stack-card li code {
-    background: rgba(59, 184, 214, 0.15);
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-size: 0.82rem;
-    color: var(--df-cyan);
-  }
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+}
 
-  /* Callout box */
-  .callout {
-    background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
-    border: 1px solid #bae6fd;
-    border-radius: 12px;
-    padding: 28px;
-    margin: 32px 0;
-  }
-  .callout.warning {
-    background: linear-gradient(135deg, #fffbeb 0%, #fefce8 100%);
-    border-color: #fde68a;
-  }
-  .callout h4 { margin: 0 0 8px; }
-  .callout p { font-size: 0.95rem; color: #475569; margin: 0; }
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
 
-  /* Blockquote */
-  blockquote {
-    border-left: 3px solid var(--df-cyan);
-    padding: 16px 24px;
-    margin: 24px 0;
-    background: #f8fafc;
-    border-radius: 0 8px 8px 0;
-    font-style: italic;
-    color: #475569;
-  }
+.card-meta {
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
 
-  /* Lists */
-  ul, ol { padding-left: 24px; margin-bottom: 16px; }
-  li { margin-bottom: 6px; font-size: 0.95rem; }
+/* Status pills */
+.status {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
 
-  /* Footer */
-  .footer {
-    text-align: center;
-    padding: 48px 40px;
-    border-top: 1px solid var(--df-border);
-    color: var(--df-muted);
-    font-size: 0.8rem;
-  }
-  .footer svg { margin-bottom: 8px; opacity: 0.5; }
-  .footer .company { font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.7rem; }
+.status-live { background: rgba(5,150,105,0.12); color: var(--green); }
+.status-wip { background: rgba(217,119,6,0.12); color: var(--amber); }
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    .hero { padding: 48px 24px 40px; }
-    .hero h1 { font-size: 1.8rem; }
-    .container { padding: 0 20px; }
-    section { padding: 40px 0; }
-    .toc { padding: 12px 20px; }
-    .toc-inner { gap: 12px; }
-    .gallery { grid-template-columns: 1fr; }
-    .roadmap { grid-template-columns: 1fr; }
-    h2 { font-size: 1.4rem; }
-  }
+/* Footer */
+.footer {
+  padding: 2rem 0;
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
 
-  /* Concept card hover */
-  .concept-card-link:hover .exec-card {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-  }
-  .concept-card-link:hover img {
-    opacity: 0.92;
-  }
+.footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
 
-  /* Print */
-  @media print {
-    .toc { position: static; }
-    .hero { background: var(--df-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .finding, .exec-card, .phase, .strategy-card, .stack-card { break-inside: avoid; }
-  }
+.footer a:hover { color: var(--accent); }
 </style>
 </head>
 <body>
 
-<!-- Hero -->
-<header class="hero">
-  <h1><span>Deep</span>Flow — UI/UX Review</h1>
-  <p class="subtitle">Comprehensive design review and improvement recommendations for the DeepFlow AI orchestration platform</p>
-  <p class="meta">Prepared March 2026 · Confidential</p>
-</header>
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
 
-<!-- Navigation -->
-<nav class="toc">
-  <div class="toc-inner">
-    <a href="#executive">Executive Summary</a>
-    <a href="#strengths">Strengths</a>
-    <a href="#graph">The Graph</a>
-    <a href="#navigation">Multi-Level Navigation</a>
-    <a href="#workspace">Workspace</a>
-    <a href="#approachability">Approachability</a>
-    <a href="#visual">Visual Design</a>
-    <a href="#jargon">Language & Jargon</a>
-    <a href="#quickwins">Quick Wins</a>
-    <a href="#tech">Technical Feasibility</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#screenshots">Screenshots</a>
-    <a href="#concepts">Design Concepts</a>
-    <a href="style-guide.html" style="color: var(--df-cyan); font-weight: 600;">Style Guide →</a>
-  </div>
-</nav>
-
-<main>
-
-<!-- 1. Executive Summary -->
-<section id="executive">
 <div class="container">
-  <h2><span class="section-num">01</span> Executive Summary</h2>
-  <p class="section-intro">DeepFlow's core value proposition is clear and differentiated: give the system a prompt, and it generates a structured task graph with dependency, parallelism, and multi-level decomposition. The graph <em>is</em> the product. This review assesses how well the current UI serves that mission — and where it can improve.</p>
 
-  <div class="exec-grid">
-    <div class="exec-card">
-      <div class="icon">🏗️</div>
-      <h4>Strong Foundation</h4>
-      <p>Clean visual language, multi-view system (canvas, kanban, list, swimlane, dashboard), distinctive brand colour, and a well-conceived workspace for human-AI collaboration. The architecture is sound.</p>
+  <div class="header">
+    <div class="header-brand">
+      <img src="guidelines/assets/iconmark-gradient.png" alt="DeepFlow" class="header-logo">
+      <h1>DeepFlow Review</h1>
     </div>
-    <div class="exec-card">
-      <div class="icon">🔍</div>
-      <h4>Graph Needs Clarity</h4>
-      <p>Nodes are visually identical regardless of status. Edges don't distinguish dependency types. Text is truncated everywhere. The graph's power is hidden behind uniform blue circles and dotted lines.</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">🧭</div>
-      <h4>Navigation is Opaque</h4>
-      <p>Multi-level drill-down (L1→L2→L3) lacks breadcrumbs, clear entry/exit points, and familiar metaphors. The 3D overview is visually striking but interaction-free.</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">🗣️</div>
-      <h4>Language Barrier</h4>
-      <p>Technical jargon throughout — "Task Execution Model", "L1/L2/L3", "Agents", "Failed" — assumes knowledge the target audience doesn't have. Business users need human words.</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">⚡</div>
-      <h4>Quick Wins Available</h4>
-      <p>Many high-impact improvements are low-effort: tooltips, breadcrumbs, label replacements, status-as-node-colour. A focused sprint could dramatically improve approachability.</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">🏛️</div>
-      <h4>Governance Ready</h4>
-      <p>The ICAAP workflow demonstrates real enterprise use: named assignees, audit trails, board approval gates. The platform is governance-capable — the UI needs to surface this more clearly.</p>
+    <p>Design guidelines, architecture documents, and product critique for the DeepFlow AI orchestration platform.</p>
+    <div class="header-meta">
+      <span>Prepared by Enriched Solutions</span>
+      <span>March 2026</span>
     </div>
   </div>
 
-  <div class="callout">
-    <h4>💡 The Core Insight</h4>
-    <p>DeepFlow doesn't need to be simpler. It needs to <strong>explain itself</strong> — with familiar shapes, human language, and a clear on-ramp to genuine power. The graph should feel like a superpower, not a prerequisite.</p>
-  </div>
-</div>
-</section>
-
-<!-- 2. Strengths -->
-<section id="strengths">
-<div class="container">
-  <h2><span class="section-num">02</span> What Works Well</h2>
-  <p class="section-intro">Before diving into improvements, it's important to acknowledge what DeepFlow does right — there's a lot to build on.</p>
-
-  <div class="strategy-grid">
-    <div class="strategy-card">
-      <h4>🎯 Prompt-to-Graph Generation</h4>
-      <p>No mainstream PM tool generates dependency-aware, parallelism-optimised task graphs from natural language. This is a genuine moat and the killer feature. The value proposition is exciting — if users can understand what they're looking at.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>🌈 Depth-Colour Gradient System</h4>
-      <p>DeepFlow uses a <strong>blue→red colour gradient based on hierarchy depth</strong>. L1 (strategic objectives) = blue/cyan, deepest levels (atomic tasks) = pink/red, with intermediate levels blending between. This applies to nodes, badges, connection lines, and the 3D navigator layers — a cohesive visual language that communicates "where you are" in the hierarchy at a glance. This is a genuinely sophisticated design decision that most PM tools lack entirely.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>⬡ Shape-Based Task Encoding</h4>
-      <p><strong>Circles = human tasks, hexagons = AI agent tasks.</strong> This lets users scan the graph and instantly see the human/AI balance without reading labels. Combined with the depth-colour gradient, DeepFlow achieves two independent visual dimensions: <strong>shape encodes WHO</strong> (human vs AI), <strong>colour encodes WHERE</strong> (depth level). Both survive at any zoom level — even when nodes are tiny dots, circles and hexagons remain distinguishable. This also maps naturally to the "Users vs Agents" analytics in the Level Hub.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>👁️ Multi-View System</h4>
-      <p>Canvas, kanban, list, swimlane, and dashboard views give users multiple ways to interact with the same underlying graph. This is genuinely impressive view diversity that respects different working styles.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>🎨 Clean Visual Foundation</h4>
-      <p>The cyan/sky-blue accent is distinctive and well-chosen. Dark sidebar provides excellent anchoring. Status colour coding (green/amber/red/grey) is intuitive and consistent across all views.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>🤖 Human-AI Workspace</h4>
-      <p>The three-panel workspace (output + chat + details) is the right pattern for human-AI collaboration. It features expandable AI thought process steps, version navigation (V3/3), an "Execute this task for me" button, a History tab with timestamped audit trail, and a Resources tab with inputs/outputs. This is genuinely powerful task execution infrastructure.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>🏠 Inviting Home Screen</h4>
-      <p>"Hello Ali!" with the prompt bar, project cards with graph thumbnails, and "My Tasks" sidebar — this is a warm, approachable entry point that balances exploration and quick access.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>📊 Level Hub Analytics</h4>
-      <p>The donut chart, task due list, and Users vs. Agents breakdown per level means stakeholders can monitor progress through familiar dashboard widgets without touching the canvas.</p>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- 3. The Graph -->
-<section id="graph">
-<div class="container">
-  <h2><span class="section-num">03</span> The Graph — Making the Hero Shine</h2>
-  <p class="section-intro">The graph is DeepFlow's entire differentiator. Every recommendation here is oriented around one question: <em>how do we make the graph feel as natural as a Monday.com board while preserving the power that makes DeepFlow unique?</em></p>
-
-  <div class="callout" style="margin-bottom: 24px;">
-    <h4>✅ What Already Works — Node Shape &amp; Colour System</h4>
-    <p>DeepFlow already has two strong visual encoding systems: <strong>circles for human tasks</strong> (with avatar/initials) and <strong>hexagons for AI agent tasks</strong> (with agent logo/letters), plus a <strong>depth-colour gradient</strong> (blue/cyan at L1 → pink/red at deepest levels) applied to node borders, connection lines, and badges. Shape encodes WHO, colour encodes WHERE — two independent dimensions that work well together. The recommendations below build on this foundation rather than replacing it.</p>
-  </div>
-
-  <div class="finding finding-critical">
-    <h4>
-      <span class="severity severity-critical">Critical</span>
-      Node status is still under-communicated
-      <span class="source"><span>UX</span><span>UI</span><span>Business</span></span>
-    </h4>
-    <p class="screens">Screens: Workflow Canvas, Swimlane, Multi-level Drilldown</p>
-    <p>The circle/hexagon shape distinction and depth-colour gradient are strong foundations. However, task <em>status</em> is still communicated only through a small badge overlay — easy to miss at working zoom levels. Users should understand workflow state in under 3 seconds without squinting at individual badges.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Add <strong>status as a secondary visual layer</strong> that works alongside the depth-colour and shape systems. Options: (1) Use the <strong>node border style</strong> — solid for complete, dashed for in-progress, dotted for pending, double for failed. (2) Add a <strong>status glow/ring</strong> outside the depth-colour border — green glow for done, amber for active, red pulse for failed. (3) Use <strong>node opacity</strong> — completed tasks at 60% opacity, creating a "fading into the background" effect that makes active work pop. The key: status encoding must not conflict with the depth-colour system — it should be a third independent dimension.
+  <!-- DESIGN SYSTEM -->
+  <div class="section">
+    <div class="section-title">Design System</div>
+    <div class="card-grid card-grid-2">
+      <a href="guidelines/" class="card">
+        <div class="card-label label-design">Design</div>
+        <div class="card-title">Design Guidelines <span class="status status-live">Live</span></div>
+        <div class="card-desc">Complete design system: brand foundations, colour, typography, 28 component specifications, permissions model.</div>
+        <div class="card-meta">28 sections · v2.3 · Euclid Circular B</div>
+      </a>
+      <a href="guidelines/views.html" class="card">
+        <div class="card-label label-design">Design</div>
+        <div class="card-title">View Layouts & Wireframes <span class="status status-live">Live</span></div>
+        <div class="card-desc">5 full wireframes: Graph View, List View, Workspace, Gallery, Workflow Hub. Plus chat layout options and chat input detail.</div>
+        <div class="card-meta">Desktop 1200px · Phone-scrollable</div>
+      </a>
+      <a href="guidelines/mobile.html" class="card">
+        <div class="card-label label-design">Design</div>
+        <div class="card-title">Mobile Experience <span class="status status-live">Live</span></div>
+        <div class="card-desc">Chat-first mobile design. 7 phone-frame mockups, voice input, bottom tab bar, swipe gestures.</div>
+        <div class="card-meta">375px frames · Touch-optimised</div>
+      </a>
     </div>
   </div>
 
-  <div class="finding finding-critical">
-    <h4>
-      <span class="severity severity-critical">Critical</span>
-      Edges don't communicate dependency type
-      <span class="source"><span>UI</span><span>Business</span></span>
-    </h4>
-    <p class="screens">Screens: Workflow Canvas, Node Closeup</p>
-    <p>All edges use the same dashed cyan line regardless of whether they represent sequential dependency, parallel branching, or convergence. Small chevron arrows are nearly invisible (light cyan on white, ~8px). The graph's <em>entire value</em> is showing which tasks depend on others — if every edge looks the same, the graph is just a pretty picture.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Use <strong>solid lines</strong> for sequential dependencies, <strong>dashed</strong> for optional/conditional paths. Colour-code by status: green (satisfied), amber (in progress), red (broken), grey (pending). Add animated dot-flow along edges to show direction. Increase arrowheads to 12px+ at the target node. Add fork/join indicators where parallel branches diverge and converge.
+  <!-- ARCHITECTURE DOCUMENTS -->
+  <div class="section">
+    <div class="section-title">Architecture Documents</div>
+    <div class="card-grid card-grid-2">
+      <a href="docs/chat-interface.html" class="card">
+        <div class="card-label label-arch">Architecture</div>
+        <div class="card-title">Chat as Primary Interface <span class="status status-wip">New</span></div>
+        <div class="card-desc">Non-blocking, multi-response interaction model. Why chat-first orchestration is fundamentally different from prompt-response AI.</div>
+        <div class="card-meta">Interaction architecture</div>
+      </a>
+      <a href="docs/agent-architecture.html" class="card">
+        <div class="card-label label-arch">Architecture</div>
+        <div class="card-title">Agent Execution Architecture <span class="status status-wip">New</span></div>
+        <div class="card-desc">Per-task runtimes, tools vs. skills, permission isolation. Single runtime (OpenClaw) vs. multi-runtime (DeepFlow).</div>
+        <div class="card-meta">Runtime & capability model</div>
+      </a>
+      <a href="docs/triggers-integrations.html" class="card">
+        <div class="card-label label-arch">Architecture</div>
+        <div class="card-title">Integrations & Triggers <span class="status status-wip">New</span></div>
+        <div class="card-desc">Trigger architecture, execution runs lifecycle, Pipedream integration, where triggered runs live in the UI.</div>
+        <div class="card-meta">Integration & automation model</div>
+      </a>
     </div>
   </div>
 
-  <div class="finding finding-critical">
-    <h4>
-      <span class="severity severity-critical">Critical</span>
-      Universal text truncation destroys task identification
-      <span class="source"><span>UX</span><span>UI</span><span>Business</span><span>Frontend</span></span>
-    </h4>
-    <p class="screens">Screens: All views</p>
-    <p>Nearly every task label across the entire application is truncated. When every label is a sentence fragment, the information architecture has failed. Task names <em>are</em> the content of a task management tool.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Allow 2-line wrapping on canvas nodes with ellipsis + full-text tooltip on hover. Never truncate in headers or detail views. Auto-collapse empty columns in list view to give more space to titles. Consider encouraging shorter task names via UI hints, or auto-generating a short title + full description.
+  <!-- PRODUCT REVIEW -->
+  <div class="section">
+    <div class="section-title">Product Review</div>
+    <div class="card-grid card-grid-1">
+      <a href="critique/" class="card">
+        <div class="card-label label-review">Review</div>
+        <div class="card-title">Product Director Critique <span class="status status-live">Live</span></div>
+        <div class="card-desc">Fresh-eyes assessment of DeepFlow's positioning, personas, and prioritisation. Recalibrated for reskin context with Ravi (solo CEO) as primary persona.</div>
+        <div class="card-meta">Strategic review · Enriched Solutions</div>
+      </a>
     </div>
   </div>
 
-  <div class="finding finding-critical">
-    <h4>
-      <span class="severity severity-critical">Critical</span>
-      Graph layout lacks spatial grammar
-      <span class="source"><span>UI</span><span>Business</span></span>
-    </h4>
-    <p class="screens">Screen: Workflow Canvas</p>
-    <p>The current layout appears force-directed with no clear reading direction. Business users expect a process map that reads like a timeline — not a physics simulation. The ICAAP workflow demonstrates that left-to-right flow works brilliantly when enforced.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Default to <strong>left-to-right flow</strong> with clear start and end columns. Vertically align parallel tasks within the same stage. Add start/end markers. Consider grouping tasks into visual phases with subtle background shading. Offer a "fit to readable" smart zoom that optimises for label legibility.
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      Ensure shape parity between circles and hexagons
-      <span class="source"><span>UI</span><span>UX</span></span>
-    </h4>
-    <p class="screens">Screens: Workflow Canvas, Node Closeup</p>
-    <p>The circle/hexagon distinction is excellent. Two refinements: (1) Hexagons are visually "heavier" than circles at equal size — AI tasks may inadvertently draw more attention, subordinating human tasks visually. (2) At far zoom, both shapes should remain distinguishable — circles as round dots, hexagons retaining their angular silhouette.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Calibrate both shapes to have <strong>equal visual weight</strong> — slightly increase circle border thickness or size to match hexagonal solidity. At far zoom, ensure hexagons don't collapse into circles (maintain angular rendering down to ~8px). When no agent logo is assigned, use a subtle <strong>circuit/bot icon</strong> inside hexagons rather than generic initials. Consider adding a thin <strong>"layered squares" icon</strong> on nodes that have sub-levels, signalling drill-down availability.
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      Undiscoverable node interactions
-      <span class="source"><span>UX</span><span>UI</span></span>
-    </h4>
-    <p class="screens">Screen: Node Closeup (radial menu)</p>
-    <p>The radial context menu appears via an unknown trigger with no visual hint. Editing the graph — adding connections, removing nodes — is fundamental. The radial menu itself uses a unique visual language that shares zero DNA with any other component.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      On hover, show a subtle "…" overflow icon on both circles and hexagons. Offer a standard right-click context menu with icon + text labels as the primary path. Keep the radial menu as a power-user shortcut. Add a first-use coach mark: "Click a task to open it. Right-click for more actions."
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      No way to add nodes on the canvas
-      <span class="source"><span>UX</span></span>
-    </h4>
-    <p class="screens">Screen: Workflow Canvas</p>
-    <p>The kanban view has "+ Add Task" buttons in every column. The canvas — the flagship view — has no visible affordance for adding new tasks.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Add a <strong>"+ Add Task"</strong> button in the canvas toolbar. Allow double-click on empty canvas to create a node. Consider a drag-from-edge affordance: hover on a node's right side → small "+" connector handle → drag to create a connected node (like Miro/FigJam).
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      No critical-path or progress overlay
-      <span class="source"><span>UI</span><span>UX</span><span>Business</span></span>
-    </h4>
-    <p class="screens">Screen: Workflow Canvas</p>
-    <p>With tasks in various states, the workflow's health is invisible at a glance. Downstream impact of failures is not shown.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Add a progress summary bar at the top: "2/5 complete · 1 blocked · ETA: stalled". Offer a <strong>critical-path highlight mode</strong> that dims non-critical tasks and emphasises the longest dependency chain. When a task fails, visually grey out downstream edges to show cascade impact.
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      Dependency intelligence missing from other views
-      <span class="source"><span>UX</span><span>Business</span></span>
-    </h4>
-    <p class="screens">Screens: Kanban, List View</p>
-    <p>Dependencies — the graph's unique value — are invisible in kanban and list views. A blocked task looks identical to an unblocked one. The graph's killer insight doesn't surface where business users spend most of their time.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      <strong>Kanban cards:</strong> Add "Blocked by: [Task Name]" chip or 🔗 icon with count. <strong>List view:</strong> Add "Depends on" and "Blocks" columns. <strong>Both views:</strong> Flag tasks on the critical path. The graph's data should be everywhere, even when the graph's visual isn't.
-    </div>
+  <div class="footer">
+    <p>Prepared by <a href="https://enriched.solutions">Enriched Solutions</a> · <em>"You cannot change the wind, but working together, we can adjust the sails"</em></p>
   </div>
 
 </div>
-</section>
 
-<!-- 4. Multi-Level Navigation -->
-<section id="navigation">
-<div class="container">
-  <h2><span class="section-num">04</span> Multi-Level Navigation</h2>
-  <p class="section-intro">The L1 → L2 → L3 decomposition is DeepFlow's most distinctive feature. The challenge is making it intuitive for users who think in folders and tabs, not graph theory.</p>
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('deepflow-guidelines-theme', next);
+  document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+}
 
-  <h3>The "Semantic Zoom" Model</h3>
-  <p>Users already understand zooming: pinch to zoom out (satellite view), zoom in (street view). Apply this to levels:</p>
-  <ul>
-    <li><strong>Overview state:</strong> L1 nodes shown as large group containers with summary info (task count, completion %, assignees)</li>
-    <li><strong>Double-click to enter:</strong> Smooth animated zoom into a node → it dissolves into its L2 children → breadcrumb updates</li>
-    <li><strong>Continue drilling:</strong> Same pattern, L2 → L3 → L4</li>
-    <li><strong>Navigate back:</strong> Click breadcrumb, press Escape, or click the dimmed parent border to zoom out</li>
-  </ul>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      L1/L2/L3 labels are insider jargon (mitigated by colour)
-      <span class="source"><span>UX</span><span>Business</span></span>
-    </h4>
-    <p>"L1", "L2", "L3" appear everywhere and are never explained. A project lead from Monday.com has no concept of "L3." However, the <strong>depth-colour gradient significantly mitigates this</strong> — users can visually distinguish levels through colour (blue = strategic, pink = atomic) even without understanding the labels. The jargon is still worth fixing, but it's less critical than initially assessed.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Allow users (or the AI) to <strong>name each level</strong> per project: "Phases → Workstreams → Tasks → Subtasks." Fall back to "Level 1", "Level 2" (not "L1"). The existing depth-colour gradient is excellent — keep it and ensure the named labels are displayed <em>alongside</em> the colour so users build the association: "blue = Phases, pink = Subtasks."
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      No breadcrumbs for level navigation
-      <span class="source"><span>UX</span><span>Business</span></span>
-    </h4>
-    <p>When drilling from L1 → L2 → L3, the only wayfinding is a level badge and a back arrow. In a system where the entire value is hierarchical decomposition, users must always know where they are.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Persistent clickable breadcrumb below the header: <code>Project &gt; Strategy &gt; Quick Wins &gt; First Deployment</code>. Each segment clickable. Show task count at current level. On narrow viewports, collapse to: <code>... &gt; Quick Wins &gt; L3</code>.
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      3D multi-level overview needs interactivity
-      <span class="source"><span>UX</span><span>UI</span><span>Frontend</span></span>
-    </h4>
-    <p>The 3D isometric layer diagram is visually impressive and conceptually bold — no competitor has this. But it's confined to a small overlay (~200×200px) with no visible click targets, labels, or interaction affordances. It reads as decoration, not navigation.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      <strong>Promote it:</strong> Make it accessible via a persistent "Levels" button, not just a minimap corner. <strong>Make it interactive:</strong> Click a layer to navigate; hover to highlight and show tooltip ("Level 2: Workstreams — 8 tasks"). <strong>Add labels</strong> directly on each layer. <strong>Animate transitions</strong> when drilling — the selected level rises to the foreground. <strong>Assign each level a distinct colour</strong> (currently only L3 gets colour treatment).
-    </div>
-  </div>
-
-  <div class="finding finding-medium">
-    <h4>
-      <span class="severity severity-medium">Medium</span>
-      Swimlane view is overwhelming
-      <span class="source"><span>UX</span><span>UI</span><span>Business</span></span>
-    </h4>
-    <p>Dense nodes with ~9px labels, duplicate names, no legend, and the lower two-thirds of the viewport empty. This is the most cognitively demanding screen in the product — even though the depth-colour gradient and circle/hexagon shapes help with orientation.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Use card-based nodes (consistent with kanban) instead of circles. Increase minimum label size to 12px. Suppress repeated metadata ("Unassigned" shown once at group level, not per node). Add a legend. Default new users to Canvas or List; surface Swimlane in "All Views."
-    </div>
-  </div>
-
-  <h3>Interaction Patterns for Level Navigation</h3>
-  <div class="strategy-grid">
-    <div class="strategy-card">
-      <h4>🗺️ Google Maps Zoom</h4>
-      <p>Scroll/pinch to zoom doesn't just scale — it transitions between levels. Zoom into an L1 node → it dissolves into L2 children. Makes level navigation a <strong>physical gesture</strong> rather than an abstract menu selection.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>📁 Folder Mental Model</h4>
-      <p>In list and kanban views, double-click an L1 item to expand its children. Clicking an L1 kanban card with children shows "View subtasks →". A persistent breadcrumb always shows the drill path.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>✨ Animated Transitions</h4>
-      <p>Level changes should be animated to maintain spatial context. Drilling down: current view zooms forward, new level fades in. Drilling up: reverse. The 3D panel should animate in sync.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>👀 Hover Preview</h4>
-      <p>Before committing to drill-down, hovering a node for 500ms shows a tooltip card: child count, status summary ("3 done, 2 blocked"), and "Click to explore." Gives confidence before navigating.</p>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- 5. Workspace -->
-<section id="workspace">
-<div class="container">
-  <h2><span class="section-num">05</span> The Workspace — Human-AI Collaboration</h2>
-  <p class="section-intro">The three-panel workspace (Output + Chat + Details) is where work gets done. The current implementation is more sophisticated than it first appears — the recommendations below aim to refine what exists, not propose basics that are already there.</p>
-
-  <div class="callout" style="margin-bottom: 24px;">
-    <h4>✅ What Already Works — Workspace Capabilities</h4>
-    <p>The workspace is considerably more capable than a basic three-panel layout. The <strong>Chat panel</strong> features expandable AI "Thought process" steps (showing multi-step reasoning chains), an <strong>"Execute this task for me"</strong> button, task execution history, and artifact creation status indicators. The <strong>Workspace panel</strong> has a rich text editor with formatting toolbar, a Preview toggle, tabbed outputs, and <strong>version navigation (V3/3)</strong> with arrow controls. The <strong>Details panel</strong> includes a <strong>History tab</strong> with a full timestamped audit trail ("Ali Panju assigned the task to Deepflow", "Ali Panju changed the task description"), a <strong>Resources tab</strong> with DeepFlow Inputs and Outputs sections, Sub-tasks, and an Advanced tab. This is genuine task execution infrastructure for running a business — not a toy.</p>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      Cross-panel integration could be stronger
-      <span class="source"><span>UI</span><span>UX</span></span>
-    </h4>
-    <p>The individual panels are well-built, but the connections between them could be tighter. When the AI's thought process completes and creates an artifact, the workspace panel should visually acknowledge the new content. When a task fails, the error state should propagate across all three panels coherently — not just appear as a status badge in Details.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      <strong>State coherence:</strong> When a task fails, the entire workspace should reflect it — subtle error tint, diagnostic view in the chat, and a "Retry" action accessible from any panel. <strong>Artifact bridging:</strong> When the chat shows "Creating artifact ✓", highlight or pulse the corresponding workspace tab. <strong>Thought process → output linking:</strong> Consider a subtle visual thread connecting the AI's reasoning steps to the generated content, reinforcing the "here's WHY this output looks this way" narrative.
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      No graph context in task view
-      <span class="source"><span>Business</span></span>
-    </h4>
-    <p>When drilling into a task, the graph disappears entirely. The user loses all sense of where this task sits in the workflow. The dependency structure — the product's core value — is invisible at the moment when it matters most. The depth-colour is present (the task header shows the level colour), but the dependency chain is not.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Add a <strong>mini dependency context bar</strong> at the top of the task view, colour-coded by depth level: <code>← Research (✓ Done) → [THIS TASK: Build Prototype (🔴 Failed)] → Testing (⏸ Blocked)</code>. Use circles/hexagons to indicate whether upstream/downstream tasks are human or AI — maintaining the shape language even in this compact view.
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      Panel resize and collapse affordances are invisible
-      <span class="source"><span>UX</span><span>Frontend</span></span>
-    </h4>
-    <p>Three panels on a laptop screen (~1366px) will be tight. No visible resize handles, no collapse toggles.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Add visible drag handles between panels. Add collapse toggles (chevrons) on panel headers. Remember panel state per user. On screens &lt; 1400px, <strong>default to two panels</strong> with Details as a slide-over. On mobile, single panel with tab bar.
-    </div>
-  </div>
-
-  <div class="finding finding-medium">
-    <h4>
-      <span class="severity severity-medium">Medium</span>
-      Version navigation could be more discoverable
-      <span class="source"><span>UX</span></span>
-    </h4>
-    <p>The version navigation (V3/3 with arrows) is present but easy to overlook. Version history is powerful for business users who want to see how AI iterations evolved — but only if they notice it exists.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      When multiple versions exist, add a subtle <strong>"3 versions — compare"</strong> label near the version arrows. Consider a <strong>diff view</strong> toggle that highlights what changed between versions. On first multi-version encounter, show a brief coach mark: "DeepFlow iterated on this — use arrows to see previous versions."
-    </div>
-  </div>
-
-  <div class="finding finding-medium">
-    <h4>
-      <span class="severity severity-medium">Medium</span>
-      Thought process disclosure could be richer
-      <span class="source"><span>UX</span></span>
-    </h4>
-    <p>The expandable "Thought process" steps (Step 1, Step 2) are a great transparency feature. Business users running an entire operation on DeepFlow will want to understand <em>why</em> the AI made certain decisions — this is the mechanism for that trust.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Consider adding a <strong>summary line</strong> for collapsed thought processes: "2 steps · Prepared a French sonnet, then crafted it" — giving a quick overview without needing to expand. For complex multi-step reasoning, add a <strong>visual step indicator</strong> (dots or a mini progress bar) showing how far through the reasoning chain the AI progressed.
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- 6. Approachability -->
-<section id="approachability">
-<div class="container">
-  <h2><span class="section-num">06</span> Making It Approachable</h2>
-  <p class="section-intro">The non-technical user doesn't need a simpler product. They need a product that explains itself — with familiar shapes, human language, and a clear on-ramp to genuine power.</p>
-
-  <h3>Onboarding Strategy</h3>
-
-  <blockquote>"A flowchart that runs itself." — the one-sentence mental model every business user can hold onto.</blockquote>
-
-  <div class="strategy-grid">
-    <div class="strategy-card">
-      <h4>🎬 Step 1: The Build Animation</h4>
-      <p>When a user types their goal, show the graph <strong>building itself</strong> — nodes appearing, connections forming, levels expanding. This 3-5 second animation teaches the core concept without a single word: <em>you described a goal, and we structured it.</em></p>
-    </div>
-    <div class="strategy-card">
-      <h4>🏷️ Step 2: The Anatomy Overlay</h4>
-      <p>On first graph load, a lightweight in-context annotation layer labels the key elements: "Each box is a task" • "Lines show dependencies" • "These run in parallel." Three annotations. Ten seconds. Dismissible.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>🌱 Step 3: Start Tiny</h4>
-      <p>The first project should be a <strong>3-node graph</strong>: one starting task branching into two parallel tasks. Build confidence before complexity. The 90-task, 4-level project comes later.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>🎯 Step 4: Learn by Doing</h4>
-      <p>"Click a node → see the task → mark it done → watch the graph update." Contextual tooltips, celebration moments when dependencies resolve, "Why is this blocked?" right-click action. Teach through interaction.</p>
-    </div>
-  </div>
-
-  <h3>Progressive Disclosure Strategy</h3>
-  <ul>
-    <li><strong>Level 0 — The Prompt:</strong> User types a goal. No graph visible yet.</li>
-    <li><strong>Level 1 — The Generated Plan:</strong> Clean, simplified graph with large nodes, clear labels, prominent status. L1 nodes only.</li>
-    <li><strong>Level 2 — On-Demand Depth:</strong> Users who click a node see children. Users who never click stay at L1 — and that's fine.</li>
-    <li><strong>Level 3 — Power Features:</strong> Dependency lines, critical path, swimlane view, edge labels — behind a "Show details" toggle.</li>
-  </ul>
-
-  <h3>Two User Postures</h3>
-  <div class="strategy-grid">
-    <div class="strategy-card">
-      <h4>🤖 Auto-Pilot Mode</h4>
-      <p>DeepFlow generates and executes autonomously. User monitors via the Level Hub dashboard — familiar KPI widgets, no graph required. Best for delegators and stakeholders who want oversight without direct manipulation.</p>
-    </div>
-    <div class="strategy-card">
-      <h4>✋ Manual Mode</h4>
-      <p>User works directly with the graph — adding nodes, adjusting dependencies, reassigning tasks. Best for hands-on project leads who want control. Default new users to Auto-Pilot; surface editing tools progressively.</p>
-    </div>
-  </div>
-
-  <h3>Patterns Borrowed from Familiar Tools</h3>
-  <table class="jargon-table">
-    <thead>
-      <tr><th>Pattern</th><th>Source</th><th>DeepFlow Application</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Companion table alongside visual</td><td>Monday.com</td><td>Split view: graph on left, table on right. Clicking a row highlights the node.</td></tr>
-      <tr><td>Dependency columns in list view</td><td>Asana</td><td>"Depends on" and "Blocks" columns in list view, leaking graph data into flat views.</td></tr>
-      <tr><td>Progressive disclosure & clean defaults</td><td>Notion</td><td>Task detail shows name, status, assignee first. "Task Execution Model" lives behind "Advanced."</td></tr>
-      <tr><td>Drag-to-connect</td><td>Trello / Miro</td><td>Drag a node onto another to create a dependency. Physical, direct manipulation.</td></tr>
-      <tr><td>Critical path + Gantt chart</td><td>MS Project</td><td>Always highlight the critical path. Offer a Gantt view as another graph rendering.</td></tr>
-    </tbody>
-  </table>
-</div>
-</section>
-
-<!-- 7. Visual Design -->
-<section id="visual">
-<div class="container">
-  <h2><span class="section-num">07</span> Visual Design System</h2>
-  <p class="section-intro">The graph should be the most visually refined surface in the entire product. Every other view is a lens on graph data — the canvas should feel like the flagship experience.</p>
-
-  <div class="finding finding-critical">
-    <h4>
-      <span class="severity severity-critical">Critical</span>
-      No unified component library
-      <span class="source"><span>UI</span></span>
-    </h4>
-    <p>Button styles vary across every screen. Tab components appear in two incompatible patterns. Badge colours for level indicators differ between views. This signals "work in progress" rather than "production product."</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Build a design system with exactly one variant of each component type. Audit every screen against it. A Storybook instance enforces consistency.
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      Mixed icon families create visual noise
-      <span class="source"><span>UI</span></span>
-    </h4>
-    <p>At least three icon styles coexist: outline/stroke (sidebar), filled (node badges), white-on-black (radial menu).</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Migrate to a single icon family (Phosphor or Lucide). Define stroke weight, size grid (16/20/24px), and fill rules once.
-    </div>
-  </div>
-
-  <div class="finding finding-high">
-    <h4>
-      <span class="severity severity-high">High</span>
-      Hero banner wastes space for returning users
-      <span class="source"><span>UI</span><span>UX</span></span>
-    </h4>
-    <p>The rainbow gradient hero and display-size text pushes functional content below the fold. The gradient introduces off-palette colours not used elsewhere.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Collapse to a compact search/prompt bar for returning users (auto-collapse after 3+ projects). Align gradient to brand palette (cyan-to-deep-blue).
-    </div>
-  </div>
-
-  <div class="callout" style="margin-bottom: 24px;">
-    <h4>✅ The Depth-Colour System — A Foundation to Build On</h4>
-    <p>DeepFlow's <strong>blue→red depth gradient</strong> is a genuinely sophisticated colour system. L1 strategic objectives render in blue/cyan, deepest atomic tasks in pink/red, with intermediate levels blending between. This gradient applies consistently across nodes, connection lines, badges, and the 3D navigator — creating a cohesive "you are here" signal at every level. Combined with the circle/hexagon shape distinction, DeepFlow already encodes two critical dimensions (depth and executor type) through visual properties alone. The recommendations below aim to <strong>preserve and extend</strong> this system, not replace it.</p>
-  </div>
-
-  <div class="finding finding-medium">
-    <h4>
-      <span class="severity severity-medium">Medium</span>
-      Status needs a third visual dimension that doesn't conflict with depth-colour
-      <span class="source"><span>UI</span></span>
-    </h4>
-    <p>Depth = colour (blue→red gradient). Executor = shape (circle vs hexagon). Status currently relies on small badge overlays. Adding status as a third independent visual dimension would make all three critical properties scannable simultaneously.</p>
-    <div class="recommendation">
-      <strong>💡 Recommendation</strong>
-      Use <strong>border style or glow</strong> for status: solid border for complete (with green glow), animated dashed border for in-progress, dotted/faded for pending, red pulse for failed. This keeps the depth-colour gradient as the fill/border colour, the shape as the executor signal, and the border treatment as the status signal — three independent channels, zero conflict. See the <a href="style-guide.html"><strong>Style Guide</strong></a> for detailed specifications.
-    </div>
-  </div>
-
-  <h3>Design Principles for the Graph</h3>
-  <div class="exec-grid">
-    <div class="exec-card">
-      <div class="icon">🎨</div>
-      <h4>Colour is Data (and Already Is)</h4>
-      <p>The depth-colour gradient already makes colour meaningful. Extend this: every visual property should encode information. Shape = executor, colour = depth, border = status, size = importance. Eliminate decorative elements that don't carry meaning.</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">📖</div>
-      <h4>Readability Over Aesthetics</h4>
-      <p>A business user should understand workflow state in 3 seconds. Clear flow direction, depth-colour showing hierarchy at a glance, circle/hexagon showing the human/AI split, and status visible through border treatment — not just tiny badges.</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">🔎</div>
-      <h4>Progressive Disclosure via Zoom</h4>
-      <p>At far zoom: coloured shapes (circles and hexagons) tell depth and executor type. At medium zoom: add titles and status. At close zoom: full metadata. Beautiful and informative at every zoom level.</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">💫</div>
-      <h4>Animation Communicates Life</h4>
-      <p>Dot-flow along depth-coloured edges, gentle pulse on nodes needing attention, smooth level transitions with colour shifting. These separate "static diagram" from "living orchestration platform."</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">🌈</div>
-      <h4>Respect the Gradient</h4>
-      <p>The blue→red depth gradient is the primary colour system. UI chrome, status indicators, and decorative elements must not conflict with it. Use neutral greys for non-depth UI, and encode status through border style/glow rather than competing hues.</p>
-    </div>
-    <div class="exec-card">
-      <div class="icon">🔤</div>
-      <h4>Typographic Discipline</h4>
-      <p>Strict 5-level type scale (12px–28px). No 9px swimlane labels, no display-size hero text. Hierarchy through weight and colour, not dramatic size jumps.</p>
-    </div>
-  </div>
-
-  <div class="callout" style="margin: 32px 0;">
-    <h4>📐 Visual Design System — Full Specification</h4>
-    <p>For detailed component specs, colour tokens, animation definitions, and a comprehensive style guide covering the depth-colour gradient, node shapes, edge treatments, and typography: <a href="style-guide.html" style="color: #0369a1; font-weight: 600;">View the Style Guide →</a></p>
-  </div>
-
-  <h3>Zoom-Adaptive Node Rendering</h3>
-  <table class="qw-table">
-    <thead>
-      <tr><th>Zoom Level</th><th>Node Treatment</th><th>Purpose</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>Far</strong> (overview)</td><td>Depth-coloured shapes only — circles (human) and hexagons (AI). No labels. Shape + colour = instant human/AI balance and depth reading.</td><td>Pattern recognition, project health at a glance</td></tr>
-      <tr><td><strong>Medium</strong> (working)</td><td>Depth-coloured circle/hexagon + 1-line truncated title + status border treatment</td><td>Navigate and identify tasks</td></tr>
-      <tr><td><strong>Close</strong> (focused)</td><td>Full shape with avatar/logo + complete title + status badge + depth-colour border + assignee</td><td>Read and understand individual tasks</td></tr>
-      <tr><td><strong>Selected</strong></td><td>Full detail + action menu + metadata panel</td><td>Edit and manage tasks</td></tr>
-    </tbody>
-  </table>
-</div>
-</section>
-
-<!-- 8. Language & Jargon -->
-<section id="jargon">
-<div class="container">
-  <h2><span class="section-num">08</span> Language & Jargon Audit</h2>
-  <p class="section-intro">Business users need human words. Every piece of jargon is a micro-moment where a user feels "this isn't for me." That said, the depth-colour gradient already does heavy lifting here — users can <em>see</em> the hierarchy through colour even when the labels are abstract.</p>
-
-  <h3>Must Fix — High Impact</h3>
-  <table class="jargon-table">
-    <thead>
-      <tr><th>Current</th><th>Replace With</th><th>Why</th></tr>
-    </thead>
-    <tbody>
-      <tr><td class="old">Task Execution Model</td><td class="new">"Who does this?" / hide behind Advanced</td><td>Most intimidating element in the UI</td></tr>
-      <tr><td class="old">"Use Agent Default"</td><td class="new">"AI handles it" / "I'll do it" / "Assign someone"</td><td>Jargon on jargon</td></tr>
-      <tr><td class="old">Agents (sidebar)</td><td class="new">AI Assistants or Teammates</td><td>"Agent" is developer vocabulary</td></tr>
-      <tr><td class="old">Failed (status)</td><td class="new">Needs Attention / Stuck</td><td>Business tasks don't "fail" — they get stuck</td></tr>
-      <tr><td class="old">L1 / L2 / L3 / L4</td><td class="new">Phase / Workstream / Task / Subtask (customisable)</td><td>The depth-colour gradient mitigates this significantly — users can <em>see</em> the hierarchy through colour (blue = strategic, red = atomic) even when they don't understand "L3." But custom labels would still improve comprehension for text-based views like lists and breadcrumbs.</td></tr>
-      <tr><td class="old">--/--/----</td><td class="new">"No date set" (clickable to add)</td><td>Looks like broken data</td></tr>
-      <tr><td class="old">Delegate (button)</td><td class="new">Assign (with "to AI" or "to person" options)</td><td>"Delegate" is ambiguous in an AI context</td></tr>
-    </tbody>
-  </table>
-
-  <h3>Should Fix — Medium Impact</h3>
-  <table class="jargon-table">
-    <thead>
-      <tr><th>Current</th><th>Replace With</th><th>Why</th></tr>
-    </thead>
-    <tbody>
-      <tr><td class="old">Workflow Hub</td><td class="new">Project Overview / Dashboard</td><td>"Hub" is vague</td></tr>
-      <tr><td class="old">Automations (sidebar)</td><td class="new">Rules or Auto-Actions</td><td>Overlaps with Agents; unclear scope</td></tr>
-      <tr><td class="old">V1/1 version notation</td><td class="new">Hide unless user enables version history</td><td>Version control concepts confuse PMs</td></tr>
-      <tr><td class="old">Users: 0, Agents: 0</td><td class="new">Team: [combined list with AI badge]</td><td>Don't categorise team by species</td></tr>
-    </tbody>
-  </table>
-</div>
-</section>
-
-<!-- 9. Quick Wins -->
-<section id="quickwins">
-<div class="container">
-  <h2><span class="section-num">09</span> Quick Wins</h2>
-  <p class="section-intro">High-impact improvements requiring relatively low implementation effort. A focused sprint on these would dramatically improve the user experience.</p>
-
-  <table class="qw-table">
-    <thead>
-      <tr><th>#</th><th>Change</th><th>Impact</th><th>Effort</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td><strong>Node fill colour = status</strong> — instantly communicate state through the largest visual element</td>
-        <td><span class="impact-badge">Transformative</span></td>
-        <td><span class="effort-badge effort-medium">~1 day</span></td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td><strong>Replace "--/--/----"</strong> with "No due date" in muted grey, clickable to set</td>
-        <td><span class="impact-badge">High</span></td>
-        <td><span class="effort-badge effort-low">~1 hour</span></td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td><strong>Add tooltips to all truncated text</strong> — hover reveals full task name</td>
-        <td><span class="impact-badge">High</span></td>
-        <td><span class="effort-badge effort-low">~2 hours</span></td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td><strong>Larger arrowheads on edges</strong> (12px+, filled, at target node)</td>
-        <td><span class="impact-badge">High</span></td>
-        <td><span class="effort-badge effort-low">~2 hours</span></td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td><strong>Add tooltips to view-switcher icons</strong> ("Plan View", "Board", "List")</td>
-        <td><span class="impact-badge">Medium</span></td>
-        <td><span class="effort-badge effort-low">~2 hours</span></td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td><strong>Filled vs outlined filter pills</strong> for active/inactive states + "Clear all"</td>
-        <td><span class="impact-badge">Medium</span></td>
-        <td><span class="effort-badge effort-low">~3 hours</span></td>
-      </tr>
-      <tr>
-        <td>7</td>
-        <td><strong>Add grip handles to kanban cards</strong> — signals drag-and-drop</td>
-        <td><span class="impact-badge">Medium</span></td>
-        <td><span class="effort-badge effort-low">~2 hours</span></td>
-      </tr>
-      <tr>
-        <td>8</td>
-        <td><strong>Let users name levels</strong> ("Phases", "Tasks", "Subtasks")</td>
-        <td><span class="impact-badge">Transformative</span></td>
-        <td><span class="effort-badge effort-medium">~1 day</span></td>
-      </tr>
-      <tr>
-        <td>9</td>
-        <td><strong>Add 3-4 example prompts</strong> below home screen input</td>
-        <td><span class="impact-badge">High</span></td>
-        <td><span class="effort-badge effort-low">~2 hours</span></td>
-      </tr>
-      <tr>
-        <td>10</td>
-        <td><strong>Add persistent breadcrumb</strong> for level navigation</td>
-        <td><span class="impact-badge">Transformative</span></td>
-        <td><span class="effort-badge effort-low">~4 hours</span></td>
-      </tr>
-      <tr>
-        <td>11</td>
-        <td><strong>Context-aware AI greeting</strong> based on task status</td>
-        <td><span class="impact-badge">High</span></td>
-        <td><span class="effort-badge effort-low">~4 hours</span></td>
-      </tr>
-      <tr>
-        <td>12</td>
-        <td><strong>Add "Blocked by" chip to kanban cards</strong></td>
-        <td><span class="impact-badge">High</span></td>
-        <td><span class="effort-badge effort-medium">~1 day</span></td>
-      </tr>
-      <tr>
-        <td>13</td>
-        <td><strong>Unify icon family</strong> (Lucide or Phosphor throughout)</td>
-        <td><span class="impact-badge">High</span></td>
-        <td><span class="effort-badge effort-medium">~2 days</span></td>
-      </tr>
-      <tr>
-        <td>14</td>
-        <td><strong>Remove or fade canvas watermark</strong></td>
-        <td><span class="impact-badge">Medium</span></td>
-        <td><span class="effort-badge effort-low">Trivial</span></td>
-      </tr>
-      <tr>
-        <td>15</td>
-        <td><strong>Make 3D drilldown layers clickable</strong> with hover labels</td>
-        <td><span class="impact-badge">High</span></td>
-        <td><span class="effort-badge effort-medium">~1 day</span></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</section>
-
-<!-- 10. Technical Feasibility -->
-<section id="tech">
-<div class="container">
-  <h2><span class="section-num">10</span> Technical Feasibility</h2>
-  <p class="section-intro">Implementation guidance for the recommended improvements, with library recommendations and performance strategy.</p>
-
-  <h3>Recommended Architecture</h3>
-  <div class="callout">
-    <h4>🏗️ Graph: Single React Flow Instance with Virtual Layers</h4>
-    <p>One canvas, one event system, one render loop. Nodes carry a <code>level</code> attribute. Drill-down applies a filter transition: fade out current level, animate viewport to children, fade in next level. The 3D overview panel (React Three Fiber) syncs as a read-only navigation minimap. This is simpler, more performant, and more maintainable than nested instances or 3D editing surfaces.</p>
-  </div>
-
-  <h3>Recommended Stack</h3>
-  <div class="stack-grid">
-    <div class="stack-card">
-      <h4>Graph Rendering</h4>
-      <ul>
-        <li><code>@xyflow/react</code> v12 — Graph canvas with viewport culling</li>
-        <li><code>elkjs</code> — Hierarchical layout in Web Worker</li>
-        <li><code>@react-three/fiber</code> — 3D overview minimap only</li>
-        <li><code>d3-hierarchy</code> — Edge bundling for dense graphs</li>
-      </ul>
-    </div>
-    <div class="stack-card">
-      <h4>Workspace</h4>
-      <ul>
-        <li><code>@tiptap/react</code> — Rich text editor (ProseMirror-based)</li>
-        <li><code>react-resizable-panels</code> — Panel layout with persistence</li>
-        <li><code>react-markdown</code> — Streaming AI content rendering</li>
-        <li><code>shiki</code> — Syntax highlighting (WASM)</li>
-      </ul>
-    </div>
-    <div class="stack-card">
-      <h4>State & Data</h4>
-      <ul>
-        <li><code>zustand</code> + <code>immer</code> — Client state with undo/redo</li>
-        <li><code>@tanstack/react-query</code> — Server state, caching, optimistic updates</li>
-        <li><code>EventSource</code> (SSE) — Streaming AI responses</li>
-      </ul>
-    </div>
-    <div class="stack-card">
-      <h4>UI & Interaction</h4>
-      <ul>
-        <li><code>@radix-ui/*</code> — Accessible primitives</li>
-        <li><code>@dnd-kit</code> — Kanban drag & drop</li>
-        <li><code>framer-motion</code> — Level transitions, animations</li>
-        <li><code>cmdk</code> — Command palette for power users</li>
-      </ul>
-    </div>
-  </div>
-
-  <h3>Performance at Scale</h3>
-  <table class="qw-table">
-    <thead>
-      <tr><th>Scenario</th><th>Total Nodes</th><th>Strategy</th><th>Target</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Small project</td><td>30–50</td><td>Standard rendering</td><td>60fps, &lt;50ms layout</td></tr>
-      <tr><td>Medium project</td><td>100–300</td><td>Viewport culling + LOD</td><td>60fps, &lt;200ms layout</td></tr>
-      <tr><td>Large project</td><td>500–1,500</td><td>Culling + LOD + clustering + lazy loading</td><td>60fps, &lt;1s layout</td></tr>
-      <tr><td>Enterprise</td><td>1,500–5,000</td><td>All above + edge bundling + spatial hash clustering</td><td>30fps, &lt;2s layout</td></tr>
-    </tbody>
-  </table>
-  <p style="font-size:0.9rem; color: var(--df-muted);"><strong>Memory budget:</strong> ~10MB for 2,000 nodes with 20 undo snapshots — well within browser limits. Primary concern is DOM node count: keep visible DOM nodes under 500 via viewport culling and level-of-detail rendering.</p>
-
-  <h3>Accessibility Requirements</h3>
-  <ul>
-    <li><strong>Keyboard navigation:</strong> Tab into graph → Arrow keys between nodes (following edges) → Enter to drill down → Escape to drill up → / to search</li>
-    <li><strong>Screen reader alternative:</strong> "View as accessible table" button switching to list view with dependency columns</li>
-    <li><strong>Colour-blind safety:</strong> Shape encoding alongside colour — ✓ (done), ▶ (active), ○ (ready), ✕ (failed), ◻ (pending)</li>
-    <li><strong>Reduced motion:</strong> Respect <code>prefers-reduced-motion</code> — disable animated transitions, dot-flow, and pulse effects</li>
-  </ul>
-</div>
-</section>
-
-<!-- 11. Roadmap -->
-<section id="roadmap">
-<div class="container">
-  <h2><span class="section-num">11</span> Implementation Roadmap</h2>
-  <p class="section-intro">A phased approach over approximately 17 weeks, from quick wins through scale testing.</p>
-
-  <div class="roadmap">
-    <div class="phase phase-1">
-      <div class="phase-label">Phase 1</div>
-      <h4>Make It Readable</h4>
-      <ul>
-        <li>Node fill = status colour</li>
-        <li>Larger arrowheads on edges</li>
-        <li>Tooltips for truncated text</li>
-        <li>Fix date placeholders</li>
-        <li>Unified icon family</li>
-        <li>Filter pill active states</li>
-      </ul>
-      <div class="duration">⏱ 2–3 weeks</div>
-    </div>
-    <div class="phase phase-2">
-      <div class="phase-label">Phase 2</div>
-      <h4>Make It Navigable</h4>
-      <ul>
-        <li>Persistent breadcrumb navigation</li>
-        <li>Named level labels (customisable)</li>
-        <li>Interactive 3D drilldown panel</li>
-        <li>Semantic zoom transitions</li>
-        <li>Graph layout algorithm (ELK.js)</li>
-      </ul>
-      <div class="duration">⏱ 6–8 weeks</div>
-    </div>
-    <div class="phase phase-3">
-      <div class="phase-label">Phase 3</div>
-      <h4>Make It Intelligent</h4>
-      <ul>
-        <li>"Blocked by" chips in kanban/list</li>
-        <li>Critical path highlighting</li>
-        <li>Context-aware AI chat</li>
-        <li>Mini dependency context bar</li>
-        <li>Project health indicator</li>
-        <li>Workspace panel improvements</li>
-      </ul>
-      <div class="duration">⏱ 4–5 weeks</div>
-    </div>
-    <div class="phase phase-4">
-      <div class="phase-label">Phase 4</div>
-      <h4>Make It Welcoming</h4>
-      <ul>
-        <li>Graph build animation</li>
-        <li>First-time onboarding overlay</li>
-        <li>Example prompts on home</li>
-        <li>Accessibility pass</li>
-        <li>Scale testing (2000+ nodes)</li>
-        <li>Component library audit</li>
-      </ul>
-      <div class="duration">⏱ 3–4 weeks</div>
-    </div>
-  </div>
-
-  <div class="callout">
-    <h4>🎯 The North Star</h4>
-    <p>DeepFlow should feel like: <em>"I can see my entire operation at a glance, and everything just works."</em> The graph is the hero shot. When a prospect sees the workflow canvas, they should immediately understand: which tasks are done, which are active, which are blocked, what depends on what, and where the bottleneck is. They should feel the urge to zoom in and explore. And when they drill down into a sub-level, the transition should make them smile.</p>
-    <p style="margin-top: 12px;"><strong>Confident, clear, and alive</strong> — even when orchestrating complex multi-agent workflows across four levels of hierarchy.</p>
-  </div>
-</div>
-</section>
-
-</main>
-
-<!-- Screenshots Gallery -->
-<section id="screenshots">
-<div class="container">
-  <h2><span class="section-num">12</span> Current UI — Screenshots</h2>
-  <p class="section-intro">The current DeepFlow interface across its main views. These screenshots formed the basis of this review.</p>
-
-  <div class="gallery">
-    <div class="gallery-item">
-      <img src="screenshots/01-workflow-canvas.jpg" alt="Workflow Canvas" loading="lazy">
-      <div class="caption">Workflow Canvas — main graph view with task nodes and dependency edges</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/02-node-closeup.jpg" alt="Node Closeup" loading="lazy">
-      <div class="caption">Node Closeup — radial context menu for task actions</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/03-task-detail.jpg" alt="Task Detail / Workspace" loading="lazy">
-      <div class="caption">Workspace — three-panel view (Output + Chat + Details)</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/04-projects-home.jpg" alt="Projects Home" loading="lazy">
-      <div class="caption">Projects Home — dashboard with prompt bar and project cards</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/05-kanban-board.jpg" alt="Kanban Board" loading="lazy">
-      <div class="caption">Kanban Board — status columns with task cards</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/06-multilevel-swimlane.jpg" alt="Multi-level Swimlane" loading="lazy">
-      <div class="caption">Swimlane View — multi-level grouping (L1–L4)</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/07-list-view.jpg" alt="List View" loading="lazy">
-      <div class="caption">List View — hierarchical table with status badges</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/08-level-hub-dashboard.jpg" alt="Level Hub Dashboard" loading="lazy">
-      <div class="caption">Level Hub — analytics dashboard per level</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/09-multilevel-drilldown.jpg" alt="Multi-level Drilldown" loading="lazy">
-      <div class="caption">3D Multi-Level Drilldown — isometric layer navigation</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/10-icaap-complex-graph.jpg" alt="ICAAP Workflow" loading="lazy">
-      <div class="caption">ICAAP Workflow — real-world compliance workflow with named assignees</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/11-depth-colour-nodes.jpg" alt="Depth-Colour Nodes" loading="lazy">
-      <div class="caption">Depth-Colour Nodes — hexagonal AI agent nodes with pink L2 depth gradient, connection lines, and Resources panel</div>
-    </div>
-    <div class="gallery-item">
-      <img src="screenshots/12-workspace-full.jpg" alt="Full Workspace View" loading="lazy">
-      <div class="caption">Full Workspace — three-panel view with AI thought process steps, version navigation (V3/3), rich text output, and History audit trail</div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- Design Concepts -->
-<section id="concepts">
-<div class="container">
-  <h2><span class="section-num">13</span> Design Concepts — Reimagined</h2>
-  <p class="section-intro">Five interactive mockups exploring different design directions for DeepFlow. Each is a fully functional HTML page — click to explore the interactions.</p>
-
-  <div class="concepts-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; margin: 32px 0;">
-
-    <a href="concepts/01-clean-canvas.html" target="_blank" style="text-decoration: none; color: inherit;" class="concept-card-link">
-      <div class="exec-card" style="padding: 0; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
-        <img src="concepts/concept-01-thumb.jpg" alt="Clean Canvas concept" style="width: 100%; height: 220px; object-fit: cover; object-position: top; display: block;">
-        <div style="padding: 20px;">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-            <span style="font-size: 1.2rem;">🌤️</span>
-            <h4 style="margin: 0; font-size: 1.05rem;">Concept 1: Clean Canvas</h4>
-          </div>
-          <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 12px;">Light mode, minimal, Google Maps-inspired. Rectangular task cards, coloured dependency arrows, dot grid canvas, and a dependency context strip on selection.</p>
-          <div style="font-size: 0.8rem; font-weight: 600; color: #3BB8D6; display: flex; align-items: center; gap: 4px;">
-            Click to open interactive mockup →
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a href="concepts/02-mission-control.html" target="_blank" style="text-decoration: none; color: inherit;" class="concept-card-link">
-      <div class="exec-card" style="padding: 0; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
-        <img src="concepts/concept-02-thumb.jpg" alt="Mission Control concept" style="width: 100%; height: 220px; object-fit: cover; object-position: top; display: block;">
-        <div style="padding: 20px;">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-            <span style="font-size: 1.2rem;">🌑</span>
-            <h4 style="margin: 0; font-size: 1.05rem;">Concept 2: Mission Control</h4>
-          </div>
-          <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 12px;">Dark mode, Linear/Raycast-inspired. Glowing status nodes, command bar, live project health dashboard, ICAAP compliance workflow. Feels like monitoring a live operation.</p>
-          <div style="font-size: 0.8rem; font-weight: 600; color: #3BB8D6; display: flex; align-items: center; gap: 4px;">
-            Click to open interactive mockup →
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a href="concepts/03-familiar-ground.html" target="_blank" style="text-decoration: none; color: inherit;" class="concept-card-link">
-      <div class="exec-card" style="padding: 0; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
-        <img src="concepts/concept-03-thumb.jpg" alt="Familiar Ground concept" style="width: 100%; height: 220px; object-fit: cover; object-position: top; display: block;">
-        <div style="padding: 20px;">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-            <span style="font-size: 1.2rem;">📊</span>
-            <h4 style="margin: 0; font-size: 1.05rem;">Concept 3: Familiar Ground</h4>
-          </div>
-          <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 12px;">Light mode, Monday.com-inspired. Split view with graph above and companion table below. Synced interaction, dependency columns, expandable project tree.</p>
-          <div style="font-size: 0.8rem; font-weight: 600; color: #3BB8D6; display: flex; align-items: center; gap: 4px;">
-            Click to open interactive mockup →
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a href="concepts/04-deep-dark.html" target="_blank" style="text-decoration: none; color: inherit;" class="concept-card-link">
-      <div class="exec-card" style="padding: 0; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
-        <img src="concepts/concept-04-thumb.jpg" alt="Deep Dark concept" style="width: 100%; height: 220px; object-fit: cover; object-position: top; display: block;">
-        <div style="padding: 20px;">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-            <span style="font-size: 1.2rem;">🖤</span>
-            <h4 style="margin: 0; font-size: 1.05rem;">Concept 4: Deep Dark</h4>
-          </div>
-          <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 12px;">Full dark mode, neon cyan accents. Gradient-glow edges with animated flow, pulsing critical path, 3D level navigator, glassmorphism UI. Figma meets Bloomberg.</p>
-          <div style="font-size: 0.8rem; font-weight: 600; color: #3BB8D6; display: flex; align-items: center; gap: 4px;">
-            Click to open interactive mockup →
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a href="concepts/05-executive-suite.html" target="_blank" style="text-decoration: none; color: inherit;" class="concept-card-link">
-      <div class="exec-card" style="padding: 0; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
-        <img src="concepts/concept-05-thumb.jpg" alt="Executive Suite concept" style="width: 100%; height: 220px; object-fit: cover; object-position: top; display: block;">
-        <div style="padding: 20px;">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-            <span style="font-size: 1.2rem;">🏛️</span>
-            <h4 style="margin: 0; font-size: 1.05rem;">Concept 5: Executive Suite</h4>
-          </div>
-          <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 12px;">Light mode, governance-focused. Three-column layout with audit trail, ICAAP workflow, task details. Board approval gates, compliance badges, named assignees with roles.</p>
-          <div style="font-size: 0.8rem; font-weight: 600; color: #3BB8D6; display: flex; align-items: center; gap: 4px;">
-            Click to open interactive mockup →
-          </div>
-        </div>
-      </div>
-    </a>
-
-  </div>
-
-  <div class="callout" style="margin-top: 32px;">
-    <h4>💡 How to Use These Concepts</h4>
-    <p>Each concept explores a different design direction across <strong>multiple views</strong> — Graph canvas, Workspace three-panel view, and List view — showing how the depth-colour gradient, circle/hexagon shape system, and visual language extend across the entire product surface. They're not mutually exclusive — the best outcome likely combines elements from several. For example: <strong>Clean Canvas</strong> node design + <strong>Mission Control</strong> status dashboard + <strong>Executive Suite</strong> audit trail + <strong>Familiar Ground</strong> companion table as an optional view.</p>
-  </div>
-</div>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="80" height="64">
-    <path d="M10,130 Q30,122 50,130 Q70,138 90,130 Q110,122 130,130 Q150,138 170,130 Q190,122 200,130" fill="none" stroke="#3B8DBD" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M5,138 Q25,130 45,138 Q65,146 85,138 Q105,130 125,138 Q145,146 165,138 Q185,130 200,138" fill="none" stroke="#3B8DBD" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-    <path d="M55,128 L75,128 L145,128 L135,142 L65,142 Z" fill="#3B8DBD" rx="2"/>
-    <line x1="100" y1="128" x2="100" y2="28" stroke="#2C3E50" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M97,32 L97,124 L52,124 Z" fill="#F5B731" opacity="0.9"/>
-    <path d="M103,32 L103,108 L148,108 Z" fill="#A2B86B" opacity="0.9"/>
-    <text x="78" y="95" font-family="Georgia, serif" font-size="30" font-weight="bold" fill="#2C3E50" text-anchor="middle" opacity="0.85">E</text>
-    <text x="120" y="85" font-family="Georgia, serif" font-size="26" font-weight="bold" fill="#2C3E50" text-anchor="middle" opacity="0.85">S</text>
-    <path d="M100,28 L112,33 L100,38" fill="#C75B5B" opacity="0.9"/>
-  </svg>
-  <div class="company">Enriched Solutions</div>
-  <p style="margin-top: 4px; font-style: italic;">"You cannot change the wind, but working together, we can adjust the sails"</p>
-  <p style="margin-top: 16px;">Confidential · Prepared March 2026</p>
-</footer>
+// Restore theme
+const saved = localStorage.getItem('deepflow-guidelines-theme');
+if (saved === 'dark') {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.querySelector('.theme-toggle').textContent = '☀️';
+}
+</script>
 
 </body>
 </html>

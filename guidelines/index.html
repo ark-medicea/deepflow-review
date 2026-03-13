@@ -1616,6 +1616,12 @@
             flex-shrink: 0;
         }
 
+        .df-badge-symbol {
+            font-size: 0.85em;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
         .df-badge-success {
             background: var(--status-success-bg);
             color: var(--status-success);
@@ -2172,15 +2178,15 @@
         }
 
         .df-health-segment.active {
-            background: var(--status-success);
+            background: var(--task-complete);
         }
 
         .df-health-segment.warning {
-            background: var(--status-warning);
+            background: var(--task-approval);
         }
 
         .df-health-segment.error {
-            background: var(--status-error);
+            background: var(--task-failed);
         }
 
         /* --- SECTION INDEX --- */
@@ -3899,16 +3905,16 @@
                     <div class="group-parent">
                         <div class="group-parent-label"><span style="font-size: var(--text-md);">▾</span> L1 — ICAAP Document Production</div>
                         <div class="group-children">
-                            <div class="group-child"><div class="group-child-dot" style="background: var(--status-success);"></div>Data Collection<span class="text-muted text-sm" style="margin-left: auto;">Complete</span></div>
-                            <div class="group-child"><div class="group-child-dot" style="background: var(--status-info);"></div>Risk Assessment<span class="text-muted text-sm" style="margin-left: auto;">In Progress</span></div>
+                            <div class="group-child"><div class="group-child-dot" style="background: var(--task-complete);"></div>Data Collection<span class="text-muted text-sm" style="margin-left: auto;">Complete</span></div>
+                            <div class="group-child"><div class="group-child-dot" style="background: var(--task-active);"></div>Risk Assessment<span class="text-muted text-sm" style="margin-left: auto;">In Progress</span></div>
                             <div class="group-nested">
                                 <div class="group-nested-label">▾ L2 — Capital Modelling</div>
                                 <div class="group-children" style="padding-left: 0;">
-                                    <div class="group-child"><div class="group-child-dot" style="background: var(--status-success);"></div>Run Capital Model<span class="text-muted text-sm" style="margin-left: auto;">Complete</span></div>
-                                    <div class="group-child"><div class="group-child-dot" style="background: var(--status-warning);"></div>Gather Market Data<span class="text-muted text-sm" style="margin-left: auto;">Needs Attention</span></div>
+                                    <div class="group-child"><div class="group-child-dot" style="background: var(--task-complete);"></div>Run Capital Model<span class="text-muted text-sm" style="margin-left: auto;">Complete</span></div>
+                                    <div class="group-child"><div class="group-child-dot" style="background: var(--task-approval);"></div>Gather Market Data<span class="text-muted text-sm" style="margin-left: auto;">Needs Approval</span></div>
                                 </div>
                             </div>
-                            <div class="group-child"><div class="group-child-dot" style="background: var(--status-pending-bg); border: 1px solid var(--neutral-500);"></div>Draft Report<span class="text-muted text-sm" style="margin-left: auto;">Pending</span></div>
+                            <div class="group-child"><div class="group-child-dot" style="background: var(--task-pending);"></div>Draft Report<span class="text-muted text-sm" style="margin-left: auto;">Pending</span></div>
                         </div>
                     </div>
                 </div>
@@ -4693,9 +4699,9 @@
             <div class="df-edge-demos">
                 <div class="df-edge-demo-item">
                     <div class="df-edge-preview">
-                        <div class="df-edge-line" style="background: var(--status-success);">
-                            <div class="df-edge-dot-start" style="background: var(--status-success);"></div>
-                            <div class="df-edge-dot-end" style="background: var(--status-success);"></div>
+                        <div class="df-edge-line" style="background: var(--task-complete);">
+                            <div class="df-edge-dot-start" style="background: var(--task-complete);"></div>
+                            <div class="df-edge-dot-end" style="background: var(--task-complete);"></div>
                         </div>
                     </div>
                     <div class="df-edge-label">Complete → Ready</div>
@@ -4704,12 +4710,12 @@
 
                 <div class="df-edge-demo-item">
                     <div class="df-edge-preview">
-                        <div class="df-edge-line" style="background: var(--status-info);">
-                            <div class="df-edge-dot-start" style="background: var(--status-info);"></div>
-                            <div class="df-edge-dot-end" style="background: var(--status-info);"></div>
-                            <div class="df-edge-flow-dot" style="background: var(--status-info);"></div>
-                            <div class="df-edge-flow-dot" style="background: var(--status-info); animation-delay: 0.7s;"></div>
-                            <div class="df-edge-flow-dot" style="background: var(--status-info); animation-delay: 1.4s;"></div>
+                        <div class="df-edge-line" style="background: var(--task-active);">
+                            <div class="df-edge-dot-start" style="background: var(--task-active);"></div>
+                            <div class="df-edge-dot-end" style="background: var(--task-active);"></div>
+                            <div class="df-edge-flow-dot" style="background: var(--task-active);"></div>
+                            <div class="df-edge-flow-dot" style="background: var(--task-active); animation-delay: 0.7s;"></div>
+                            <div class="df-edge-flow-dot" style="background: var(--task-active); animation-delay: 1.4s;"></div>
                         </div>
                     </div>
                     <div class="df-edge-label">Active Flow</div>
@@ -4729,9 +4735,9 @@
 
                 <div class="df-edge-demo-item">
                     <div class="df-edge-preview">
-                        <div class="df-edge-line" style="background: var(--status-error); opacity: 0.7;">
-                            <div class="df-edge-dot-start" style="background: var(--status-error);"></div>
-                            <div class="df-edge-dot-end" style="background: var(--status-error);"></div>
+                        <div class="df-edge-line" style="background: var(--task-failed); opacity: 0.7;">
+                            <div class="df-edge-dot-start" style="background: var(--task-failed);"></div>
+                            <div class="df-edge-dot-end" style="background: var(--task-failed);"></div>
                         </div>
                     </div>
                     <div class="df-edge-label">Blocked</div>
@@ -4922,10 +4928,10 @@
                 <div style="max-width: 400px; margin-bottom: var(--space-6);">
                     <div class="df-progress-label">
                         <span class="df-progress-text">Capital Modelling</span>
-                        <span class="df-progress-pct" style="color: var(--status-error);">Blocked</span>
+                        <span class="df-progress-pct" style="color: var(--task-failed);">Blocked</span>
                     </div>
                     <div class="df-progress">
-                        <div class="df-progress-fill" style="width: 35%; background: var(--status-error);"></div>
+                        <div class="df-progress-fill" style="width: 35%; background: var(--task-failed);"></div>
                     </div>
                 </div>
 
@@ -5212,7 +5218,7 @@
                 <div class="demo-row-start" style="margin-bottom: var(--space-6);">
                     <div class="df-task-card">
                         <div class="df-task-card-header">
-                            <div class="df-task-card-status" style="background: var(--status-info);"></div>
+                            <div class="df-status-symbol df-status-symbol-sm df-status-in-progress"><svg viewBox="0 0 24 24"><line x1="9" y1="7" x2="9" y2="17"/><line x1="15" y1="7" x2="15" y2="17"/></svg></div>
                             <div class="df-task-card-title">Risk Assessment & Stress Testing</div>
                             <div class="df-avatar df-avatar-human df-avatar-xs df-avatar-teal">DO</div>
                         </div>
@@ -5222,7 +5228,7 @@
                         </div>
                         <div class="df-task-card-meta">
                             <div class="df-task-card-meta-left">
-                                <span class="df-badge df-badge-info" style="font-size: 10px; padding: 2px 8px;"><span class="df-badge-dot" style="width: 5px; height: 5px;"></span> In Progress</span>
+                                <span class="df-badge" style="font-size: 10px; padding: 2px 8px; background: var(--task-active-bg); color: var(--task-active); border-color: var(--task-active-border);"><span class="df-badge-symbol">❚❚</span> In Progress</span>
                             </div>
                             <div class="df-task-card-meta-right">
                                 <span class="df-task-card-due">Due Mar 15</span>
@@ -5232,7 +5238,7 @@
 
                     <div class="df-task-card">
                         <div class="df-task-card-header">
-                            <div class="df-task-card-status" style="background: var(--status-success);"></div>
+                            <div class="df-status-symbol df-status-symbol-sm df-status-complete"><svg viewBox="0 0 24 24"><polyline points="7 12 10.5 15.5 17 9"/></svg></div>
                             <div class="df-task-card-title">Data Collection & Validation</div>
                             <div class="df-avatar df-avatar-human df-avatar-xs df-avatar-blue">SC</div>
                         </div>
@@ -5241,7 +5247,7 @@
                         </div>
                         <div class="df-task-card-meta">
                             <div class="df-task-card-meta-left">
-                                <span class="df-badge df-badge-success" style="font-size: 10px; padding: 2px 8px;"><span class="df-badge-dot" style="width: 5px; height: 5px;"></span> Complete</span>
+                                <span class="df-badge" style="font-size: 10px; padding: 2px 8px; background: var(--task-complete-bg); color: var(--task-complete); border-color: var(--task-complete-border);"><span class="df-badge-symbol">✓</span> Complete</span>
                             </div>
                             <div class="df-task-card-meta-right">
                                 <span class="df-task-card-id">DF-142</span>
@@ -5250,12 +5256,17 @@
                     </div>
                 </div>
 
-                <div class="component-demo-label">All Six Colours (Swatches)</div>
-                <div class="swatch-row">
+                <div class="component-demo-label">All Twelve Colours (Swatches)</div>
+                <div class="swatch-row" style="flex-wrap: wrap;">
                     <div class="swatch">
                         <div class="swatch-color" style="background: #64748B;"></div>
                         <span class="swatch-label">Slate</span>
                         <span class="swatch-hex">#64748B</span>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-color" style="background: #14B8A6;"></div>
+                        <span class="swatch-label">Teal</span>
+                        <span class="swatch-hex">#14B8A6</span>
                     </div>
                     <div class="swatch">
                         <div class="swatch-color" style="background: #8B5CF6;"></div>
@@ -5273,14 +5284,34 @@
                         <span class="swatch-hex">#6366F1</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-color" style="background: #14B8A6;"></div>
-                        <span class="swatch-label">Teal</span>
-                        <span class="swatch-hex">#14B8A6</span>
+                        <div class="swatch-color" style="background: #06B6D4;"></div>
+                        <span class="swatch-label">Cyan</span>
+                        <span class="swatch-hex">#06B6D4</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-color" style="background: #F97316;"></div>
-                        <span class="swatch-label">Orange</span>
-                        <span class="swatch-hex">#F97316</span>
+                        <div class="swatch-color" style="background: #84CC16;"></div>
+                        <span class="swatch-label">Lime</span>
+                        <span class="swatch-hex">#84CC16</span>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-color" style="background: #FB7185;"></div>
+                        <span class="swatch-label">Rose</span>
+                        <span class="swatch-hex">#FB7185</span>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-color" style="background: #A78BFA;"></div>
+                        <span class="swatch-label">Lavender</span>
+                        <span class="swatch-hex">#A78BFA</span>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-color" style="background: #D946EF;"></div>
+                        <span class="swatch-label">Fuchsia</span>
+                        <span class="swatch-hex">#D946EF</span>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-color" style="background: #2DD4BF;"></div>
+                        <span class="swatch-label">Mint</span>
+                        <span class="swatch-hex">#2DD4BF</span>
                     </div>
                 </div>
             </div>
@@ -5289,7 +5320,7 @@
                 <div class="card">
                     <div class="card-title">Why Not Status Colours?</div>
                     <p class="card-text">
-                        Status colours (green, blue, amber, red, gray) are sacred — they always mean task state. Custom property pills use a separate palette of muted, desaturated tones (violet, pink, indigo, teal, orange, slate). This prevents a "High Priority" pill in red from being confused with a "Failed" status badge. The two systems coexist clearly because they occupy different colour spaces.
+                        Status colours (gray, blue, yellow, amber, green, red) are sacred — they always mean task state. Custom property pills use a separate palette of 12 muted, desaturated tones (slate, teal, violet, pink, indigo, cyan, lime, rose, lavender, fuchsia, mint). Orange was removed from the original 6 because it clashed with the new amber Needs Approval status. The two systems coexist clearly because they occupy different colour spaces.
                     </p>
                 </div>
                 <div class="card">
@@ -5493,7 +5524,7 @@
                             <!-- Parent row — expanded (▾) -->
                             <tr class="df-row-selected">
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox" checked></td>
-                                <td><span class="df-table-status-symbol" style="color: var(--status-success);">✓</span></td>
+                                <td><span class="df-table-status-symbol" style="color: var(--task-complete);">✓</span></td>
                                 <td><span class="df-table-task-name"><span class="df-chevron" style="transform: rotate(90deg);">▸</span>ICAAP Document Production</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">SC</span> Sarah Chen</div></td>
                                 <td>2026-04-15</td>
@@ -5501,7 +5532,7 @@
                             </tr>
                             <tr class="df-table-child">
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
-                                <td><span class="df-table-status-symbol" style="color: var(--status-success);">✓</span></td>
+                                <td><span class="df-table-status-symbol" style="color: var(--task-complete);">✓</span></td>
                                 <td><span class="df-table-task-name">Gather Risk Data</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">DO</span> David Okafor</div></td>
                                 <td>2026-03-20</td>
@@ -5509,7 +5540,7 @@
                             </tr>
                             <tr class="df-table-child">
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
-                                <td><span class="df-table-status-symbol" style="color: var(--brand-solid);">▶</span></td>
+                                <td><span class="df-table-status-symbol" style="color: var(--task-ready);">▶</span></td>
                                 <td><span class="df-table-task-name">Run Capital Model</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">SC</span> Sarah Chen</div></td>
                                 <td>2026-03-28</td>
@@ -5517,7 +5548,7 @@
                             </tr>
                             <tr class="df-table-child">
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
-                                <td><span class="df-table-status-symbol" style="color: var(--status-pending);">○</span></td>
+                                <td><span class="df-table-status-symbol" style="color: var(--task-pending);">○</span></td>
                                 <td><span class="df-table-task-name">Draft Executive Summary</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">EZ</span> Emily Zhao</div></td>
                                 <td>2026-04-10</td>
@@ -5526,7 +5557,7 @@
                             <!-- Parent row — collapsed (▸) -->
                             <tr>
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
-                                <td><span class="df-table-status-symbol" style="color: var(--brand-solid);">▶</span></td>
+                                <td><span class="df-table-status-symbol" style="color: var(--task-ready);">▶</span></td>
                                 <td><span class="df-table-task-name"><span class="df-chevron">▸</span>Risk Assessment Review</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">DO</span> David Okafor</div></td>
                                 <td>2026-03-25</td>
@@ -5534,7 +5565,7 @@
                             </tr>
                             <tr>
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
-                                <td><span class="df-table-status-symbol" style="color: var(--status-warning);">⏸</span></td>
+                                <td><span class="df-table-status-symbol" style="color: var(--task-active);">❚❚</span></td>
                                 <td><span class="df-table-task-name">Stress Testing Scenarios</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">SC</span> Sarah Chen</div></td>
                                 <td>2026-04-01</td>
@@ -5542,7 +5573,7 @@
                             </tr>
                             <tr>
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
-                                <td><span class="df-table-status-symbol" style="color: var(--status-pending);">○</span></td>
+                                <td><span class="df-table-status-symbol" style="color: var(--task-pending);">○</span></td>
                                 <td><span class="df-table-task-name">Board Presentation Prep</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">EZ</span> Emily Zhao</div></td>
                                 <td>2026-04-20</td>
@@ -5621,9 +5652,9 @@
                         <div class="df-sidebar-divider"></div>
                         <div class="df-sidebar-section">
                             <div class="df-sidebar-section-label">Projects</div>
-                            <a class="df-sidebar-item"><span class="df-sidebar-icon"><span class="df-sidebar-project-dot" style="background: var(--status-success);"></span></span> <span>ICAAP 2026</span></a>
-                            <a class="df-sidebar-item"><span class="df-sidebar-icon"><span class="df-sidebar-project-dot" style="background: var(--status-info);"></span></span> <span>Risk Assessment</span></a>
-                            <a class="df-sidebar-item"><span class="df-sidebar-icon"><span class="df-sidebar-project-dot" style="background: var(--status-warning);"></span></span> <span>Capital Modelling</span></a>
+                            <a class="df-sidebar-item"><span class="df-sidebar-icon"><span class="df-sidebar-project-dot" style="background: var(--task-complete);"></span></span> <span>ICAAP 2026</span></a>
+                            <a class="df-sidebar-item"><span class="df-sidebar-icon"><span class="df-sidebar-project-dot" style="background: var(--task-active);"></span></span> <span>Risk Assessment</span></a>
+                            <a class="df-sidebar-item"><span class="df-sidebar-icon"><span class="df-sidebar-project-dot" style="background: var(--task-approval);"></span></span> <span>Capital Modelling</span></a>
                         </div>
                         <div class="df-sidebar-spacer"></div>
                         <div class="df-sidebar-divider"></div>
