@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepFlow — Agent Execution Architecture</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Euclid Circular B';
+  src: url('../guidelines/fonts/EuclidCircularB-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0F1019;
+  --surface: #181924;
+  --surface-raised: #1F2130;
+  --border: rgba(255,255,255,0.08);
+  --text: #E8E9ED;
+  --text-muted: #9499AD;
+  --text-dim: #646980;
+  --accent: #6C7CFF;
+  --accent-soft: rgba(108,124,255,0.12);
+  --red: #FF6B7A;
+  --amber: #FFB347;
+  --green: #5BDA8C;
+  --teal: #4DD9C0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* — Header — */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(108,124,255,0.04) 0%, transparent 100%);
+}
+.site-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+.site-header .subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.site-header .meta {
+  margin-top: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* — Layout — */
+.container {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 6rem;
+}
+
+/* — Table of Contents — */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 3rem;
+}
+.toc-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+.toc ol {
+  list-style: none;
+  counter-reset: toc;
+}
+.toc ol li {
+  counter-increment: toc;
+}
+.toc ol li a {
+  display: block;
+  padding: 0.3rem 0;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+.toc ol li a::before {
+  content: counter(toc) ".";
+  display: inline-block;
+  width: 1.5rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.toc ol li a:hover { color: var(--accent); }
+
+/* — Sections — */
+section { margin-bottom: 3rem; }
+section + section { padding-top: 1rem; }
+
+h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 1.75rem 0 0.75rem;
+  color: var(--text);
+}
+
+p { margin-bottom: 1rem; }
+
+strong { font-weight: 600; color: var(--text); }
+em { font-style: italic; color: var(--text-muted); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* — Callouts — */
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0 1.5rem;
+}
+.callout p { margin-bottom: 0.5rem; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout-amber { border-left-color: var(--amber); }
+.callout-green { border-left-color: var(--green); }
+.callout-red { border-left-color: var(--red); }
+.callout-teal { border-left-color: var(--teal); }
+
+/* — Lists — */
+ul, ol { margin: 0.5rem 0 1rem 1.25rem; }
+li { margin-bottom: 0.35rem; font-size: 0.95rem; }
+li strong { color: var(--text); }
+
+/* — Tables — */
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+th {
+  background: var(--surface-raised);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+td {
+  padding: 0.6rem 0.85rem;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(108,124,255,0.03); }
+
+/* — Verdict blocks — */
+.verdict {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* — Diagram blocks — */
+.diagram {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
+  margin: 1.5rem 0;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  overflow-x: auto;
+  white-space: pre;
+}
+.diagram strong { color: var(--accent); font-family: inherit; }
+.diagram .hl-green { color: var(--green); }
+.diagram .hl-amber { color: var(--amber); }
+.diagram .hl-red { color: var(--red); }
+.diagram .hl-teal { color: var(--teal); }
+
+/* — Rec cards — */
+.rec-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.15rem 1.35rem;
+}
+.rec-card .num {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+.rec-card h4 {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.rec-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0;
+}
+
+/* — Self-critique section — */
+.critique-block {
+  background: linear-gradient(135deg, rgba(255,107,122,0.06), rgba(255,179,71,0.04));
+  border: 1px solid rgba(255,107,122,0.15);
+  border-radius: 10px;
+  padding: 1.75rem;
+  margin: 1.5rem 0;
+}
+.critique-block h3 {
+  margin-top: 0;
+  color: var(--red);
+}
+
+/* — Footer — */
+.final-note {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* — Code — */
+code {
+  background: var(--surface-raised);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: var(--teal);
+}
+
+/* — Responsive — */
+@media (max-width: 600px) {
+  .site-header { padding: 2rem 1.25rem 1.75rem; }
+  .site-header h1 { font-size: 1.4rem; }
+  .site-header .meta { flex-direction: column; gap: 0.25rem; }
+  .container { padding: 1.5rem 1rem 4rem; }
+  h2 { font-size: 1.15rem; }
+  .toc { padding: 1.25rem 1.25rem; }
+  table { font-size: 0.8rem; }
+  th, td { padding: 0.5rem 0.6rem; }
+  .diagram { font-size: 0.72rem; padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Agent Execution Architecture</h1>
+  <div class="subtitle">Runtimes, Tools &amp; Skills</div>
+  <div class="meta">
+    <span>13 March 2026</span>
+    <span>Product Architecture Document</span>
+    <span>DeepFlow Platform</span>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ol>
+    <li><a href="#thesis">Core Thesis</a></li>
+    <li><a href="#runtimes">Single Runtime vs. Per-Task Runtime</a></li>
+    <li><a href="#tools-skills">Tools vs. Skills — A Crucial Distinction</a></li>
+    <li><a href="#deep-dive">Runtime Architecture Deep Dive</a></li>
+    <li><a href="#permissions">Permission Model at the Runtime Level</a></li>
+    <li><a href="#comparison">Comparison Matrix</a></li>
+    <li><a href="#recommendations">Recommendations</a></li>
+    <li><a href="#self-critique">Self-Critique</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ -->
+<!-- CORE THESIS -->
+<!-- ============================================================ -->
+<section id="thesis">
+<h2>Core Thesis</h2>
+
+<div class="callout">
+<p><strong>DeepFlow uses a separate runtime per task.</strong> Every task in a workflow gets its own execution environment — its own tools, its own permissions, its own context window. This is not how most AI orchestration platforms work, and the choice has profound implications for security, scalability, and architectural complexity.</p>
+</div>
+
+<p>Most AI agent systems — from personal assistants like OpenClaw to framework-level tools like LangChain — operate in a single runtime. The agent loads once, gets access to everything, and runs until it's done. It's simple, fast, and works beautifully for single-user, trusted environments.</p>
+
+<p>DeepFlow takes a different path. When a workflow decomposes into tasks, each task spawns its own isolated execution environment. A task reviewing financial compliance loads legal and audit tools. A task writing marketing copy loads content and brand tools. Neither sees the other's capabilities. Neither can invoke the other's permissions.</p>
+
+<p>This document examines why that choice matters, when it's the right call, and when it's over-engineering.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SINGLE VS PER-TASK RUNTIME -->
+<!-- ============================================================ -->
+<section id="runtimes">
+<h2>1. Single Runtime vs. Per-Task Runtime</h2>
+
+<h3>The single-runtime model</h3>
+
+<p>In a single-runtime system, the AI agent operates like a user sitting at a workstation. It has one session, one set of tools, one permission boundary. OpenClaw is a clean example: one host machine, one agent, access to everything the host provides — files, APIs, shell commands, messaging surfaces.</p>
+
+<p>The mental model is straightforward: <strong>the agent sees what you see.</strong> If you can read a file, the agent can read it. If you can send an email, so can the agent. Permission boundaries are coarse — they're your operating system's permissions, not the agent's.</p>
+
+<p>This works remarkably well for specific scenarios:</p>
+<ul>
+  <li><strong>Personal assistants.</strong> A solo user trusts the agent with their environment. There's no multi-tenancy concern.</li>
+  <li><strong>Developer tooling.</strong> Coding agents that need full filesystem access, git operations, and shell execution.</li>
+  <li><strong>Single-operator workflows.</strong> One person, one machine, one context.</li>
+</ul>
+
+<p>The strengths are real: low latency (no runtime spin-up), full context (the agent accumulates knowledge across tasks), simple mental model (one agent, one session), and minimal infrastructure overhead.</p>
+
+<h3>The per-task runtime model</h3>
+
+<p>DeepFlow's model is fundamentally different. When a workflow decomposes a goal into tasks, each task gets its own execution environment. Think of it as <strong>Docker containers for AI execution</strong> — shared orchestration kernel, isolated userspace per task.</p>
+
+<div class="diagram"><strong>Workflow: "Prepare quarterly board report"</strong>
+
+┌─────────────────────────────────────────────────┐
+│  <strong>Orchestrator</strong>                                    │
+│  Manages DAG, routes context, enforces policy   │
+├─────────────┬───────────────┬───────────────────┤
+│             │               │                   │
+│  <span class="hl-green">Task 1</span>     │  <span class="hl-amber">Task 2</span>       │  <span class="hl-teal">Task 3</span>          │
+│  Financial  │  Marketing    │  Compliance       │
+│  Analysis   │  Summary      │  Review           │
+│             │               │                   │
+│  Tools:     │  Tools:       │  Tools:           │
+│  · SQL      │  · CMS API    │  · Audit log      │
+│  · Excel    │  · Analytics  │  · Policy docs    │
+│  · Charts   │  · Brand kit  │  · Reg database   │
+│             │               │                   │
+│  Perms:     │  Perms:       │  Perms:           │
+│  · Finance  │  · Marketing  │  · Compliance     │
+│    data (R) │    data (R)   │    data (R/W)     │
+│  · No email │  · No finance │  · Escalation     │
+│  · No deploy│  · No deploy  │  · No deploy      │
+└─────────────┴───────────────┴───────────────────┘</div>
+
+<p>Task 1 can query the financial database but cannot access the CMS. Task 3 can read compliance policies but cannot touch marketing analytics. Each runtime is configured for exactly what the task needs — nothing more.</p>
+
+<h3>The Docker analogy</h3>
+
+<p>This maps cleanly to containerisation. In a single-runtime system, the agent runs as a process with the host's full permissions — like running an application directly on bare metal. In DeepFlow's model, each task runs in its own container: shared orchestration kernel, isolated tool access, defined resource limits, and clean teardown.</p>
+
+<p>The analogy extends further:</p>
+<ul>
+  <li><strong>Namespaces</strong> → each task has its own tool namespace; no cross-contamination</li>
+  <li><strong>Resource limits</strong> → each task has its own context window budget and token ceiling</li>
+  <li><strong>Networking</strong> → tasks communicate through the orchestrator, not directly (like container networking through a bridge)</li>
+  <li><strong>Image layers</strong> → skill definitions serve as the "image" from which task runtimes are instantiated</li>
+</ul>
+
+<h3>When does each model make sense?</h3>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Factor</th><th>Single Runtime</th><th>Per-Task Runtime</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>User trust</strong></td><td>High trust, single user</td><td>Mixed trust, multi-user</td></tr>
+    <tr><td><strong>Data sensitivity</strong></td><td>Uniform sensitivity</td><td>Variable sensitivity across tasks</td></tr>
+    <tr><td><strong>Regulatory needs</strong></td><td>Low / self-regulated</td><td>Auditable, per-task traceability</td></tr>
+    <tr><td><strong>Team size</strong></td><td>Solo or small, trusted team</td><td>Cross-functional, role-based</td></tr>
+    <tr><td><strong>Latency tolerance</strong></td><td>Low (needs instant response)</td><td>Moderate (workflow tasks, not chat)</td></tr>
+    <tr><td><strong>Workflow complexity</strong></td><td>Sequential or ad hoc</td><td>DAG with dependencies, parallelism</td></tr>
+    <tr><td><strong>Cost sensitivity</strong></td><td>Optimised (shared context)</td><td>Higher (per-task overhead)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="verdict">
+<strong>Neither model is universally superior.</strong> A solo consultant running a personal AI assistant should use a single runtime — isolation adds overhead with no security benefit. A 50-person team running regulated workflows across departments needs per-task isolation — shared access is a compliance failure waiting to happen. DeepFlow's bet is that its target market (structured team workflows) justifies the per-task approach.
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOOLS VS SKILLS -->
+<!-- ============================================================ -->
+<section id="tools-skills">
+<h2>2. Tools vs. Skills — A Crucial Distinction</h2>
+
+<h3>Tools are atomic. Skills are composed.</h3>
+
+<p>This distinction sounds semantic but it's architecturally fundamental. Getting it wrong leads to either over-permissioned agents (every task gets every tool) or under-capable ones (tasks can't accomplish their goals without manual intervention).</p>
+
+<p><strong>A tool</strong> is a single capability with a defined interface:</p>
+<ul>
+  <li><code>read_file(path)</code> → returns file contents</li>
+  <li><code>query_database(sql)</code> → returns rows</li>
+  <li><code>send_email(to, subject, body)</code> → sends an email</li>
+  <li><code>call_api(endpoint, method, payload)</code> → returns response</li>
+</ul>
+
+<p>Tools are <strong>stateless</strong>. They don't know why they're being called. They don't carry context between invocations. They're functions.</p>
+
+<p><strong>A skill</strong> is a composed behaviour that orchestrates multiple tools with domain knowledge:</p>
+
+<div class="callout callout-teal">
+<p><strong>Skill: "Review a Pull Request"</strong></p>
+<p>This isn't one tool call. It's a sequence with judgment:</p>
+<p>1. Read the diff (tool: <code>read_file</code>)<br>
+2. Understand the codebase context (tool: <code>search_files</code>, <code>read_file</code>)<br>
+3. Check CI status (tool: <code>check_ci</code>)<br>
+4. Evaluate against coding standards (domain knowledge, not a tool)<br>
+5. Write review comments (tool: <code>create_review</code>)<br>
+6. Approve or request changes (tool: <code>submit_review</code>)</p>
+<p>The skill defines the <em>strategy</em> — what to check, in what order, what standards to apply. The tools are just the hands.</p>
+</div>
+
+<h3>Why this matters for per-task runtimes</h3>
+
+<p>In DeepFlow's architecture, the skill-tool distinction enables <strong>principle of least privilege at the capability level</strong>. When a task is assigned, its skill definition determines which tools are loaded into that runtime:</p>
+
+<ul>
+  <li>A <strong>"compliance review" skill</strong> loads: audit log reader, policy document search, regulatory database query, report generator. It does NOT load: deployment tools, email sending, file deletion.</li>
+  <li>A <strong>"code deployment" skill</strong> loads: git operations, CI/CD triggers, environment configuration, health checks. It does NOT load: financial database access, HR systems, customer data queries.</li>
+  <li>A <strong>"customer outreach" skill</strong> loads: CRM query, email composer, template engine, analytics. It does NOT load: source code access, infrastructure controls, internal wikis.</li>
+</ul>
+
+<p>This is the security model working as intended. The skill is the unit of capability scoping. The tools are the implementation details.</p>
+
+<h3>Skill composition in practice</h3>
+
+<p>Skills can be nested. A high-level skill like "prepare quarterly report" might decompose into sub-skills, each with their own tool requirements:</p>
+
+<div class="diagram"><strong>Skill: "Prepare Quarterly Report"</strong>
+
+├── <span class="hl-green">Sub-skill: Financial Analysis</span>
+│   ├── Tool: query_database (finance schema only)
+│   ├── Tool: generate_charts
+│   └── Tool: format_spreadsheet
+│
+├── <span class="hl-amber">Sub-skill: Executive Summary</span>
+│   ├── Tool: read_document (previous reports)
+│   ├── Tool: search_notes (meeting minutes)
+│   └── Tool: generate_text
+│
+└── <span class="hl-teal">Sub-skill: Compliance Check</span>
+    ├── Tool: audit_log_query
+    ├── Tool: policy_lookup
+    └── Tool: flag_exceptions</div>
+
+<p>Each sub-skill runs in its own task runtime with only the tools it needs. The financial analysis task cannot read meeting minutes. The compliance check cannot generate charts. The orchestrator manages the flow of outputs between them.</p>
+
+<h3>Skills carry context and strategy</h3>
+
+<p>A critical difference: tools are interchangeable (any SQL client will do), but skills encode institutional knowledge. A "compliance review" skill at a fintech startup is fundamentally different from one at a pharmaceutical company — different regulations, different risk thresholds, different escalation paths.</p>
+
+<p>This makes skills the primary vector for customisation in DeepFlow. Users don't configure tools (those are infrastructure); they configure <em>how work gets done</em> through skill definitions. Over time, an organisation's skill library becomes a codified version of "how we do things here" — a genuine competitive asset.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- RUNTIME DEEP DIVE -->
+<!-- ============================================================ -->
+<section id="deep-dive">
+<h2>3. Runtime Architecture Deep Dive</h2>
+
+<h3>Task runtime lifecycle</h3>
+
+<p>Every task in a DeepFlow workflow follows the same lifecycle:</p>
+
+<div class="diagram"><strong>Task Runtime Lifecycle</strong>
+
+  <span class="hl-amber">SPAWN</span>           Orchestrator creates a new runtime instance
+    │              Triggered by: DAG dependency resolution, manual assignment
+    ▼
+  <span class="hl-green">CONFIGURE</span>       Load tools based on skill definition
+    │              Set permissions from user role + task scope
+    │              Inject context from upstream task outputs
+    │              Set resource limits (tokens, time, cost ceiling)
+    ▼
+  <span class="hl-teal">EXECUTE</span>         Agent runs within configured boundaries
+    │              Tool invocations logged individually
+    │              Progress reported to orchestrator
+    │              Can request additional context (orchestrator-mediated)
+    ▼
+  <span class="hl-green">REPORT</span>          Output structured and stored
+    │              Downstream tasks notified of availability
+    │              Quality/completeness signals generated
+    ▼
+  <span class="hl-red">TEARDOWN</span>        Runtime destroyed
+                   Logs preserved for audit
+                   Tools unloaded, permissions revoked
+                   Resources released</div>
+
+<p>The key insight: <strong>teardown is not optional.</strong> Every runtime is ephemeral. There's no persistent agent accumulating permissions over time. Each task starts clean and ends clean. This is a security property, not just an implementation detail.</p>
+
+<h3>Shared state vs. isolated state</h3>
+
+<p>If every task is isolated, how do tasks in the same workflow communicate? This is the central tension of per-task architecture.</p>
+
+<p>DeepFlow uses an <strong>orchestrator-mediated message bus</strong>. Tasks don't talk to each other directly. Instead:</p>
+
+<ol>
+  <li><strong>Task outputs are structured.</strong> When Task A completes, its output is stored as a typed artifact (document, data table, analysis, decision).</li>
+  <li><strong>The orchestrator routes outputs to dependents.</strong> Based on the DAG, Task B receives Task A's output as part of its context injection during the CONFIGURE phase.</li>
+  <li><strong>The orchestrator controls visibility.</strong> Task B might receive Task A's summary but not its raw data. The orchestrator can filter, summarise, or transform outputs before passing them downstream.</li>
+</ol>
+
+<p>This is more restrictive than shared memory but more auditable. Every piece of information that crosses a task boundary is logged, traceable, and filterable.</p>
+
+<div class="callout callout-amber">
+<p><strong>The trade-off is real.</strong> In a single-runtime system, the agent naturally accumulates context across tasks — it remembers what it did two steps ago. In DeepFlow's model, that context must be explicitly passed. If the orchestrator doesn't inject a relevant upstream output, the downstream task operates blind. The system's intelligence is only as good as its context routing.</p>
+</div>
+
+<h3>The context window problem</h3>
+
+<p>Every LLM-based agent operates within a finite context window. In a single-runtime system, one long-running agent gradually fills its window with conversation history, tool outputs, and accumulated knowledge. Eventually, important early context falls off the edge.</p>
+
+<p>Per-task runtimes flip this problem. Each task starts with a fresh context window, populated only with what's relevant:</p>
+
+<ul>
+  <li><strong>Skill instructions</strong> — how to approach this type of work</li>
+  <li><strong>Upstream outputs</strong> — results from dependent tasks (filtered by the orchestrator)</li>
+  <li><strong>Tool definitions</strong> — what capabilities are available</li>
+  <li><strong>Task-specific context</strong> — relevant documents, data, constraints</li>
+</ul>
+
+<p>This is genuinely advantageous for complex workflows. A task reviewing compliance doesn't waste context tokens on the marketing task's creative brief. Each task gets a curated, relevant context window instead of an accumulated, noisy one.</p>
+
+<p><strong>But it creates a new problem:</strong> the orchestrator must be smart about context curation. Too little context → the task lacks necessary information. Too much → you've recreated the single-runtime bloat problem, just with extra steps. Getting this right is possibly the hardest engineering challenge in DeepFlow's architecture.</p>
+
+<h3>Resource management</h3>
+
+<p>Per-task runtimes have non-trivial cost implications:</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Cost Factor</th><th>Single Runtime</th><th>Per-Task Runtime</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>LLM API calls</strong></td><td>One session, accumulated context</td><td>Multiple sessions, duplicated system prompts</td></tr>
+    <tr><td><strong>Tool loading</strong></td><td>Load once, use for everything</td><td>Load per task, subset each time</td></tr>
+    <tr><td><strong>Context overhead</strong></td><td>Growing but shared</td><td>Fresh but repeated (skill defs, tool schemas)</td></tr>
+    <tr><td><strong>Orchestration</strong></td><td>Minimal (agent self-orchestrates)</td><td>Significant (DAG management, context routing)</td></tr>
+    <tr><td><strong>Parallelism</strong></td><td>Sequential (one agent)</td><td>Parallel (independent tasks run simultaneously)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The parallelism benefit partially offsets the overhead cost. A workflow with 10 independent tasks completes in the time of the slowest task, not the sum of all tasks. For workflows with natural parallelism (and DAGs often have significant parallelism), per-task runtimes can be <em>faster</em> despite per-task overhead.</p>
+
+<h3>Cold start vs. warm pool</h3>
+
+<p>Spinning up a fresh runtime for every task introduces latency. The mitigation strategies are well-understood from serverless computing:</p>
+
+<ul>
+  <li><strong>Warm pool:</strong> Keep pre-configured runtimes ready for common skill types. A "code review" runtime is always available; it just needs context injection.</li>
+  <li><strong>Predictive pre-warming:</strong> When Task A is 80% complete, pre-warm runtimes for its downstream dependents.</li>
+  <li><strong>Runtime reuse:</strong> For tasks with identical skill + tool requirements, reuse a runtime with a context flush (clear prior task's state, inject new context).</li>
+  <li><strong>Tiered latency:</strong> Not all tasks are latency-sensitive. Background analysis tasks can tolerate cold starts; interactive chat-based tasks cannot.</li>
+</ul>
+
+<p>The target should be sub-second runtime configuration for warm pools and under 3 seconds for cold starts. Anything longer and users perceive the system as sluggish compared to single-runtime alternatives.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- PERMISSIONS -->
+<!-- ============================================================ -->
+<section id="permissions">
+<h2>4. Permission Model at the Runtime Level</h2>
+
+<h3>From UI roles to runtime capabilities</h3>
+
+<p>DeepFlow's UI defines four permission levels: <strong>Owner</strong>, <strong>Member</strong>, <strong>Read-only</strong>, and <strong>Agent</strong>. These are familiar — most SaaS platforms have something similar. What's less common is how these translate into runtime-level tool permissions.</p>
+
+<div class="diagram"><strong>Permission Cascade: UI → Runtime</strong>
+
+  <span class="hl-green">Owner</span> (Sarah)
+    └─ Can spawn tasks with ANY tool in the workspace
+    └─ Can grant/revoke tool access for other roles
+    └─ Runtime: full tool catalogue available
+
+  <span class="hl-amber">Member</span> (Ravi)
+    └─ Can spawn tasks with tools assigned to their role
+    └─ Cannot access Owner-restricted tools (billing, user mgmt)
+    └─ Runtime: scoped tool catalogue
+
+  <span class="hl-teal">Read-only</span> (David the auditor)
+    └─ Can view task outputs and audit logs
+    └─ Cannot spawn tasks or invoke tools
+    └─ Runtime: view-only, no tool execution
+
+  <span class="hl-red">Agent</span> (AI executing a task)
+    └─ Inherits EXACTLY the permissions of its invoking user
+    └─ Cannot escalate beyond invoker's access level
+    └─ Runtime: subset of invoker's tool catalogue</div>
+
+<p>The critical rule: <strong>an AI agent's runtime never exceeds its invoking user's permissions.</strong> If Ravi (Member) triggers a workflow, every AI task in that workflow is bounded by Ravi's access level. The agent cannot spawn a task that accesses Owner-restricted tools, even if the skill definition references them.</p>
+
+<p>This is where per-task isolation pays clear dividends. In a single-runtime system, enforcing per-action permission checks requires the agent to self-police (or a middleware to intercept every tool call). In DeepFlow's model, the permissions are baked into the runtime at spawn time. The tools simply aren't available — there's nothing to intercept.</p>
+
+<h3>Agent permission inheritance</h3>
+
+<p>When an AI agent executes a task, its effective permissions are the <strong>intersection</strong> of three sets:</p>
+
+<ol>
+  <li><strong>Invoking user's role permissions</strong> — what the user who triggered the workflow can access</li>
+  <li><strong>Skill-defined tool requirements</strong> — what tools the skill says it needs</li>
+  <li><strong>Task-specific scope</strong> — any additional restrictions set at the workflow level (e.g., "this task can only read from the Q1 dataset")</li>
+</ol>
+
+<p>The result: the smallest reasonable set of capabilities. If a Member invokes a "financial analysis" skill that requests SQL, chart generation, and email tools — but the Member doesn't have email permissions — the runtime loads SQL and chart generation only. The task may produce a less complete output (no emailed report), but it won't violate the permission boundary.</p>
+
+<h3>Audit trail</h3>
+
+<p>Every tool invocation in a per-task runtime generates an audit record:</p>
+
+<ul>
+  <li><strong>Who</strong> — which user triggered the workflow</li>
+  <li><strong>What</strong> — which tool was called, with what arguments</li>
+  <li><strong>When</strong> — timestamp</li>
+  <li><strong>Where</strong> — which task, which workflow, which runtime instance</li>
+  <li><strong>Why</strong> — which skill definition requested this tool</li>
+  <li><strong>Result</strong> — what the tool returned (or that it failed)</li>
+</ul>
+
+<p>This is table-stakes for regulated industries, but it's also valuable for debugging. When a workflow produces unexpected output, the audit trail shows exactly which tool call in which task generated the problematic data. In a single-runtime system, you get a log of tool calls, but tracing them to specific logical tasks requires inference. In DeepFlow's model, the tracing is structural.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- COMPARISON MATRIX -->
+<!-- ============================================================ -->
+<section id="comparison">
+<h2>5. Comparison Matrix</h2>
+
+<p>How does DeepFlow's architecture compare to the current landscape of AI orchestration platforms?</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>OpenClaw</th>
+      <th>DeepFlow</th>
+      <th>LangChain / LangGraph</th>
+      <th>CrewAI</th>
+      <th>AutoGen</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Runtime Isolation</strong></td>
+      <td>None — single host process, full access</td>
+      <td>Per-task — isolated tools, permissions, context</td>
+      <td>None — single process, shared memory</td>
+      <td>Per-agent — each "crew member" has a role, but shares process</td>
+      <td>Per-agent — conversational isolation, shared process</td>
+    </tr>
+    <tr>
+      <td><strong>Tool Management</strong></td>
+      <td>Skills loaded at startup; agent has all tools always</td>
+      <td>Tools loaded per-task based on skill definition</td>
+      <td>Tools bound to agent at definition time; static per graph run</td>
+      <td>Tools assigned per agent role; static for the crew run</td>
+      <td>Tools registered globally or per-agent; static once assigned</td>
+    </tr>
+    <tr>
+      <td><strong>Permission Granularity</strong></td>
+      <td>OS-level — agent has user's full permissions</td>
+      <td>Task-level — intersection of user role, skill def, and task scope</td>
+      <td>None built-in — developer must implement</td>
+      <td>Role-based conceptual — not enforced at tool level</td>
+      <td>Minimal — human-in-the-loop as permission gate</td>
+    </tr>
+    <tr>
+      <td><strong>Scalability</strong></td>
+      <td>Vertical — one machine, one agent</td>
+      <td>Horizontal — parallel task runtimes across infrastructure</td>
+      <td>Vertical — single process, can parallelise graph nodes</td>
+      <td>Vertical — sequential or simple parallel within one process</td>
+      <td>Moderate — multi-agent conversations, single orchestrator</td>
+    </tr>
+    <tr>
+      <td><strong>Audit Trail</strong></td>
+      <td>Tool call logging per session</td>
+      <td>Per-task, per-tool, traceable to user and workflow</td>
+      <td>Callbacks/tracing (LangSmith) — observability, not governance</td>
+      <td>Minimal — output logging, no per-tool audit</td>
+      <td>Conversation logging — not structured for compliance</td>
+    </tr>
+    <tr>
+      <td><strong>Context Management</strong></td>
+      <td>Accumulated — one growing context window</td>
+      <td>Curated — orchestrator routes relevant context per task</td>
+      <td>Graph state — shared mutable state across nodes</td>
+      <td>Shared memory — agents can read each other's context</td>
+      <td>Conversation-based — agents share through message passing</td>
+    </tr>
+    <tr>
+      <td><strong>Complexity</strong></td>
+      <td>Low — install, configure, run</td>
+      <td>High — DAG engine, runtime management, context routing</td>
+      <td>Medium — developer framework, requires coding</td>
+      <td>Medium — YAML/code config, role-based setup</td>
+      <td>Medium — conversation patterns, agent definitions</td>
+    </tr>
+    <tr>
+      <td><strong>Target User</strong></td>
+      <td>Individual power user, developer</td>
+      <td>Teams, regulated industries, structured workflows</td>
+      <td>Developers building custom AI applications</td>
+      <td>Developers wanting multi-agent with minimal code</td>
+      <td>Researchers, developers exploring multi-agent patterns</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Key takeaways from the comparison</h3>
+
+<p><strong>DeepFlow is the only platform with genuine runtime isolation.</strong> CrewAI and AutoGen have conceptual agent separation (different roles, different tools), but they share a process. A misconfigured tool in one agent can leak data to another. DeepFlow's isolation is structural, not conventional.</p>
+
+<p><strong>LangChain/LangGraph is the closest architectural competitor</strong> — not in isolation (it has none) but in graph-based execution. LangGraph's "state graph" model is conceptually similar to DeepFlow's DAG, but without the permission layer, audit trail, or runtime isolation. It's a developer framework; DeepFlow is a platform.</p>
+
+<p><strong>OpenClaw occupies a genuinely different niche.</strong> It's not competing with DeepFlow — it's solving a different problem. A personal assistant that knows your entire environment is the opposite of an isolated task runtime. Both are valid; they serve different needs.</p>
+
+<div class="verdict">
+<strong>DeepFlow's architectural differentiation is real</strong> — per-task isolation with permission inheritance and structured audit trails doesn't exist in any current competitor. The question is whether the market values this differentiation enough to absorb the complexity cost.
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- RECOMMENDATIONS -->
+<!-- ============================================================ -->
+<section id="recommendations">
+<h2>6. Recommendations</h2>
+
+<h3>What DeepFlow should prioritise</h3>
+
+<div class="rec-grid">
+  <div class="rec-card">
+    <div class="num">Priority 01</div>
+    <h4>Get context routing right before anything else</h4>
+    <p>The orchestrator's ability to curate and route the right context to each task runtime is the make-or-break capability. Too little context → useless outputs. Too much → expensive and noisy. Invest in smart summarisation, relevance scoring, and user-configurable context policies. This is harder than the isolation model itself.</p>
+  </div>
+  <div class="rec-card">
+    <div class="num">Priority 02</div>
+    <h4>Build warm pools for common skill types</h4>
+    <p>Cold-start latency will kill adoption for interactive workflows. Pre-warm runtimes for the top 10 skill types. Use predictive pre-warming based on DAG structure. Target sub-second task start for warm runtimes. Users will forgive many things; they won't forgive feeling slow.</p>
+  </div>
+  <div class="rec-card">
+    <div class="num">Priority 03</div>
+    <h4>Make the permission model invisible until it matters</h4>
+    <p>Most users won't care about per-task tool isolation — until they do. Design the permission system to be zero-configuration for solo users (everything works, no friction) and progressively configurable for teams. Don't make Ravi learn about permission inheritance to use the product. Let Sarah configure it when her team needs it.</p>
+  </div>
+  <div class="rec-card">
+    <div class="num">Priority 04</div>
+    <h4>Ship a "shared runtime" mode for simple workflows</h4>
+    <p>Not every workflow needs per-task isolation. A solo user running a personal task list gains nothing from spawning isolated runtimes. Offer a lightweight "shared runtime" mode for low-complexity workflows — one agent, accumulated context, all tools available. Switch to per-task isolation when the workflow involves multiple users, sensitive data, or governance requirements.</p>
+  </div>
+</div>
+
+<h3>Where per-task isolation adds genuine value</h3>
+
+<ul>
+  <li><strong>Multi-department workflows.</strong> Finance + Legal + Marketing tasks in one workflow — isolation prevents cross-contamination of sensitive data.</li>
+  <li><strong>Regulated industries.</strong> Per-task audit trails satisfy compliance requirements that no other AI platform currently meets.</li>
+  <li><strong>Mixed human/AI execution.</strong> When AI tasks and human tasks interleave, per-task permissions ensure the AI never exceeds the human's access level.</li>
+  <li><strong>Parallel execution.</strong> Independent tasks running simultaneously is only possible with isolated runtimes. A single-runtime agent must execute sequentially.</li>
+</ul>
+
+<h3>Where it adds unnecessary complexity</h3>
+
+<ul>
+  <li><strong>Solo user, single-domain workflows.</strong> One person managing their own tasks doesn't need isolation. The overhead is pure cost.</li>
+  <li><strong>Rapid iteration / exploratory work.</strong> When a user is brainstorming and quickly spawning tasks, runtime spin-up latency disrupts flow.</li>
+  <li><strong>Small teams with full trust.</strong> A 5-person startup where everyone has access to everything gains governance overhead without security benefit.</li>
+</ul>
+
+<h3>The "good enough" permission model</h3>
+
+<div class="callout callout-green">
+<p><strong>For most teams under 20 people, three permission levels suffice:</strong></p>
+<p>1. <strong>Admin</strong> — can configure tools, skills, and permissions<br>
+2. <strong>User</strong> — can trigger workflows and execute tasks with default tool sets<br>
+3. <strong>Viewer</strong> — can see outputs and audit trails, cannot execute</p>
+<p>Don't ship a complex RBAC system on day one. Ship these three levels, make them work flawlessly, and add granularity when enterprise customers demand it with purchase orders attached.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SELF-CRITIQUE -->
+<!-- ============================================================ -->
+<section id="self-critique">
+<h2>8. Self-Critique</h2>
+
+<p><em>An architecture document that doesn't question its own assumptions is marketing, not analysis.</em></p>
+
+<div class="critique-block">
+<h3>Is per-task runtime over-engineered for most use cases?</h3>
+<p><strong>Probably, yes.</strong> The honest assessment: 80% of AI agent workflows today are single-user, single-domain, moderate-complexity tasks. A developer asking an AI to review code. A marketer generating campaign copy. A manager summarising meeting notes. None of these need per-task isolation.</p>
+<p>DeepFlow's architecture is designed for the 20% — multi-user, cross-domain, regulated workflows where isolation is a genuine requirement. That's a real market (enterprise, finance, healthcare, legal), but it's not the mass market. If DeepFlow targets the 80% with an architecture designed for the 20%, it will feel heavy. The "shared runtime" mode recommended above isn't optional — it's existential for adoption.</p>
+</div>
+
+<div class="critique-block">
+<h3>The performance cost of isolation</h3>
+<p><strong>It's non-trivial and shouldn't be hand-waved.</strong> Every per-task runtime incurs:</p>
+<ul>
+  <li>System prompt duplication (skill instructions, tool schemas) — ~500-2000 tokens per task</li>
+  <li>Context injection overhead — serialising and deserialising upstream outputs</li>
+  <li>Cold start latency — even with warm pools, configuration takes time</li>
+  <li>Orchestration cost — the DAG engine, context router, and permission validator are all additional compute</li>
+</ul>
+<p>For a workflow with 20 tasks, the overhead could be 10,000-40,000 additional tokens compared to a single-runtime approach. At current API pricing, that's small in absolute terms but compounds at scale. More importantly, the latency adds up — 20 tasks with 1-second cold starts is 20 seconds of pure overhead before any work begins (mitigated by parallelism, but still present on the critical path).</p>
+</div>
+
+<div class="critique-block">
+<h3>When shared state is actually what you want</h3>
+<p><strong>Isolation is the wrong default for collaborative, real-time work.</strong> Consider:</p>
+<ul>
+  <li><strong>Collaborative document editing.</strong> Multiple agents contributing to the same document need shared state, not isolated runtimes passing summaries through an orchestrator.</li>
+  <li><strong>Real-time dashboards.</strong> A monitoring workflow where tasks need instant access to each other's latest data — orchestrator-mediated message passing adds unacceptable latency.</li>
+  <li><strong>Conversational agents.</strong> A customer support workflow where context from one exchange must immediately inform the next — isolation destroys conversational coherence.</li>
+  <li><strong>Exploratory data analysis.</strong> An analyst asking iterative questions about a dataset — each question depends on seeing what the last answer revealed. Per-task isolation means losing the analytical thread.</li>
+</ul>
+<p>DeepFlow must recognise that isolation is a tool, not a philosophy. Some workflows benefit from shared state. The architecture should support both modes gracefully.</p>
+</div>
+
+<div class="critique-block">
+<h3>The complexity tax: is this worth it for teams under 20 people?</h3>
+<p><strong>Almost certainly not as the default experience.</strong> A team of 8 people will never configure per-task tool permissions. They'll never define skill-level capability scopes. They'll never review per-runtime audit trails. They'll use the product like a project management tool with AI features — and if the per-task architecture makes that experience slower or more confusing than Asana with an AI plugin, they'll choose Asana.</p>
+<p>The complexity tax is not just technical — it's cognitive. Every concept a user must understand (runtimes, tools vs. skills, permission inheritance, context routing) is a barrier to adoption. The architecture should be invisible to small teams and only surface for organisations that need it.</p>
+<p><strong>The test:</strong> Can a solo user run DeepFlow without ever encountering the word "runtime"? If yes, the architecture is well-hidden. If no, it's leaking implementation into UX.</p>
+</div>
+
+<div class="verdict">
+<strong>Bottom line:</strong> Per-task runtime isolation is a genuinely differentiated architecture with real value for regulated, multi-user workflows. But it's a liability if it's the only mode. DeepFlow needs to be simple by default and powerful by configuration — not powerful by default and simple never. The architecture should serve the product, not the other way around.
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FOOTER -->
+<!-- ============================================================ -->
+<div class="final-note">
+  <p>DeepFlow's per-task runtime model is architecturally novel in the AI orchestration space. No current competitor offers genuine runtime isolation with permission inheritance and structured audit trails. The question isn't whether the architecture is sound — it is. The question is whether the product can hide the complexity from users who don't need it while exposing it to users who do.</p>
+  <p style="margin-top:1rem;">The best infrastructure is invisible. Make the runtimes invisible.</p>
+  <p style="margin-top:1.5rem;font-style:normal;color:var(--text-dim);font-size:0.75rem;">Prepared by <a href="https://enriched.solutions" style="color:var(--text-dim);">Enriched Solutions</a></p>
+</div>
+
+</main>
+
+</body>
+</html>
