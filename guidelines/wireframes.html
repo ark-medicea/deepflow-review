@@ -210,7 +210,6 @@
                 <li class="sub">Status counts: ✓ complete · ▶ active · ⚠ blocked · ○ pending</li>
                 <li class="sub">Counts use task status colours (dot + number)</li>
                 <li class="sub">At 464px: drop pending count (show top 3 only)</li>
-                <li class="sub">Health meter (5 segments: green/amber/empty)</li>
                 <li class="heading">Right zone (context):</li>
                 <li class="sub">Due date (red if overdue) — hidden at 464px</li>
                 <li class="sub">Team avatar stack (3 + overflow count) — hidden at 464px</li>
@@ -274,7 +273,7 @@
     <div class="notes">
         <strong>Layout math:</strong> 56 + 320 + canvas + 360 = 1200px → canvas = 464px.<br>
         <strong>Detail panel hidden:</strong> canvas expands to 824px. Chat always remains.<br>
-        <strong>Hub bar expand:</strong> grows to ~220px, pushes canvas down. Three-column layout: (1) Stats — donut chart + per-status breakdown bars + health meter, (2) Team — member list with online status, roles, + add member, (3) Resources — workflow files + upload + metadata (due date countdown, owner, description). At 464px: 2-column + resource row. See <a href="hubbar.html" style="color:#0077DD;text-decoration:none">full Hub Bar spec</a>.
+        <strong>Hub bar expand:</strong> grows to ~220px, pushes canvas down. Three-column layout: (1) Stats — donut chart + per-status breakdown bars, (2) Team — member list with online status, roles, + add member, (3) Resources — workflow files + upload + metadata (due date countdown, owner, description). At 464px: 2-column + resource row. See <a href="hubbar.html" style="color:#0077DD;text-decoration:none">full Hub Bar spec</a>.
     </div>
 </div>
 
@@ -413,7 +412,6 @@
                 <li class="sub">Per card:</li>
                 <li class="sub" style="padding-left:28px">Project name</li>
                 <li class="sub" style="padding-left:28px">Client name</li>
-                <li class="sub" style="padding-left:28px">Health meter (5 segments: green/amber/empty)</li>
                 <li class="sub" style="padding-left:28px">Progress bar + percentage</li>
                 <li class="sub" style="padding-left:28px">Due date (red if overdue)</li>
                 <li class="sub" style="padding-left:28px">Status counts: ✓ done · ▶ active · ✕ failed</li>

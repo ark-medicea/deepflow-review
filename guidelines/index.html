@@ -2164,32 +2164,6 @@
             font-family: 'SF Mono', 'Fira Code', monospace;
         }
 
-        /* Health meter (multi-segment) */
-        .df-health {
-            display: flex;
-            gap: 2px;
-            align-items: center;
-        }
-
-        .df-health-segment {
-            flex: 1;
-            height: 6px;
-            border-radius: 1px;
-            background: var(--surface-card-border);
-        }
-
-        .df-health-segment.active {
-            background: var(--task-complete);
-        }
-
-        .df-health-segment.warning {
-            background: var(--task-approval);
-        }
-
-        .df-health-segment.error {
-            background: var(--task-failed);
-        }
-
         /* --- SECTION INDEX --- */
 
         .section-index {
@@ -4993,7 +4967,7 @@
             <div class="section-header">
                 <div class="section-number">17</div>
                 <h2 class="section-title">Status Indicators</h2>
-                <p class="section-desc">Dots, progress bars, and health meters. Multiple ways to show status at different levels of detail — from a single dot to a full progress breakdown.</p>
+                <p class="section-desc">Dots and progress bars. Multiple ways to show status at different levels of detail — from a single dot to a full progress breakdown.</p>
             </div>
 
             <div class="component-demo">
@@ -5168,39 +5142,7 @@
                     </div>
                 </div>
 
-                <div class="component-demo-label">Health Meters</div>
-                <div style="display: flex; align-items: center; gap: var(--space-4); max-width: 400px;">
-                    <div class="df-health" style="flex: 1;">
-                        <div class="df-health-segment active"></div>
-                        <div class="df-health-segment active"></div>
-                        <div class="df-health-segment active"></div>
-                        <div class="df-health-segment active"></div>
-                        <div class="df-health-segment"></div>
-                    </div>
-                    <span style="font-size: var(--text-xs); font-weight: 600; color: var(--status-success);">Healthy</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: var(--space-4); max-width: 400px; margin-top: var(--space-3);">
-                    <div class="df-health" style="flex: 1;">
-                        <div class="df-health-segment warning"></div>
-                        <div class="df-health-segment warning"></div>
-                        <div class="df-health-segment"></div>
-                        <div class="df-health-segment"></div>
-                        <div class="df-health-segment"></div>
-                    </div>
-                    <span style="font-size: var(--text-xs); font-weight: 600; color: var(--task-approval);">At Risk</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: var(--space-4); max-width: 400px; margin-top: var(--space-3);">
-                    <div class="df-health" style="flex: 1;">
-                        <div class="df-health-segment error"></div>
-                        <div class="df-health-segment"></div>
-                        <div class="df-health-segment"></div>
-                        <div class="df-health-segment"></div>
-                        <div class="df-health-segment"></div>
-                    </div>
-                    <span style="font-size: var(--text-xs); font-weight: 600; color: var(--status-error);">Critical</span>
-                </div>
-
-                <div class="component-demo-label" style="margin-top: var(--space-8);">Stacked Health Meter — Horizontal Bar</div>
+                <div class="component-demo-label" style="margin-top: var(--space-8);">Stacked Status Bar — Horizontal</div>
                 <p class="card-text" style="margin-bottom: var(--space-4);">A proportional stacked bar (like GitHub's language bar) showing task distribution by status. Each segment's width is proportional to its count. Hover segments for exact counts.</p>
                 <div style="max-width: 500px; margin-bottom: var(--space-4);">
                     <div style="display: flex; height: 12px; border-radius: var(--radius-full); overflow: hidden; gap: 2px;">
@@ -5242,7 +5184,7 @@
                     </div>
                 </div>
 
-                <div class="component-demo-label">Stacked Health Meter — Circular / Donut</div>
+                <div class="component-demo-label">Stacked Status — Circular / Donut</div>
                 <p class="card-text" style="margin-bottom: var(--space-4);">A ring/donut variant (like GitHub's PR check circle). Segments go clockwise in the same order. Centre shows total count or completion percentage. Ideal for dashboard widgets.</p>
                 <div style="display: flex; gap: var(--space-8); align-items: center; flex-wrap: wrap; margin-bottom: var(--space-4);">
                     <!-- Donut 1: project overview -->
@@ -5336,7 +5278,7 @@
                         <strong style="color: var(--text-primary);">Status symbols (20-32px):</strong> Primary format. Task cards, graph nodes, list rows, detail panels. Always prefer symbols over dots when space allows.<br>
                         <strong style="color: var(--text-primary);">Status dots (8px):</strong> Ultra-compact only — minimaps, inline mentions, breadcrumb badges.<br>
                         <strong style="color: var(--text-primary);">Progress bars:</strong> Workflow/phase completion percentage. Brand gradient for normal, status colours for complete/blocked.<br>
-                        <strong style="color: var(--text-primary);">Health meters:</strong> Dashboard-level project health for James and Ravi's command centre.
+                        <strong style="color: var(--text-primary);">Stacked status bars/donuts:</strong> Dashboard-level project overview for James and Ravi's command centre.
                     </p>
                 </div>
                 <div class="card">

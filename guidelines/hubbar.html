@@ -364,15 +364,6 @@
             width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
         }
 
-        /* Health meter */
-        .hubbar-health {
-            display: flex; gap: 2px; align-items: center; flex-shrink: 0;
-        }
-        .hubbar-health-seg {
-            width: 10px; height: 6px; border-radius: 1px;
-            background: var(--surface-card-border);
-        }
-
         /* Due date */
         .hubbar-due {
             font-size: 11px; font-weight: 500; color: var(--text-tertiary);
@@ -498,19 +489,6 @@
             font-size: 10px; font-weight: 600; color: var(--text-primary);
             min-width: 14px; text-align: right;
             font-family: 'SF Mono', 'Fira Code', monospace;
-        }
-
-        /* Health expanded */
-        .hubbar-health-expanded {
-            display: flex; gap: 2px; align-items: center; margin-top: var(--space-3);
-            padding-top: var(--space-3); border-top: 1px solid var(--surface-card-border);
-        }
-        .hubbar-health-expanded-seg {
-            flex: 1; height: 6px; border-radius: 1px;
-            background: var(--surface-card-border);
-        }
-        .hubbar-health-label {
-            font-size: 10px; color: var(--text-tertiary); margin-left: var(--space-2); white-space: nowrap;
         }
 
         /* Team panel */
@@ -743,7 +721,7 @@
     <section class="section" id="philosophy">
         <div class="section-header">
             <div class="section-number">Philosophy</div>
-            <h2 class="section-title">Glanceable Health</h2>
+            <h2 class="section-title">Glanceable Status</h2>
             <p class="section-desc">The Hub Bar answers one question instantly: <strong style="color:var(--text-primary);">"Is this workflow on track?"</strong> Collapsed, it's a 36px strip of vital signs. Expanded, it's a pull-down control panel — never a separate page.</p>
         </div>
 
@@ -754,7 +732,7 @@
         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:var(--space-4); margin-bottom: var(--space-8);">
             <div class="card">
                 <div class="card-title">36px of Truth</div>
-                <p class="card-text">The collapsed bar shows progress percentage, status counts, health meter, and due date. Every data point earns its pixels. Sarah glances at this 50 times a day — it must be instantly readable.</p>
+                <p class="card-text">The collapsed bar shows progress percentage, status counts, and due date. Every data point earns its pixels. Sarah glances at this 50 times a day — it must be instantly readable.</p>
             </div>
             <div class="card">
                 <div class="card-title">Pull-Down, Not Pop-Up</div>
@@ -796,14 +774,6 @@
                         <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--status-warning)"></div><span style="color:var(--status-warning)">1</span></div>
                         <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-pending)"></div><span style="color:var(--task-pending)">8</span></div>
                     </div>
-                    <div class="hubbar-sep"></div>
-                    <div class="hubbar-health" title="Workflow health: Good">
-                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                        <div class="hubbar-health-seg" style="background:var(--status-warning)"></div>
-                        <div class="hubbar-health-seg"></div>
-                    </div>
                     <div class="hubbar-spacer"></div>
                     <div class="hubbar-due">Due 28 Mar</div>
                     <div class="hubbar-sep"></div>
@@ -839,13 +809,6 @@
                         <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--status-warning)"></div><span style="color:var(--status-warning)">1</span></div>
                     </div>
                     <div class="hubbar-spacer"></div>
-                    <div class="hubbar-health" title="Workflow health">
-                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                        <div class="hubbar-health-seg" style="background:var(--status-warning)"></div>
-                        <div class="hubbar-health-seg"></div>
-                    </div>
                 </div>
             </div>
             <div class="demo-width-label">464px — due date, team, resources hidden (available in expanded view)</div>
@@ -868,10 +831,6 @@
             <div class="annotation-card">
                 <div class="annotation-card-title">Status Counts</div>
                 <div class="annotation-card-text">Coloured dots + numbers. Uses task status colours from the design system. At 464px width, only the 3 most important counts show (complete, active, blocked). Pending count dropped first.</div>
-            </div>
-            <div class="annotation-card">
-                <div class="annotation-card-title">Health Meter</div>
-                <div class="annotation-card-text">5-segment bar. Green = on track, Amber = at risk, Empty = no data. Derived from: overdue tasks, blocked percentage, time remaining vs progress. The glance-and-go indicator.</div>
             </div>
             <div class="annotation-card">
                 <div class="annotation-card-title">Team Stack + Resources</div>
@@ -971,15 +930,6 @@
                                         <span class="hubbar-status-bar-num">8</span>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Health meter expanded -->
-                            <div class="hubbar-health-expanded">
-                                <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
-                                <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
-                                <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
-                                <div class="hubbar-health-expanded-seg" style="background:var(--status-warning)"></div>
-                                <div class="hubbar-health-expanded-seg"></div>
-                                <span class="hubbar-health-label">Health: Good</span>
                             </div>
                         </div>
 
@@ -1157,7 +1107,7 @@
         <div class="annotation-grid">
             <div class="annotation-card">
                 <div class="annotation-card-title">📊 Stats Column</div>
-                <div class="annotation-card-text">Donut chart (total task count in centre) + per-status horizontal bars. Health meter with label at the bottom. The donut gives spatial proportion; the bars give exact numbers. Both are needed.</div>
+                <div class="annotation-card-text">Donut chart (total task count in centre) + per-status horizontal bars. The donut gives spatial proportion; the bars give exact numbers. Both are needed.</div>
             </div>
             <div class="annotation-card">
                 <div class="annotation-card-title">👥 Team Column</div>
@@ -1222,14 +1172,6 @@
                             <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-active)"></div><span style="color:var(--task-active)">3</span></div>
                             <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--status-warning)"></div><span style="color:var(--status-warning)">1</span></div>
                             <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-pending)"></div><span style="color:var(--task-pending)">8</span></div>
-                        </div>
-                        <div class="hubbar-sep"></div>
-                        <div class="hubbar-health">
-                            <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                            <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                            <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
-                            <div class="hubbar-health-seg" style="background:var(--status-warning)"></div>
-                            <div class="hubbar-health-seg"></div>
                         </div>
                         <div class="hubbar-spacer"></div>
                         <div class="hubbar-due">Due 28 Mar</div>
@@ -1306,14 +1248,6 @@
                                             <span class="hubbar-status-bar-num">8</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="hubbar-health-expanded">
-                                    <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
-                                    <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
-                                    <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
-                                    <div class="hubbar-health-expanded-seg" style="background:var(--status-warning)"></div>
-                                    <div class="hubbar-health-expanded-seg"></div>
-                                    <span class="hubbar-health-label">Health: Good</span>
                                 </div>
                             </div>
                             <div class="hubbar-panel">
@@ -1416,7 +1350,7 @@
                     <tr><td><strong style="color:var(--text-primary)">Expanded layout</strong></td><td>—</td><td><code>3-col</code> at ≥600px, <code>2-col + row</code> at &lt;600px</td></tr>
                     <tr><td><strong style="color:var(--text-primary)">State persistence</strong></td><td colspan="2">Expanded/collapsed state persisted in <code>layout.hubBarExpanded</code> (Zustand → IndexedDB)</td></tr>
                     <tr><td><strong style="color:var(--text-primary)">ARIA</strong></td><td colspan="2"><code>role="region"</code>, <code>aria-label="Workflow summary"</code>, <code>aria-expanded</code> on toggle</td></tr>
-                    <tr><td><strong style="color:var(--text-primary)">Data source</strong></td><td colspan="2">Derived from Zustand tree store — selectors compute counts, progress, health from <code>nodes</code> map</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Data source</strong></td><td colspan="2">Derived from Zustand tree store — selectors compute counts and progress from <code>nodes</code> map</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1432,7 +1366,6 @@
                     <tr><td>Workflow name</td><td>✅ (140px max)</td><td>✅ (80px max)</td><td>Click → workflow settings. Tooltip → full name</td></tr>
                     <tr><td>Progress bar + %</td><td>✅ (64px bar)</td><td>✅ (48px bar)</td><td>Tooltip → "12 of 24 tasks complete"</td></tr>
                     <tr><td>Status counts (4)</td><td>✅ all 4</td><td>✅ top 3 (drop pending)</td><td>Click a count → filters graph to that status</td></tr>
-                    <tr><td>Health meter</td><td>✅</td><td>✅</td><td>Tooltip → health description</td></tr>
                     <tr><td>Due date</td><td>✅</td><td>❌ (available in expanded)</td><td>Red text if overdue</td></tr>
                     <tr><td>Team avatar stack</td><td>✅</td><td>❌ (available in expanded)</td><td>Tooltip → member names</td></tr>
                     <tr><td>Resource count</td><td>✅</td><td>❌ (available in expanded)</td><td>Click → expand to resources column</td></tr>
@@ -1440,19 +1373,6 @@
             </table>
         </div>
 
-        <h3 style="font-size:var(--text-lg);font-weight:600;color:var(--text-primary);margin-bottom:var(--space-4);">Health Meter Calculation</h3>
-        <div class="card" style="margin-bottom: var(--space-8);">
-            <p class="card-text" style="margin-bottom:var(--space-4);">The 5-segment health meter is computed from three weighted signals:</p>
-            <table class="spec-table" style="margin-top:0;">
-                <thead><tr><th>Signal</th><th>Weight</th><th>Green</th><th>Amber</th><th>Red</th></tr></thead>
-                <tbody>
-                    <tr><td><strong style="color:var(--text-primary)">Time ratio</strong></td><td>40%</td><td>Progress ≥ time elapsed</td><td>Progress 10–30% behind time</td><td>Progress >30% behind</td></tr>
-                    <tr><td><strong style="color:var(--text-primary)">Blocked %</strong></td><td>30%</td><td>0 blocked</td><td>1–2 blocked</td><td>≥3 blocked or >10% of total</td></tr>
-                    <tr><td><strong style="color:var(--text-primary)">Failed tasks</strong></td><td>30%</td><td>0 failed</td><td>1 failed</td><td>≥2 failed</td></tr>
-                </tbody>
-            </table>
-            <p class="card-text" style="margin-top:var(--space-4);">Segments fill left-to-right. Score 90–100% → 5 green. 70–89% → 4 green. 50–69% → 3 green + 1 amber. 30–49% → 2 green + 2 amber. Below 30% → red segments appear.</p>
-        </div>
     </section>
 
     <!-- ==============================
@@ -1470,7 +1390,6 @@
                 <ul>
                     <li>Use the collapsed bar as the default — most users check it dozens of times without expanding</li>
                     <li>Make status counts clickable (filter the graph to that status)</li>
-                    <li>Show the health meter even when all tasks are pending (empty segments = "no signal yet")</li>
                     <li>Persist expanded/collapsed state per user — some users always want it open</li>
                     <li>Update all counts in real-time via WebSocket — never stale</li>
                     <li>Use the brand gradient accent line — this is the interactivity signal</li>
@@ -1510,7 +1429,6 @@ components/shell/HubBar/
 ├── HubBarStats.tsx         ← Donut chart + status bars
 ├── HubBarTeam.tsx          ← Team list + add member
 ├── HubBarResources.tsx     ← File list + upload + metadata
-├── HubBarHealthMeter.tsx   ← 5-segment health calculation
 ├── useHubBarData.ts        ← Hook: derives all stats from tree store
 └── hubbar.test.tsx         ← Unit tests
             </pre>
@@ -1528,7 +1446,6 @@ interface HubBarData {
   totalTasks: number
   statusCounts: Record&lt;TaskStatus, number&gt;
   progressPercent: number
-  healthScore: number              // 0–100, mapped to 5 segments
   dueDate: string | null
   isOverdue: boolean
   daysRemaining: number | null
@@ -1544,7 +1461,7 @@ interface HubBarData {
             <div class="card">
                 <div class="card-title">Responsive Breakpoints</div>
                 <p class="card-text">
-                    <strong style="color:var(--text-primary);">≥ 600px content width (3-column):</strong> Full expanded layout. Donut + bars + health | Team list + add | Resources + metadata.<br><br>
+                    <strong style="color:var(--text-primary);">≥ 600px content width (3-column):</strong> Full expanded layout. Donut + bars | Team list + add | Resources + metadata.<br><br>
                     <strong style="color:var(--text-primary);">&lt; 600px content width (2+1):</strong> Stats + Team side-by-side (no donut), Resources as full-width row below. Metadata inline.<br><br>
                     <strong style="color:var(--text-primary);">Collapsed:</strong> Progressive truncation. Due date, team, resources hide at &lt; 520px.
                 </p>
@@ -1553,7 +1470,7 @@ interface HubBarData {
                 <div class="card-title">Accessibility</div>
                 <p class="card-text">
                     <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">role="region"</code> with <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-label="Workflow summary"</code>.<br><br>
-                    Chevron: <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-expanded</code>. Health meter: <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-label="Workflow health: Good, 3 of 5 indicators positive"</code>.<br><br>
+                    Chevron: <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-expanded</code>.<br><br>
                     Status counts use both colour + number — never colour alone. <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-live="polite"</code> on counts for screen reader updates.
                 </p>
             </div>
