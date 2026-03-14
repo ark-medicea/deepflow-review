@@ -176,7 +176,7 @@
                 <li class="sub">AI messages (left-aligned, grey bg)</li>
                 <li class="sub">User messages (right-aligned, brand blue bg)</li>
                 <li class="sub">System messages (centered, muted — e.g. "Task updated")</li>
-                <li class="sub">Action chips on AI messages: "Apply to task", "Create workflow", "Assign to…"</li>
+                <li class="sub">Action chips on AI messages: "Apply to task", "Create workflow", "Assign to…", "Share with stakeholders"</li>
                 <li class="heading">Input bar (bottom, sticky):</li>
                 <li class="sub">Text input: "Ask about your workflow…"</li>
                 <li class="sub">Send button (brand gradient)</li>
@@ -192,6 +192,8 @@
                 <li>View switcher: Graph | Kanban | List (toggle buttons)</li>
                 <li>Filter button</li>
                 <li>Search input: "Search tasks…"</li>
+                <li class="heading">Right side:</li>
+                <li class="sub">🔗 Share button → popover: copy link, invite collaborator, export graph as image</li>
             </ul>
         </div>
 
@@ -479,6 +481,7 @@
                 <li class="sub" style="padding-left:28px">Owner: avatar + name</li>
                 <li class="sub" style="padding-left:28px">Status badge: Active / At Risk / Complete / Draft</li>
                 <li class="sub" style="padding-left:28px">Last updated + task count</li>
+                <li class="sub" style="padding-left:28px">⋮ menu: Share project link, Publish as template, Duplicate, Archive</li>
                 <li class="sub">Last card: "+ New Project" (dashed border)</li>
             </ul>
         </div>
@@ -533,6 +536,8 @@
                 <li>Breadcrumbs: [Project] › [Workflow] › [Task Name]</li>
                 <li>Canvas type indicator / switcher (if multiple embed types available)</li>
                 <li>Back to parent graph button</li>
+                <li class="heading">Right side:</li>
+                <li class="sub">🔗 Share button → share this task's output as read-only link</li>
             </ul>
         </div>
 
@@ -725,6 +730,14 @@
         — Double-click leaf node in Graph → enters Workspace for that task<br>
         — Middle pane switches from React Flow canvas to content editor (markdown / embed / agent log)<br>
         — Same shell, same panels, different middle content<br>
+        <br>
+        <strong>🔗 Share points (growth):</strong><br>
+        — <strong>Top Bar</strong> (Graph/Workspace): "Share" button → copy link, invite collaborator, export as image<br>
+        — <strong>Hub Bar (expanded)</strong>: "Share progress" → shareable snapshot URL with stats + graph thumbnail<br>
+        — <strong>Gallery project cards</strong>: ⋮ menu → Share project link, Publish as template<br>
+        — <strong>Workspace canvas</strong>: Share output as read-only link (task deliverable sharing)<br>
+        — <strong>Chat action chips</strong>: AI suggests "Share with stakeholders" when outputs are ready<br>
+        — <strong>Shared link experience</strong>: Non-users see a read-only branded view (graph, progress, output) with "Sign up to collaborate" CTA<br>
     </div>
 </div>
 

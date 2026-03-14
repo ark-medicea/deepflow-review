@@ -1278,7 +1278,57 @@ User is on Graph View
 
 ---
 
-## 15. Decisions (Resolved)
+## 15. Sharing & Growth
+
+### Share Points
+Every share action generates a **read-only branded link**. Non-users see the content with a "Sign up to collaborate" CTA — value before signup.
+
+| Location | Share Action | What non-users see |
+|----------|-------------|-------------------|
+| **Top Bar** (Graph/Workspace) | 🔗 Share button → popover: copy link, invite collaborator, export graph as image/PDF | Read-only graph view with progress stats. "Sign up to edit" CTA |
+| **Hub Bar (expanded)** | "Share progress" → generates a snapshot URL | Progress dashboard: stats, health meter, graph thumbnail, due dates. Auto-updates |
+| **Gallery project cards** | ⋮ menu → Share project link, Publish as template | Project overview card. "Use this template" CTA (requires signup) |
+| **Workspace canvas** | Share button → share task output as read-only link | Document/report view. "Sign up to collaborate" CTA |
+| **Chat action chips** | AI suggests "Share with stakeholders" when outputs are ready | N/A — triggers share popover for the user |
+| **Detail panel** | "Share task" link in header | Task detail view: status, description, files, progress |
+
+### Share Popover (common component)
+```
+┌─ Share ──────────────────────────┐
+│                                   │
+│ 🔗 Copy link            [Copy]  │
+│                                   │
+│ 👤 Invite collaborator           │
+│    [email or name input]  [Send] │
+│                                   │
+│ 📸 Export as image        [PNG]  │
+│ 📄 Export as PDF          [PDF]  │
+│                                   │
+│ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│ 🌐 Public link: [off ●━━━━ on]  │
+│    Anyone with link can view      │
+│                                   │
+│ Link access: [View only ▾]      │
+└───────────────────────────────────┘
+```
+
+### Shared Link View (for non-users)
+- Branded DeepFlow header with logo
+- Read-only content (graph/output/progress — whatever was shared)
+- Bottom banner: "This workflow is managed in DeepFlow. **Sign up free** to collaborate." + CTA button
+- If private link: requires email verification before viewing
+- If public link: visible immediately, indexed by search engines (optional per org setting)
+
+### Template Marketplace (Phase 3)
+- Users can publish workflows as templates (from Gallery ⋮ menu or Hub Bar)
+- Templates are discoverable by other orgs in a public gallery
+- "Use this template" → creates a copy in the user's org (requires account)
+- Template author gets attribution + usage stats
+- Org admins can restrict template publishing in Settings
+
+---
+
+## 16. Decisions (Resolved)
 
 | # | Question | Decision |
 |---|----------|----------|
@@ -1293,7 +1343,7 @@ User is on Graph View
 
 ---
 
-## 16. Phasing
+## 17. Phasing
 
 ### Phase 1 — Shell + Core Views (4–6 weeks)
 - [ ] Auth (Keycloak + keycloak-js + react-oidc-context)
