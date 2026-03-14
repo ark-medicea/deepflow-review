@@ -2725,6 +2725,20 @@
         .df-table .df-table-task-name {
             color: var(--text-primary);
             font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .df-table .df-chevron-slot {
+            width: 18px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .df-table .df-chevron-slot:empty {
+            /* Leaf nodes: empty slot preserves alignment */
         }
 
         .df-table .df-table-assignee {
@@ -5565,7 +5579,7 @@
                     .df-table .df-checkbox { width: 16px; height: 16px; accent-color: var(--brand-solid); cursor: pointer; margin: 0; }
                     .df-table tr.df-row-selected td { background: rgba(0, 119, 221, 0.06); }
                     [data-theme="dark"] .df-table tr.df-row-selected td { background: rgba(0, 153, 255, 0.08); }
-                    .df-chevron { cursor: pointer; color: var(--text-tertiary); font-size: var(--text-sm); display: inline-block; margin-right: var(--space-1); user-select: none; transition: transform var(--duration-fast) var(--ease-default); }
+                    .df-chevron { cursor: pointer; color: var(--text-tertiary); font-size: var(--text-sm); display: inline-block; user-select: none; transition: transform var(--duration-fast) var(--ease-default); }
                 </style>
                 <div class="df-table-wrapper">
                     <table class="df-table">
@@ -5584,7 +5598,7 @@
                             <tr class="df-row-selected">
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox" checked></td>
                                 <td><span class="df-table-status-symbol" style="color: var(--task-complete);">✓</span></td>
-                                <td><span class="df-table-task-name"><span class="df-chevron" style="transform: rotate(90deg);">▸</span>ICAAP Document Production</span></td>
+                                <td><span class="df-table-task-name"><span class="df-chevron-slot"><span class="df-chevron" style="transform: rotate(90deg);">▸</span></span>ICAAP Document Production</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">SC</span> Sarah Chen</div></td>
                                 <td>2026-04-15</td>
                                 <td><span class="df-table-priority df-priority-high">High</span></td>
@@ -5592,7 +5606,7 @@
                             <tr class="df-table-child">
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
                                 <td><span class="df-table-status-symbol" style="color: var(--task-complete);">✓</span></td>
-                                <td><span class="df-table-task-name">Gather Risk Data</span></td>
+                                <td><span class="df-table-task-name"><span class="df-chevron-slot"></span>Gather Risk Data</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">DO</span> David Okafor</div></td>
                                 <td>2026-03-20</td>
                                 <td><span class="df-table-priority df-priority-medium">Medium</span></td>
@@ -5600,7 +5614,7 @@
                             <tr class="df-table-child">
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
                                 <td><span class="df-table-status-symbol" style="color: var(--task-ready);">▶</span></td>
-                                <td><span class="df-table-task-name">Run Capital Model</span></td>
+                                <td><span class="df-table-task-name"><span class="df-chevron-slot"></span>Run Capital Model</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">SC</span> Sarah Chen</div></td>
                                 <td>2026-03-28</td>
                                 <td><span class="df-table-priority df-priority-high">High</span></td>
@@ -5608,7 +5622,7 @@
                             <tr class="df-table-child">
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
                                 <td><span class="df-table-status-symbol" style="color: var(--task-pending);">○</span></td>
-                                <td><span class="df-table-task-name">Draft Executive Summary</span></td>
+                                <td><span class="df-table-task-name"><span class="df-chevron-slot"></span>Draft Executive Summary</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">EZ</span> Emily Zhao</div></td>
                                 <td>2026-04-10</td>
                                 <td><span class="df-table-priority df-priority-low">Low</span></td>
@@ -5617,7 +5631,7 @@
                             <tr>
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
                                 <td><span class="df-table-status-symbol" style="color: var(--task-ready);">▶</span></td>
-                                <td><span class="df-table-task-name"><span class="df-chevron">▸</span>Risk Assessment Review</span></td>
+                                <td><span class="df-table-task-name"><span class="df-chevron-slot"><span class="df-chevron">▸</span></span>Risk Assessment Review</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">DO</span> David Okafor</div></td>
                                 <td>2026-03-25</td>
                                 <td><span class="df-table-priority df-priority-high">High</span></td>
@@ -5625,7 +5639,7 @@
                             <tr>
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
                                 <td><span class="df-table-status-symbol" style="color: var(--task-active);">❚❚</span></td>
-                                <td><span class="df-table-task-name">Stress Testing Scenarios</span></td>
+                                <td><span class="df-table-task-name"><span class="df-chevron-slot"></span>Stress Testing Scenarios</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">SC</span> Sarah Chen</div></td>
                                 <td>2026-04-01</td>
                                 <td><span class="df-table-priority df-priority-medium">Medium</span></td>
@@ -5633,7 +5647,7 @@
                             <tr>
                                 <td style="text-align: center;"><input type="checkbox" class="df-checkbox"></td>
                                 <td><span class="df-table-status-symbol" style="color: var(--task-pending);">○</span></td>
-                                <td><span class="df-table-task-name">Board Presentation Prep</span></td>
+                                <td><span class="df-table-task-name"><span class="df-chevron-slot"></span>Board Presentation Prep</span></td>
                                 <td><div class="df-table-assignee"><span class="df-table-avatar">EZ</span> Emily Zhao</div></td>
                                 <td>2026-04-20</td>
                                 <td><span class="df-table-priority df-priority-low">Low</span></td>
