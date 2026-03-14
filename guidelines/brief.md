@@ -41,10 +41,12 @@ DeepFlow is an AI-powered workflow orchestration platform. Users create hierarch
 | Language | **TypeScript (strict)** | Non-negotiable |
 | Styling | **Tailwind CSS 4** + CSS custom properties | Design tokens from guidelines map directly to CSS vars |
 | Component library | **Radix UI (headless)** | Accessible primitives. No visual opinions to fight |
-| Graph engine | **React Flow (xyflow)** | Mature DAG library. Custom nodes, edges, minimap, zoom, keyboard nav |
+| Graph engine | **React Flow (xyflow)** | Mature DAG library. Custom nodes, edges, minimap, zoom, keyboard nav. Sub-flow support for inline expansion |
+| Graph layout | **elkjs** (Eclipse Layout Kernel) | Compound graph layout — understands containers with children inside. Required for inline node expansion (nested containers, edges crossing boundaries). dagre cannot handle compound graphs. ~200KB, lazy-loaded with graph view |
+| Markdown editor | **Tiptap** (ProseMirror-based) | Rich text editing for Workspace canvas. Collaborative-ready, extensible with custom blocks (AI-inserted content tags). Headings, lists, tables, code blocks, images |
 | Panel layout | **react-resizable-panels** | Resizable panel groups with drag handles. Keyboard accessible. Persists sizes |
 | State management | **Zustand** | Lightweight, no boilerplate. Slices per domain |
-| Data fetching | **TanStack Query v5** | Cache, dedup, background refresh. Initial tree load + WS patch updates |
+| Data fetching | **TanStack Query v5** | For non-tree data only: project lists, chat history, user profiles, gallery, settings. NOT for the task tree (Zustand owns that directly) |
 | Forms | **React Hook Form + Zod** | Validation shares schemas with backend |
 | i18n | **react-intl** (FormatJS) | ICU MessageFormat. No SSR dependency. Lazy locale loading |
 | Icons | **Lucide React** | Consistent, tree-shakeable. Supplement with custom DeepFlow icons |
@@ -66,7 +68,7 @@ DeepFlow is an AI-powered workflow orchestration platform. Users create hierarch
 | Initial load | **Full DAG tree** fetched on project open | Entire task hierarchy (all levels) loaded into Zustand store. Typically 50–500 nodes. React Flow renders visible viewport; off-screen nodes are virtualised |
 | Store shape | **Normalised tree in Zustand** | `Record<nodeId, TaskNode>` with `parentId`, `childIds[]`, `dependencyIds[]`, `level`. Flat map, tree derived via selectors. Enables O(1) lookups and patches |
 | Rendering | **Derived views from single source** | Graph View, List View, Hub Bar, Detail Panel all read from the same Zustand tree store. No data duplication between views |
-| TanStack Query role | **Initial fetch + cache only** | Query fetches the tree on project open. After that, Zustand owns the live state. Query handles stale/refetch on window focus as a consistency check |
+| TanStack Query role | **Not used for tree** | Tree is fetched directly by Zustand `tree.loadTree()` (plain fetch). TanStack Query handles non-tree endpoints: project lists, chat history, user profiles, gallery. No dual-state complexity for the tree |
 
 ### Real-time — WebSocket Patches
 | Layer | Choice | Rationale |
@@ -736,7 +738,7 @@ Floating toolbar above the graph canvas (top-centre or top-right). Always visibl
 | **Zoom in** | Increase zoom level | + |
 | **Zoom out** | Decrease zoom level | − |
 | **Fit to screen** | Zoom + pan to fit all visible nodes in viewport | 0 |
-| **Auto-layout** | Re-arrange all nodes using automatic DAG layout algorithm (dagre/elkjs). Confirmation if > 20 nodes moved | ⌘⇧L |
+| **Auto-layout** | Re-arrange all nodes using elkjs compound layout algorithm. Respects expanded containers. Confirmation if > 20 nodes moved | ⌘⇧L |
 | **Expand selected** | Expand selected parent node inline (see below) | E |
 | **Collapse selected** | Collapse expanded parent back to stacked card | E (toggle) |
 | **Expand all** | Expand all parent nodes on current level | ⌘E |
@@ -861,7 +863,7 @@ Parent nodes can be **expanded inline** on the graph canvas, transforming from a
 - **Expand/collapse indicator:** ▸ chevron on collapsed cards (right of child count). ▾ chevron in container header when expanded. Clear visual affordance.
 - **Nested expansion:** Expanded containers can contain parents that are themselves expandable. L1 container → expand L2 parent inside it → see L3 nodes inside that. Containers nest.
 - **DAG edges flow through containers:** External edges connect to nodes inside expanded containers. An edge from an external node to a child inside a container draws a line that crosses the container boundary. React Flow sub-flows handle this.
-- **Container resizes automatically** based on child node layout. Auto-layout (dagre/elkjs) positions children inside the container.
+- **Container resizes automatically** based on child node layout. elkjs positions children inside the container (compound graph layout — it understands parent/child containment natively).
 - **Expand preserves position:** When expanding, the container appears where the stacked card was. Other nodes shift to accommodate the larger container. Animated transition (300ms ease).
 - **Performance:** Only render child nodes when expanded. Collapsed parents don't mount their children in React Flow. Lazy rendering for deep trees.
 
@@ -995,6 +997,25 @@ Select two or more sibling nodes and wrap them in a new parent. The new node tak
    → Render avatar in top bar (Phase 2) / cursor on canvas (Phase 3)
 ```
 
+### Canvas File Previewers
+
+The Workspace canvas supports multiple tab types. Each renderer is **lazy-loaded** — only the active tab's renderer is mounted.
+
+| Resource type | Renderer | Library | Notes |
+|---------------|----------|---------|-------|
+| **Markdown / rich text** | Tiptap editor | `@tiptap/react` + extensions | Default canvas tab. Editable for own task, read-only for upstream inputs |
+| **PDF** | PDF viewer | `react-pdf` (pdf.js wrapper) | Page navigation, zoom, text selection. Read-only |
+| **Images** (png/jpg/svg) | Image viewer | Native `<img>` + custom zoom/pan | Lightbox-style. Zoom, pan, download |
+| **CSV / spreadsheet** | Table viewer | `@tanstack/react-table` | Sortable columns, search. Read-only. For editable sheets: Google Sheets iframe |
+| **Code** | Syntax-highlighted viewer | `shiki` (WASM-based) | Language auto-detect. Line numbers. Copy button. Read-only |
+| **Google Docs** | Iframe embed | Native `<iframe>` | Authed via Google integration. Full editing inside iframe |
+| **Google Sheets** | Iframe embed | Native `<iframe>` | Same as Docs |
+| **Agent output log** | Streaming log | Custom component | Timestamped entries. Auto-scroll. ANSI colour support. Read-only while running, editable as markdown once complete |
+| **Video / audio** | Media player | Native `<video>` / `<audio>` | Basic controls. Rare use case |
+| **Unknown / binary** | Download prompt | — | "This file type can't be previewed. Download?" |
+
+**Auto-detection:** File type determined by MIME type (from API) → falls back to extension. Canvas tab icon reflects the type.
+
 ### Optimistic Updates
 - Task status change: patch Zustand store immediately → send API request → if rejected, revert patch + toast
 - Chat message send: append to message list immediately → confirm on server ack → if failed, mark as failed
@@ -1089,7 +1110,106 @@ The [design guidelines](index.html) define tokens. Map them to Tailwind + CSS va
 
 ---
 
-## 14. Decisions (Resolved)
+## 14. Mobile App Architecture
+
+### Strategy: React Native + Expo, Shared Monorepo
+
+The web and mobile apps share business logic but not UI components. React DOM (`<div>`) and React Native (`<View>`) are fundamentally different — don't fight it. Share everything *above* the UI layer.
+
+### Monorepo Structure
+```
+packages/
+├── shared/                  ← SHARED: used by web AND mobile
+│   ├── stores/              ← Zustand stores (tree, chat, filters, layout, preferences)
+│   ├── api/                 ← API client, fetch wrapper, token interceptor
+│   ├── ws/                  ← WebSocket client, event types, reconnect logic
+│   ├── validation/          ← Zod schemas (shared with backend if possible)
+│   ├── i18n/                ← ICU message files (en.json, etc.)
+│   └── types/               ← TaskNode, Project, User, Workflow, PropertyValue, etc.
+│
+├── web/                     ← WEB: React + Vite (this brief)
+│   ├── src/
+│   │   ├── routes/          ← React Router v7
+│   │   ├── components/      ← React DOM components (Radix, Tailwind)
+│   │   └── styles/          ← Tailwind + CSS tokens
+│   └── vite.config.ts
+│
+└── mobile/                  ← MOBILE: React Native + Expo
+    ├── src/
+    │   ├── screens/         ← Dashboard, Tasks, Chat, Notifications, Profile
+    │   ├── components/      ← React Native components (native primitives)
+    │   ├── navigation/      ← React Navigation (bottom tabs + stack)
+    │   └── theme/           ← Design tokens mapped to RN StyleSheet
+    ├── app.json             ← Expo config
+    └── eas.json             ← Expo Application Services (build/deploy)
+```
+
+### What Mobile Includes
+| Feature | Implementation |
+|---------|---------------|
+| **Dashboard** | Project cards, stats, attention banner. Same data as web via shared stores |
+| **Tasks (List View)** | Card-based task list (no table — cards work better on mobile). Expandable parent rows. Tap → task detail bottom sheet |
+| **Chat** | Full AI chat, promoted to a first-class tab. Same WS connection via shared hook |
+| **Notifications** | In-app list + **native push notifications** via Expo + FCM (Android) + APNs (iOS) |
+| **Profile / Settings** | Org switcher, notification preferences (per-type × per-channel matrix), profile |
+| **Task Detail** | Bottom sheet with all tabs: Description, Resources, Comments, Dependencies, History |
+| **Workspace (viewer)** | Markdown viewer (read-only or basic editing). Resource preview. Agent output log. No Tiptap — use a lighter RN markdown renderer |
+
+### What Mobile Excludes
+| Feature | Reason |
+|---------|--------|
+| **Graph canvas** | Too complex for mobile. React Flow doesn't render in RN. Users default to List View |
+| **Inline node expansion** | Graph-only feature |
+| **Panel resizing** | Single-panel views on mobile. No side-by-side panels |
+| **Tiptap editor** | Too heavy for RN. Use a simpler markdown editor (e.g. `react-native-markdown-editor`) for basic edits |
+| **Google Docs iframe** | No iframe in RN. Deep-link to Google Docs app instead |
+| **Drag-drop reparenting** | Complex gesture handling. Defer to Phase 2 mobile. Use "Move to…" action menu instead |
+
+### Push Notifications
+
+| Layer | Choice |
+|-------|--------|
+| **Service** | Expo Notifications (`expo-notifications`) |
+| **Android** | Firebase Cloud Messaging (FCM) |
+| **iOS** | Apple Push Notification service (APNs) |
+| **Backend integration** | Backend sends push alongside existing in-app/email/Slack channels. Device token registered on app launch via API |
+| **Notification types** | Same as web: task assigned, agent completed, approval needed, comment mention, workflow status change |
+| **User preferences** | Shared settings matrix — user configures which notification types go to which channels (in-app, email, Slack, push). Stored server-side, fetched by both web and mobile |
+
+### Mobile-Specific Features
+| Feature | Details |
+|---------|---------|
+| **Biometric auth** | Face ID / fingerprint → unlocks Keycloak session. `expo-local-authentication`. Token stored in secure keychain |
+| **Deep links** | `deepflow://projects/:id/task/:taskId` → opens directly in mobile app. Universal links for iOS, App Links for Android |
+| **Offline read cache** (Phase 2) | Cache last-viewed project tree in local storage. View tasks offline. Queue edits (status changes, comments) for sync when back online |
+| **Haptic feedback** | Light haptics on task completion (✓), status changes, pull-to-refresh |
+| **Pull to refresh** | Standard iOS/Android pattern on all list views |
+
+### Shared Code Reuse Estimate
+| Layer | Shared? | Notes |
+|-------|---------|-------|
+| TypeScript types | ✅ 100% | `packages/shared/types/` |
+| Zustand stores | ✅ ~90% | Tree, chat, filters, preferences. Layout store diverges (no panels on mobile) |
+| API client | ✅ 100% | Same endpoints, same token interceptor |
+| WebSocket hooks | ✅ 100% | Same reconnect logic, same event handling |
+| Zod validation | ✅ 100% | Same schemas |
+| i18n messages | ✅ 100% | Same message files, different rendering (react-intl vs react-native equivalent) |
+| UI components | ❌ 0% | Completely separate. React DOM vs React Native primitives |
+| Routing | ❌ 0% | React Router (web) vs React Navigation (mobile) |
+| Styling | ❌ 0% | Tailwind (web) vs RN StyleSheet / NativeWind (mobile) |
+
+**Bottom line:** ~60% total code reuse. All business logic shared. All UI separate. This is the right tradeoff — trying to share UI (via React Native Web or similar) creates worse experiences on both platforms.
+
+### Mobile Phasing
+| Phase | Scope | Timeline |
+|-------|-------|----------|
+| **Phase 1** | Responsive web (already in brief). PWA with Web Push (limited iOS). Validates mobile UX patterns | Included in web Phase 1 |
+| **Phase 2** | Expo app: Dashboard + Tasks (list) + Chat + Notifications (with native push) + Auth (biometric) | 4–6 weeks after web Phase 2 |
+| **Phase 3** | Workspace viewer, resource preview, offline read cache, deep links | 3–4 weeks |
+
+---
+
+## 15. Decisions (Resolved)
 
 | # | Question | Decision |
 |---|----------|----------|
@@ -1104,7 +1224,7 @@ The [design guidelines](index.html) define tokens. Map them to Tailwind + CSS va
 
 ---
 
-## 15. Phasing
+## 16. Phasing
 
 ### Phase 1 — Shell + Core Views (4–6 weeks)
 - [ ] Auth (Keycloak + keycloak-js + react-oidc-context)
