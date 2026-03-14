@@ -566,7 +566,8 @@ The shell uses **react-resizable-panels** for a flexible, resizable panel layout
 **Visible data on node (at default zoom):**
 | Element | Position | Notes |
 |---------|----------|-------|
-| Status symbol | Left edge | ○ pending · ▶ in-progress · ❚❚ paused · ❗ blocked · ✓ complete · ✕ failed — coloured by status. Not a dot — a recognisable symbol |
+| Left accent border | Left edge (3px) | **Primary status indicator.** Coloured by task status: green=complete, amber/yellow=in-progress, red=failed, grey=pending. Part of the Single Line design system — the line *is* the status at a glance. Always visible, even at reduced zoom levels |
+| Status symbol | Inside, left of title | ○ pending · ▶ in-progress · ❚❚ paused · ❗ blocked · ✓ complete · ✕ failed — **secondary** indicator providing redundant encoding (shape + colour alongside the accent border). Provides accessibility (shape, not just colour) |
 | Task name | Centre | Truncated with ellipsis if too long. Bold |
 | Assignee avatar | Right edge | Circle = human, hexagon = AI agent |
 | Progress count | Below name | Only shown when in-progress: "3/7 sub-tasks" |
@@ -577,7 +578,7 @@ The shell uses **react-resizable-panels** for a flexible, resizable panel layout
 **Node states (visual):**
 | State | Visual treatment |
 |-------|-----------------|
-| Default | White card, thin border |
+| Default | White card, thin border, 3px left accent coloured by task status (Single Line system) |
 | Hovered | Subtle shadow lift. Tooltip appears with full detail (all properties, description preview, dependencies) |
 | Selected (single-click) | Blue border + glow. Opens detail panel |
 | Multi-selected | Blue border (no glow). Part of selection group |

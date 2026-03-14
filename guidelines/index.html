@@ -1870,7 +1870,8 @@
 
         .df-node {
             background: var(--surface-card);
-            border: 2px solid var(--surface-card-border);
+            border: 1px solid var(--surface-card-border);
+            border-left: 3px solid var(--task-pending);
             border-radius: var(--radius-md);
             padding: var(--space-3) var(--space-4);
             display: inline-flex;
@@ -2722,6 +2723,10 @@
             background: var(--surface-hover);
         }
 
+        .df-table tr:hover td:first-child {
+            box-shadow: inset 3px 0 0 var(--brand-solid);
+        }
+
         .df-table .df-table-task-name {
             color: var(--text-primary);
             font-weight: 500;
@@ -3333,6 +3338,7 @@
             <ul class="nav-links">
                 <li><a href="#brand">Brand</a></li>
                 <li><a href="#principles">Principles</a></li>
+                <li><a href="#the-line" style="color: var(--brand-solid); font-weight: 600;">The Line</a></li>
                 <li><a href="#personas">Personas</a></li>
                 <li><a href="#tone">Tone</a></li>
                 <li><a href="#colour">Colour</a></li>
@@ -3571,6 +3577,163 @@
                 </div>
             </div>
 
+        </section>
+
+        <!-- ==========================================
+             THE LINE — Single Line Design System
+             ========================================== -->
+        <section id="the-line" class="section">
+            <div class="section-header">
+                <div class="section-number" style="font-size: var(--text-lg);">⸻</div>
+                <h2 class="section-title">The Line</h2>
+                <p class="section-desc">DeepFlow's visual signature. One subtle accent line signals interactivity, state, or focus. Full borders mean static containers. A single line means something is alive.</p>
+            </div>
+
+            <!-- Principle Statement -->
+            <div class="brand-statement" style="margin-bottom: var(--space-12);">
+                A single line is the smallest unit of visual information. One line — placed deliberately — tells you <em>this element is interactive</em>, <em>this element has state</em>, or <em>this element has your attention</em>.
+            </div>
+
+            <!-- The Rule -->
+            <div class="card mb-8" style="border-left: 3px solid; border-image: var(--brand-gradient-vertical) 1;">
+                <div class="card-title">The Rule</div>
+                <p class="card-text" style="margin-bottom: var(--space-4);">
+                    <strong style="color: var(--text-primary);">Full border</strong> = static container. A card, a panel, a section boundary. It holds content but doesn't communicate state.<br><br>
+                    <strong style="color: var(--text-primary);">Single line</strong> = interactive or stateful element. An editable field, an active navigation item, a status indicator, a notification severity. The line <em>is</em> the signal.
+                </p>
+            </div>
+
+            <!-- Where it appears -->
+            <div class="component-demo">
+                <div class="component-demo-label">Where the Line Appears</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-bottom: var(--space-8);">
+
+                    <!-- Form input — bottom -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Form Input</div>
+                        <div style="padding: var(--space-2) 0; border-bottom: 2px solid var(--brand-solid); font-size: var(--text-sm); color: var(--text-primary);">Capital Modelling</div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Bottom line = "editable text"</div>
+                    </div>
+
+                    <!-- Textarea — left -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Textarea</div>
+                        <div style="border-left: 2px solid var(--brand-solid); padding: var(--space-2) var(--space-3); font-size: var(--text-sm); color: var(--text-secondary); background: var(--surface-raised); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">Execute the capital model for ICAAP…</div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Left line = "editable block"</div>
+                    </div>
+
+                    <!-- Active tab — bottom -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Active Tab</div>
+                        <div style="display: flex; gap: var(--space-4); border-bottom: 1px solid var(--surface-card-border); padding-bottom: var(--space-2);">
+                            <span style="font-size: var(--text-sm); font-weight: 600; color: var(--brand-solid); border-bottom: 2px solid var(--brand-solid); padding-bottom: var(--space-2); margin-bottom: -3px;">Overview</span>
+                            <span style="font-size: var(--text-sm); color: var(--text-tertiary);">History</span>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Bottom line = "you are here"</div>
+                    </div>
+
+                    <!-- Card status — left -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Task Card</div>
+                        <div style="border-left: 3px solid var(--task-active); padding: var(--space-2) var(--space-3); background: var(--surface-raised); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+                            <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Risk Assessment</div>
+                            <div style="font-size: 10px; color: var(--text-tertiary);">In Progress</div>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Left line = task status</div>
+                    </div>
+
+                    <!-- Graph node — left -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Graph Node</div>
+                        <div style="border: 1px solid var(--surface-card-border); border-left: 3px solid var(--task-complete); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); display: flex; align-items: center; gap: var(--space-2);">
+                            <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Data Collection</div>
+                            <div style="width: 20px; height: 20px; background: var(--task-complete); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: auto;"><span style="color: white; font-size: 10px;">✓</span></div>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Left line = node status colour</div>
+                    </div>
+
+                    <!-- Toast — left -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Toast</div>
+                        <div style="border-left: 3px solid var(--status-error); padding: var(--space-2) var(--space-3); background: var(--surface-raised); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+                            <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Execution failed</div>
+                            <div style="font-size: 10px; color: var(--text-tertiary);">Model timed out</div>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Left line = notification severity</div>
+                    </div>
+
+                    <!-- Dialog — top -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Dialog</div>
+                        <div style="border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--surface-card-border);">
+                            <div style="height: 3px; background: linear-gradient(90deg, var(--status-error), #FF6B6B);"></div>
+                            <div style="padding: var(--space-2) var(--space-3);">
+                                <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);">Delete workflow?</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Top line = dialog intent/severity</div>
+                    </div>
+
+                    <!-- Sidebar active — left -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Sidebar Active</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-1);">
+                            <div style="font-size: var(--text-sm); color: var(--text-tertiary); padding: var(--space-1) var(--space-3);">Dashboard</div>
+                            <div style="font-size: var(--text-sm); font-weight: 600; color: var(--brand-solid); padding: var(--space-1) var(--space-3); border-left: 3px solid var(--brand-solid); background: rgba(0,119,221,0.06); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">Projects</div>
+                            <div style="font-size: var(--text-sm); color: var(--text-tertiary); padding: var(--space-1) var(--space-3);">Workflows</div>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Left line = "you are here"</div>
+                    </div>
+
+                    <!-- Table hover — left -->
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-md); padding: var(--space-4);">
+                        <div style="font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">Table Row Hover</div>
+                        <div style="display: flex; flex-direction: column; gap: 1px;">
+                            <div style="font-size: var(--text-sm); color: var(--text-tertiary); padding: var(--space-1) var(--space-3);">Data Collection</div>
+                            <div style="font-size: var(--text-sm); color: var(--text-primary); padding: var(--space-1) var(--space-3); border-left: 3px solid var(--brand-solid); background: var(--surface-hover); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">Risk Assessment ←</div>
+                            <div style="font-size: var(--text-sm); color: var(--text-tertiary); padding: var(--space-1) var(--space-3);">Stress Testing</div>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-2);">Left line = hover focus</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Colour Map -->
+            <div class="card-grid card-grid-2" style="margin-top: var(--space-8);">
+                <div class="card">
+                    <div class="card-title">Line Position Encodes Meaning</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">Bottom line:</strong> editable text (inputs), current location (active tab).<br>
+                        <strong style="color: var(--text-primary);">Left line:</strong> editable block (textarea), element status (cards, nodes, toasts), navigation state (sidebar), hover focus (table rows).<br>
+                        <strong style="color: var(--text-primary);">Top line:</strong> dialog intent and severity (destructive, action, approval).<br><br>
+                        Position isn't arbitrary — it follows spatial convention. Bottom = "what I'm typing in." Left = "what this thing <em>is</em>." Top = "what this dialog <em>wants</em>."
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Line Colour Encodes State</div>
+                    <p class="card-text">
+                        <strong style="color: var(--task-complete);">Green</strong> = complete, success.<br>
+                        <strong style="color: var(--task-active);">Yellow/Amber</strong> = in progress, active, warning, needs approval.<br>
+                        <strong style="color: var(--brand-solid);">Blue (brand)</strong> = interactive, focused, selected, editable.<br>
+                        <strong style="color: var(--task-failed);">Red</strong> = failed, error, destructive.<br>
+                        <strong style="color: var(--task-pending);">Grey</strong> = pending, inactive, disabled.<br><br>
+                        The line colour always maps to the existing status/semantic palette — no new colours are introduced. The system piggybacks on the tokens already defined.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">What Doesn't Get a Line</div>
+                    <p class="card-text">
+                        Not everything needs the treatment. Static information cards, the graph canvas background, sidebar icons, breadcrumb separators, avatar badges — these are structural or decorative. Adding a line would create noise, not signal.<br><br>
+                        <strong style="color: var(--text-primary);">The test:</strong> Does this element have interactive state or variable status? If yes, it gets a line. If it's purely structural, leave it alone.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Consistency Is the Point</div>
+                    <p class="card-text">
+                        The power of this system isn't any single line — it's that every line follows the same logic. A user who learns that "left accent = status" on a card will recognise the same pattern on a graph node, a toast, and a table row. One visual grammar, learned once, applied everywhere.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- ==========================================
@@ -4599,7 +4762,7 @@
                 <div class="component-demo-label">Card States</div>
                 <div class="demo-row-start">
                     <!-- Complete -->
-                    <div class="df-task-card">
+                    <div class="df-task-card" style="border-left: 3px solid var(--task-complete);">
                         <div class="df-task-card-header">
                             <div class="df-status-symbol df-status-symbol-sm df-status-complete"><svg viewBox="0 0 24 24"><polyline points="7 12 10.5 15.5 17 9"/></svg></div>
                             <div class="df-task-card-title">Data Collection & Validation</div>
@@ -4616,7 +4779,7 @@
                     </div>
 
                     <!-- In Progress -->
-                    <div class="df-task-card">
+                    <div class="df-task-card" style="border-left: 3px solid var(--task-active);">
                         <div class="df-task-card-header">
                             <div class="df-status-symbol df-status-symbol-sm df-status-in-progress"><svg viewBox="0 0 24 24"><line x1="9" y1="7" x2="9" y2="17"/><line x1="15" y1="7" x2="15" y2="17"/></svg></div>
                             <div class="df-task-card-title">Risk Assessment & Stress Testing</div>
@@ -4634,7 +4797,7 @@
                     </div>
 
                     <!-- AI Agent Task — Needs Approval -->
-                    <div class="df-task-card">
+                    <div class="df-task-card" style="border-left: 3px solid var(--task-approval);">
                         <div class="df-task-card-header">
                             <div class="df-status-symbol df-status-symbol-sm df-status-approval"><svg viewBox="0 0 24 24"><line x1="12" y1="8" x2="12" y2="13" stroke-width="2.5"/><circle cx="12" cy="16.5" r="0.5" fill="currentColor" stroke="none"/></svg></div>
                             <div class="df-task-card-title">Run Capital Adequacy Model</div>
@@ -4680,9 +4843,9 @@
                     </p>
                 </div>
                 <div class="card">
-                    <div class="card-title">Error State</div>
+                    <div class="card-title">Left Accent Line</div>
                     <p class="card-text">
-                        Failed tasks receive a coloured left border (3px, <code>status-error</code>) in addition to the status dot and badge. This is the one case where we add a card-level colour accent — failure must be impossible to miss. The "Overdue" label also turns red.
+                        Every task card carries a 3px left border coloured by its status — part of the <a href="#the-line" style="color: var(--brand-solid);">Single Line System</a>. Green = complete, amber = in progress, yellow = needs approval, red = failed, grey = pending. The line provides instant status recognition before reading any text. Combined with the status symbol, it creates redundant encoding: colour + shape + position.
                     </p>
                 </div>
             </div>
@@ -4702,7 +4865,7 @@
                 <!-- Row of nodes simulating a graph -->
                 <div style="display: flex; align-items: center; gap: 60px; flex-wrap: wrap;">
                     <!-- Node 1: Complete -->
-                    <div class="df-node" style="position: relative;">
+                    <div class="df-node" style="position: relative; border-left-color: var(--task-complete);">
                         <div class="df-node-handle df-node-handle-left" style="background: var(--task-complete);"></div>
                         <div class="df-status-symbol df-status-symbol-sm df-status-complete" style="flex-shrink: 0;"><svg viewBox="0 0 24 24"><polyline points="7 12 10.5 15.5 17 9"/></svg></div>
                         <div class="df-node-content">
@@ -4714,7 +4877,7 @@
                     </div>
 
                     <!-- Node 2: In Progress -->
-                    <div class="df-node" style="position: relative;">
+                    <div class="df-node" style="position: relative; border-left-color: var(--task-active);">
                         <div class="df-node-handle df-node-handle-left" style="background: var(--task-active);"></div>
                         <div class="df-status-symbol df-status-symbol-sm df-status-in-progress" style="flex-shrink: 0;"><svg viewBox="0 0 24 24"><line x1="9" y1="7" x2="9" y2="17"/><line x1="15" y1="7" x2="15" y2="17"/></svg></div>
                         <div class="df-node-content">
@@ -4726,7 +4889,7 @@
                     </div>
 
                     <!-- Node 3: AI Agent — Needs Approval -->
-                    <div class="df-node df-node-selected" style="position: relative;">
+                    <div class="df-node df-node-selected" style="position: relative; border-left-color: var(--task-approval);">
                         <div class="df-node-handle df-node-handle-left" style="background: var(--brand-solid);"></div>
                         <div class="df-status-symbol df-status-symbol-sm df-status-approval" style="flex-shrink: 0;"><svg viewBox="0 0 24 24"><line x1="12" y1="8" x2="12" y2="13" stroke-width="2.5"/><circle cx="12" cy="16.5" r="0.5" fill="currentColor" stroke="none"/></svg></div>
                         <div class="df-node-content">
@@ -4742,7 +4905,7 @@
             <div class="card-grid card-grid-3 mt-8">
                 <div class="card">
                     <div class="card-title">Node Structure</div>
-                    <p class="card-text">Rectangular card with rounded corners. Left: status symbol (○ ▶ ❚❚ ❗ ✓ ✕). Centre: task name + subtitle. Right: assignee avatar (circle/hexagon). Connection handles on left and right edges.</p>
+                    <p class="card-text">Rectangular card with rounded corners and a <strong style="color: var(--text-primary);">3px left accent border</strong> coloured by status — part of the <a href="#the-line" style="color: var(--brand-solid);">Single Line System</a>. The left border <em>is</em> the primary status indicator; the interior status symbol provides redundant encoding. Green = complete, amber/yellow = in progress, red = failed, grey = pending. Centre: task name + subtitle. Right: assignee avatar. Connection handles on both edges.</p>
                 </div>
                 <div class="card">
                     <div class="card-title">Selection State</div>
@@ -5570,7 +5733,7 @@
             <div class="section-header">
                 <div class="section-number">21</div>
                 <h2 class="section-title">Tables</h2>
-                <p class="section-desc">List view for managing large task sets. Sortable columns, inline status, and expandable parent-child rows — how Sarah manages 50+ tasks without losing context.</p>
+                <p class="section-desc">List view for managing large task sets. Sortable columns, inline status, and expandable parent-child rows — how Sarah manages 50+ tasks without losing context. On hover, a subtle left accent bar appears per the <a href="#the-line" style="color: var(--brand-solid);">Single Line System</a>.</p>
             </div>
 
             <div class="component-demo">
@@ -5762,7 +5925,7 @@
             <div class="section-header">
                 <div class="section-number">23</div>
                 <h2 class="section-title">Tabs</h2>
-                <p class="section-desc">Horizontal tab navigation for task detail panels, settings pages, and any multi-section content. Active state uses the brand underline pattern.</p>
+                <p class="section-desc">Horizontal tab navigation for task detail panels, settings pages, and any multi-section content. Active state uses a bottom underline — never a filled background — as part of the <a href="#the-line" style="color: var(--brand-solid);">Single Line System</a>. The line says "you are here."</p>
             </div>
 
             <div class="component-demo">
@@ -5829,7 +5992,7 @@
             <div class="section-header">
                 <div class="section-number">24</div>
                 <h2 class="section-title">Toasts &amp; Notifications</h2>
-                <p class="section-desc">Transient feedback messages. Appear bottom-right, auto-dismiss after 5 seconds (errors persist until dismissed). Action-oriented copy tells users what happened and what to do next.</p>
+                <p class="section-desc">Transient feedback messages. Appear bottom-right, auto-dismiss after 5 seconds (errors persist until dismissed). Each toast carries a 3px left accent bar coloured by severity — part of the <a href="#the-line" style="color: var(--brand-solid);">Single Line System</a>. Green = success, red = error, amber = warning, blue = info.</p>
             </div>
 
             <div class="component-demo">
@@ -6200,10 +6363,10 @@
                 </div>
 
                 <div class="component-demo-label">Demo Dialogs</div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+                <div style="display: flex; gap: var(--space-6); flex-wrap: wrap; align-items: flex-start;">
 
                     <!-- Destructive Confirmation Dialog -->
-                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);">
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04); width: 340px; flex-shrink: 0;">
                         <!-- Red accent stripe -->
                         <div style="height: 3px; background: linear-gradient(90deg, var(--status-error), #FF6B6B);"></div>
                         <div style="padding: var(--space-6);">
@@ -6227,7 +6390,7 @@
                     </div>
 
                     <!-- Flow Dialog (AI) -->
-                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);">
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04); width: 360px; flex-shrink: 0;">
                         <!-- Brand gradient stripe -->
                         <div style="height: 3px; background: var(--brand-gradient);"></div>
                         <div style="padding: var(--space-6);">
@@ -6268,7 +6431,7 @@
                     </div>
 
                     <!-- Approval Gate -->
-                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);">
+                    <div style="background: var(--surface-card); border: 1px solid var(--surface-card-border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04); width: 360px; flex-shrink: 0;">
                         <!-- Amber accent stripe -->
                         <div style="height: 3px; background: linear-gradient(90deg, #F59E0B, #FBBF24);"></div>
                         <div style="padding: var(--space-6);">
