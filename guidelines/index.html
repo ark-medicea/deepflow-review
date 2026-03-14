@@ -2789,12 +2789,21 @@
         }
 
         .df-table .df-table-child td {
-            padding-left: var(--space-10);
+            /* Do NOT add padding-left here — columns must always align regardless of nesting depth */
         }
 
         .df-table .df-table-child .df-table-task-name {
             font-weight: 400;
             color: var(--text-secondary);
+            padding-left: var(--space-6);  /* Indent the task name text only, not the whole cell */
+        }
+
+        .df-table .df-table-child-l2 .df-table-task-name {
+            padding-left: var(--space-10);  /* Deeper nesting: more indent on name only */
+        }
+
+        .df-table .df-table-child-l3 .df-table-task-name {
+            padding-left: calc(var(--space-10) + var(--space-4));
         }
 
         /* ============================================
