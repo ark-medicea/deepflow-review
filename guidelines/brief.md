@@ -109,7 +109,7 @@ src/
 │   ├── _app.settings.tsx         # Settings
 │   └── _app.settings.$section.tsx # Settings sub-section
 ├── components/
-│   ├── shell/                    # Sidebar, ChatPanel, TopBar, HubBar
+│   ├── shell/                    # Sidebar, ChatPanel, TopBar, HubBar (HubBar/, HubBarCollapsed, HubBarExpanded, HubBarStats, HubBarTeam, HubBarResources, HubBarHealthMeter, useHubBarData)
 │   ├── graph/                    # React Flow custom nodes, edges, zones
 │   ├── list/                     # Table, expandable rows
 │   ├── workspace/                # Canvas editor, embeds (GDoc, code, agent log)
@@ -547,7 +547,7 @@ The shell uses **react-resizable-panels** for a flexible, resizable panel layout
 | `Sidebar` | **Top zone:** Org switcher (logo + name, dropdown to switch). **Mid zone:** Dashboard, Tasks & Projects (expandable → pinned/recent projects), Agents & Automations (expandable → active agents with status dots). **Bottom zone:** Notification bell (dot badge collapsed, count expanded), Settings, User profile/avatar. Collapsed: 56px icon-only with tooltips + hover flyout mini-panels. Expanded: 240px (auto-expand in Settings view only). `aria-label="Main navigation"` |
 | `ChatPanel` | Message list, input, context badge, action chips. Subscribes to WS for new messages. `aria-label="AI chat"` |
 | `TopBar` | Breadcrumbs (driven by route), view switcher (Graph/Kanban/List), filter button, search. Dynamic per view |
-| `HubBar` | Collapsed: progress + stats. Expanded: donut, breakdown, due dates, assignees. Animated toggle |
+| `HubBar` | **Collapsed (36px):** chevron + workflow name + progress bar/% + status counts (✓ complete, ▶ active, ⚠ blocked, ○ pending) + 5-segment health meter + due date + team avatar stack (3+overflow) + resource count (📎 n). Bottom: 2px brand gradient accent line (opacity 0.5→1.0 on hover). At 464px: hides due date, team, resources. **Expanded (~220px):** 3-column grid pushed down from collapsed header row. Col 1: donut chart (status distribution, total count centre) + per-status breakdown bars + health meter with label. Col 2: team list (online dot + avatar + name + role) + "Add team member". Col 3: workflow resource list (click → opens in canvas tab) + upload + metadata (due date + countdown, owner, description). At <600px: 2-col (stats+team) + full-width resource row. Toggle: chevron click, `H` key, `Escape` to collapse. State persisted in `layout.hubBarExpanded` (Zustand → IndexedDB). ARIA: `role="region"`, `aria-label="Workflow summary"`, `aria-expanded` on toggle. See [Hub Bar spec](hubbar.html) |
 | `DetailPanel` | Tabs: Overview, Sub-tasks, Files, Comments, History. Task data via TanStack Query. Editable fields |
 | `GraphCanvas` | React Flow wrapper. Custom node component. Custom edge component. Level zones. Minimap. Zoom controls |
 | `TaskTable` | Virtualized table (TanStack Table). Expandable rows. Sticky headers. Sortable columns. Row selection |

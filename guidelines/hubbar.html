@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepFlow — Hub Bar Specification</title>
+    <style>
+        @font-face { font-family: 'Euclid Circular B'; src: url('fonts/EuclidCircularB-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+        @font-face { font-family: 'Euclid Circular B'; src: url('fonts/EuclidCircularB-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Euclid Circular B'; src: url('fonts/EuclidCircularB-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+        @font-face { font-family: 'Euclid Circular B'; src: url('fonts/EuclidCircularB-SemiBold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+        @font-face { font-family: 'Euclid Circular B'; src: url('fonts/EuclidCircularB-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+
+        :root {
+            --brand-cyan: #00D4F5;
+            --brand-blue: #2244FF;
+            --brand-mid: #0099FF;
+            --brand-gradient: linear-gradient(135deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-gradient-horizontal: linear-gradient(90deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-solid: #0077DD;
+            --brand-solid-hover: #0066CC;
+
+            --neutral-950: #FFFFFF;
+            --neutral-900: #F8F9FB;
+            --neutral-850: #F1F3F6;
+            --neutral-800: #E4E7ED;
+            --neutral-700: #D0D4DC;
+            --neutral-600: #A0A6B4;
+            --neutral-500: #6B7280;
+            --neutral-400: #4B5563;
+            --neutral-300: #374151;
+            --neutral-200: #1F2937;
+            --neutral-100: #111827;
+
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --text-tertiary: #6B7280;
+            --text-inverse: #FFFFFF;
+
+            --surface-page: #FFFFFF;
+            --surface-raised: #F8F9FB;
+            --surface-overlay: #FFFFFF;
+            --surface-nav: rgba(255, 255, 255, 0.9);
+            --surface-card: #FFFFFF;
+            --surface-card-border: #E4E7ED;
+            --surface-hover: #F1F3F6;
+
+            --status-success: #059669;
+            --status-success-bg: rgba(5, 150, 105, 0.08);
+            --status-success-border: rgba(5, 150, 105, 0.2);
+            --status-warning: #D97706;
+            --status-warning-bg: rgba(217, 119, 6, 0.08);
+            --status-warning-border: rgba(217, 119, 6, 0.2);
+            --status-error: #DC2626;
+            --status-error-bg: rgba(220, 38, 38, 0.08);
+            --status-error-border: rgba(220, 38, 38, 0.2);
+            --status-info: #2563EB;
+            --status-info-bg: rgba(37, 99, 235, 0.08);
+            --status-info-border: rgba(37, 99, 235, 0.2);
+
+            --task-pending: #9CA3AF;
+            --task-pending-bg: rgba(156, 163, 175, 0.12);
+            --task-ready: #3B82F6;
+            --task-ready-bg: rgba(59, 130, 246, 0.08);
+            --task-active: #EAB308;
+            --task-active-bg: rgba(234, 179, 8, 0.08);
+            --task-approval: #F59E0B;
+            --task-approval-bg: rgba(245, 158, 11, 0.08);
+            --task-complete: #059669;
+            --task-complete-bg: rgba(5, 150, 105, 0.08);
+            --task-failed: #DC2626;
+            --task-failed-bg: rgba(220, 38, 38, 0.08);
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            --space-16: 64px;
+            --space-20: 80px;
+            --space-24: 96px;
+
+            --text-xs: 0.75rem;
+            --text-sm: 0.8125rem;
+            --text-base: 0.875rem;
+            --text-md: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+
+            --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+            --duration-slow: 400ms;
+        }
+
+        [data-theme="dark"] {
+            --brand-solid: #0099FF;
+            --brand-solid-hover: #00AAFF;
+            --neutral-950: #0A0A0F;
+            --neutral-900: #111118;
+            --neutral-850: #16161F;
+            --neutral-800: #1C1C27;
+            --neutral-700: #2A2A3A;
+            --neutral-600: #3D3D52;
+            --neutral-500: #5C5C73;
+            --neutral-400: #8585A0;
+            --neutral-300: #ABABBD;
+            --neutral-200: #D0D0DB;
+            --neutral-100: #E8E8EF;
+
+            --text-primary: #E8E8EF;
+            --text-secondary: #ABABBD;
+            --text-tertiary: #8585A0;
+            --text-inverse: #0A0A0F;
+
+            --surface-page: #0A0A0F;
+            --surface-raised: #111118;
+            --surface-overlay: #1C1C27;
+            --surface-nav: rgba(10, 10, 15, 0.85);
+            --surface-card: #111118;
+            --surface-card-border: #1C1C27;
+            --surface-hover: #16161F;
+
+            --status-success: #34D399;
+            --status-success-bg: rgba(52, 211, 153, 0.12);
+            --status-success-border: rgba(52, 211, 153, 0.3);
+            --status-warning: #FBBF24;
+            --status-warning-bg: rgba(251, 191, 36, 0.12);
+            --status-warning-border: rgba(251, 191, 36, 0.3);
+            --status-error: #F87171;
+            --status-error-bg: rgba(248, 113, 113, 0.12);
+            --status-error-border: rgba(248, 113, 113, 0.3);
+            --status-info: #60A5FA;
+            --status-info-bg: rgba(96, 165, 250, 0.12);
+            --status-info-border: rgba(96, 165, 250, 0.3);
+
+            --task-pending: #8585A0;
+            --task-pending-bg: rgba(133, 133, 160, 0.12);
+            --task-ready: #60A5FA;
+            --task-ready-bg: rgba(96, 165, 250, 0.12);
+            --task-active: #FACC15;
+            --task-active-bg: rgba(250, 204, 21, 0.12);
+            --task-approval: #FBBF24;
+            --task-approval-bg: rgba(251, 191, 36, 0.12);
+            --task-complete: #34D399;
+            --task-complete-bg: rgba(52, 211, 153, 0.12);
+            --task-failed: #F87171;
+            --task-failed-bg: rgba(248, 113, 113, 0.12);
+
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.25);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+            background: var(--surface-page);
+            color: var(--text-secondary);
+            font-size: var(--text-base);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            transition: background var(--duration-normal) var(--ease-default), color var(--duration-normal) var(--ease-default);
+        }
+
+        ::selection {
+            background: rgba(0, 119, 221, 0.2);
+            color: var(--text-primary);
+        }
+
+        /* ============ NAV ============ */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: var(--surface-nav);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--surface-card-border);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 var(--space-8);
+            display: flex; align-items: center; justify-content: space-between; height: 64px;
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: var(--space-3);
+            text-decoration: none; color: var(--text-primary);
+        }
+        .nav-brand img { height: 28px; width: auto; filter: brightness(0); }
+        [data-theme="dark"] .nav-brand img { filter: brightness(1); }
+        .nav-divider { width: 1px; height: 24px; background: var(--surface-card-border); }
+        .nav-subtitle { font-size: var(--text-sm); font-weight: 500; color: var(--text-tertiary); }
+        .nav-links { display: flex; gap: var(--space-1); list-style: none; flex-wrap: wrap; }
+        .nav-links a {
+            display: block; padding: var(--space-2) var(--space-3);
+            color: var(--text-tertiary); text-decoration: none;
+            font-size: var(--text-sm); font-weight: 500; border-radius: var(--radius-md);
+            transition: color var(--duration-fast) var(--ease-default), background var(--duration-fast) var(--ease-default);
+        }
+        .nav-links a:hover { color: var(--text-primary); background: var(--surface-hover); }
+        .nav-links a.active { color: var(--brand-solid); font-weight: 600; }
+
+        .theme-toggle {
+            display: flex; align-items: center; gap: var(--space-2);
+            background: var(--surface-raised); border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-full); padding: 3px;
+        }
+        .theme-toggle-option {
+            padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+            font-size: var(--text-xs); font-weight: 500; color: var(--text-tertiary);
+            cursor: pointer; border: none; background: none; font-family: inherit;
+            transition: all var(--duration-fast) var(--ease-default);
+        }
+        .theme-toggle-option.active { background: var(--brand-solid); color: white; }
+
+        /* ============ LAYOUT ============ */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-8); }
+        .section { padding: var(--space-24) 0; border-top: 1px solid var(--surface-card-border); }
+        .section:first-of-type { border-top: none; }
+        .section-header { margin-bottom: var(--space-16); }
+        .section-number {
+            font-size: var(--text-sm); font-weight: 600;
+            background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--space-3);
+        }
+        .section-title { font-size: var(--text-3xl); font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
+        .section-desc { font-size: var(--text-md); color: var(--text-tertiary); max-width: 700px; line-height: 1.7; }
+
+        .card {
+            background: var(--surface-card); border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg); padding: var(--space-8);
+        }
+        .card-title { font-size: var(--text-lg); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-3); }
+        .card-text { color: var(--text-secondary); line-height: 1.7; }
+
+        /* ============ HERO ============ */
+        .hero {
+            padding: 140px var(--space-8) var(--space-16); text-align: center; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+            width: 1000px; height: 700px;
+            background: radial-gradient(ellipse, rgba(0,119,221,0.05) 0%, rgba(34,68,255,0.02) 40%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero h1 { font-size: var(--text-3xl); font-weight: 700; color: var(--text-primary); letter-spacing: -0.03em; line-height: 1.2; margin-bottom: var(--space-4); }
+        .hero h1 .gradient-text { background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-sub { font-size: var(--text-md); color: var(--text-tertiary); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+
+        /* ============ ANNOTATIONS ============ */
+        .annotation {
+            display: inline-flex; align-items: center; gap: var(--space-2);
+            padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+            font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+            text-transform: uppercase; white-space: nowrap;
+        }
+        .annotation-brand { background: rgba(0,119,221,0.08); color: var(--brand-solid); border: 1px solid rgba(0,119,221,0.2); }
+        .annotation-muted { background: var(--surface-raised); color: var(--text-tertiary); border: 1px solid var(--surface-card-border); }
+
+        /* ============ DEMO CONTAINERS ============ */
+        .demo-frame {
+            background: var(--surface-raised); border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg); padding: var(--space-6); margin-bottom: var(--space-6);
+            overflow: hidden;
+        }
+        .demo-label {
+            font-size: var(--text-xs); font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-4);
+        }
+        .demo-width-label {
+            font-size: 10px; color: var(--text-tertiary); text-align: right; margin-top: var(--space-2);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* ========================================================
+           HUB BAR — COLLAPSED (36px)
+           ======================================================== */
+        .hubbar-collapsed {
+            height: 36px;
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-top: none;
+            display: flex;
+            align-items: center;
+            padding: 0 var(--space-3);
+            gap: var(--space-3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* The bottom accent line — brand gradient. Signals "this element is interactive / expandable" */
+        .hubbar-collapsed::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--brand-gradient-horizontal);
+            opacity: 0.5;
+            transition: opacity var(--duration-fast) var(--ease-default);
+        }
+        .hubbar-collapsed:hover::after { opacity: 1; }
+
+        .hubbar-chevron {
+            width: 20px; height: 20px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text-tertiary); flex-shrink: 0;
+            border-radius: var(--radius-sm);
+            transition: background var(--duration-fast) var(--ease-default), color var(--duration-fast) var(--ease-default);
+            font-size: 11px;
+        }
+        .hubbar-chevron:hover { background: var(--surface-hover); color: var(--text-primary); }
+
+        .hubbar-name {
+            font-size: var(--text-sm); font-weight: 600; color: var(--text-primary);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            max-width: 140px; flex-shrink: 1;
+        }
+
+        .hubbar-sep {
+            width: 1px; height: 16px; background: var(--surface-card-border); flex-shrink: 0;
+        }
+
+        /* Mini progress */
+        .hubbar-progress {
+            display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+        }
+        .hubbar-progress-bar {
+            width: 64px; height: 4px; background: var(--surface-card-border); border-radius: 2px; overflow: hidden;
+        }
+        .hubbar-progress-fill {
+            height: 100%; border-radius: 2px;
+            background: var(--brand-gradient-horizontal);
+            transition: width var(--duration-normal) var(--ease-default);
+        }
+        .hubbar-progress-pct {
+            font-size: 11px; font-weight: 600; color: var(--text-primary);
+            font-family: 'SF Mono', 'Fira Code', monospace; min-width: 28px;
+        }
+
+        /* Status counts */
+        .hubbar-counts {
+            display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0;
+        }
+        .hubbar-count {
+            display: flex; align-items: center; gap: 3px;
+            font-size: 11px; font-weight: 600; white-space: nowrap;
+        }
+        .hubbar-count-dot {
+            width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+        }
+
+        /* Health meter */
+        .hubbar-health {
+            display: flex; gap: 2px; align-items: center; flex-shrink: 0;
+        }
+        .hubbar-health-seg {
+            width: 10px; height: 6px; border-radius: 1px;
+            background: var(--surface-card-border);
+        }
+
+        /* Due date */
+        .hubbar-due {
+            font-size: 11px; font-weight: 500; color: var(--text-tertiary);
+            white-space: nowrap; flex-shrink: 0;
+        }
+        .hubbar-due.overdue { color: var(--status-error); }
+
+        /* Team avatars (collapsed) */
+        .hubbar-team {
+            display: flex; flex-shrink: 0;
+        }
+        .hubbar-team .avatar {
+            width: 22px; height: 22px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9px; font-weight: 700; color: white;
+            border: 2px solid var(--surface-card);
+            margin-left: -6px; flex-shrink: 0;
+        }
+        .hubbar-team .avatar:first-child { margin-left: 0; }
+        .hubbar-team .avatar.ai {
+            clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+            border: none;
+        }
+        .hubbar-team .avatar-overflow {
+            background: var(--surface-card-border); color: var(--text-tertiary);
+            font-size: 9px; font-weight: 600;
+        }
+
+        /* Resources count */
+        .hubbar-resources {
+            display: flex; align-items: center; gap: 3px;
+            font-size: 11px; color: var(--text-tertiary); font-weight: 500;
+            white-space: nowrap; flex-shrink: 0; cursor: pointer;
+        }
+        .hubbar-resources:hover { color: var(--text-primary); }
+
+        .hubbar-spacer { flex: 1; min-width: var(--space-2); }
+
+        /* ========================================================
+           HUB BAR — EXPANDED (~220px)
+           ======================================================== */
+        .hubbar-expanded {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-top: none;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hubbar-expanded::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--brand-gradient-horizontal);
+        }
+
+        /* Collapsed row repeated at top of expanded */
+        .hubbar-expanded-header {
+            height: 36px;
+            display: flex; align-items: center;
+            padding: 0 var(--space-3); gap: var(--space-3);
+            border-bottom: 1px solid var(--surface-card-border);
+        }
+
+        .hubbar-expanded-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0;
+            min-height: 184px;
+        }
+
+        .hubbar-panel {
+            padding: var(--space-4);
+            border-right: 1px solid var(--surface-card-border);
+        }
+        .hubbar-panel:last-child { border-right: none; }
+
+        .hubbar-panel-title {
+            font-size: 10px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.06em;
+            margin-bottom: var(--space-3);
+            display: flex; align-items: center; gap: var(--space-2);
+        }
+
+        /* Stats panel */
+        .hubbar-stats-row {
+            display: flex; align-items: center; gap: var(--space-4);
+            margin-bottom: var(--space-3);
+        }
+
+        .hubbar-donut {
+            width: 56px; height: 56px; position: relative; flex-shrink: 0;
+        }
+        .hubbar-donut svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .hubbar-donut-center {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 13px; font-weight: 700; color: var(--text-primary);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .hubbar-status-bars {
+            flex: 1; display: flex; flex-direction: column; gap: 4px;
+        }
+        .hubbar-status-bar {
+            display: flex; align-items: center; gap: var(--space-2);
+        }
+        .hubbar-status-bar-dot {
+            width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+        }
+        .hubbar-status-bar-label {
+            font-size: 10px; color: var(--text-tertiary); flex: 1; min-width: 50px;
+        }
+        .hubbar-status-bar-track {
+            width: 48px; height: 3px; background: var(--surface-card-border);
+            border-radius: 2px; overflow: hidden; flex-shrink: 0;
+        }
+        .hubbar-status-bar-fill {
+            height: 100%; border-radius: 2px;
+        }
+        .hubbar-status-bar-num {
+            font-size: 10px; font-weight: 600; color: var(--text-primary);
+            min-width: 14px; text-align: right;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* Health expanded */
+        .hubbar-health-expanded {
+            display: flex; gap: 2px; align-items: center; margin-top: var(--space-3);
+            padding-top: var(--space-3); border-top: 1px solid var(--surface-card-border);
+        }
+        .hubbar-health-expanded-seg {
+            flex: 1; height: 6px; border-radius: 1px;
+            background: var(--surface-card-border);
+        }
+        .hubbar-health-label {
+            font-size: 10px; color: var(--text-tertiary); margin-left: var(--space-2); white-space: nowrap;
+        }
+
+        /* Team panel */
+        .hubbar-team-list {
+            list-style: none; display: flex; flex-direction: column; gap: var(--space-2);
+        }
+        .hubbar-team-member {
+            display: flex; align-items: center; gap: var(--space-2);
+        }
+        .hubbar-team-avatar {
+            width: 24px; height: 24px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; color: white; flex-shrink: 0;
+        }
+        .hubbar-team-avatar.ai {
+            clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+        }
+        .hubbar-team-name {
+            font-size: 12px; font-weight: 500; color: var(--text-primary);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .hubbar-team-role {
+            font-size: 10px; color: var(--text-tertiary); margin-left: auto; flex-shrink: 0; white-space: nowrap;
+        }
+        .hubbar-team-online {
+            width: 6px; height: 6px; border-radius: 50%; background: var(--status-success); flex-shrink: 0;
+        }
+        .hubbar-team-add {
+            display: flex; align-items: center; gap: var(--space-2);
+            padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm);
+            cursor: pointer; font-size: 11px; font-weight: 500; color: var(--brand-solid);
+            transition: background var(--duration-fast) var(--ease-default);
+        }
+        .hubbar-team-add:hover { background: rgba(0,119,221,0.06); }
+
+        /* Resources panel */
+        .hubbar-resource-list {
+            list-style: none; display: flex; flex-direction: column; gap: var(--space-2);
+        }
+        .hubbar-resource-item {
+            display: flex; align-items: center; gap: var(--space-2);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background var(--duration-fast) var(--ease-default);
+        }
+        .hubbar-resource-item:hover { background: var(--surface-hover); }
+        .hubbar-resource-icon {
+            font-size: 12px; flex-shrink: 0; width: 16px; text-align: center;
+        }
+        .hubbar-resource-name {
+            font-size: 12px; font-weight: 500; color: var(--text-primary);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .hubbar-resource-meta {
+            font-size: 10px; color: var(--text-tertiary); margin-left: auto; flex-shrink: 0;
+        }
+        .hubbar-resource-upload {
+            display: flex; align-items: center; gap: var(--space-2);
+            padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm);
+            cursor: pointer; font-size: 11px; font-weight: 500; color: var(--brand-solid);
+            transition: background var(--duration-fast) var(--ease-default);
+        }
+        .hubbar-resource-upload:hover { background: rgba(0,119,221,0.06); }
+
+        .hubbar-workflow-meta {
+            margin-top: var(--space-3); padding-top: var(--space-3);
+            border-top: 1px solid var(--surface-card-border);
+        }
+        .hubbar-meta-item {
+            display: flex; align-items: center; gap: var(--space-2);
+            font-size: 11px; color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+        .hubbar-meta-label { color: var(--text-tertiary); min-width: 40px; }
+
+        /* ========================================================
+           INTERACTIVE DEMO
+           ======================================================== */
+        .interactive-demo {
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: var(--space-8);
+        }
+        .interactive-demo-topbar {
+            height: 36px; background: var(--surface-card);
+            border-bottom: 1px solid var(--surface-card-border);
+            display: flex; align-items: center; padding: 0 var(--space-4);
+            gap: var(--space-3);
+        }
+        .interactive-demo-breadcrumb {
+            font-size: 12px; color: var(--text-tertiary); font-weight: 500;
+        }
+        .interactive-demo-breadcrumb span { color: var(--brand-solid); cursor: pointer; }
+        .interactive-demo-canvas {
+            height: 220px; background: var(--surface-raised);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-tertiary); font-size: var(--text-sm);
+            background-image: radial-gradient(circle, var(--surface-card-border) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .hubbar-interactive {
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-default);
+        }
+
+        /* Annotation callouts */
+        .annotation-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-4); margin-top: var(--space-6);
+        }
+        .annotation-card {
+            background: var(--surface-card); border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md); padding: var(--space-4);
+        }
+        .annotation-card-title {
+            font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-1);
+        }
+        .annotation-card-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+        /* Spec table */
+        .spec-table {
+            width: 100%; border-collapse: collapse;
+            font-size: var(--text-sm); margin-top: var(--space-4);
+        }
+        .spec-table th {
+            text-align: left; padding: var(--space-2) var(--space-4);
+            font-size: var(--text-xs); font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--surface-card-border);
+            background: var(--surface-raised);
+        }
+        .spec-table td {
+            padding: var(--space-2) var(--space-4);
+            border-bottom: 1px solid var(--surface-card-border);
+            color: var(--text-secondary); vertical-align: top;
+        }
+        .spec-table tr:last-child td { border-bottom: none; }
+        .spec-table code {
+            font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85em;
+            background: var(--surface-raised); padding: 1px 5px; border-radius: 3px;
+            color: var(--brand-solid); border: 1px solid var(--surface-card-border);
+        }
+
+        /* Brand statement */
+        .brand-statement {
+            font-size: var(--text-xl); font-weight: 600; color: var(--text-primary);
+            line-height: 1.5; border-left: 3px solid;
+            border-image: linear-gradient(180deg, #00E5FF, #2244FF) 1;
+            padding-left: var(--space-6); margin-bottom: var(--space-8); max-width: 800px;
+        }
+        .brand-statement em {
+            background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            font-style: normal;
+        }
+
+        /* Do / Don't */
+        .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin: var(--space-6) 0; }
+        .do-box, .dont-box { padding: var(--space-4); border-radius: var(--radius-md); }
+        .do-box { background: var(--status-success-bg); border: 1px solid var(--status-success-border); }
+        .dont-box { background: var(--status-error-bg); border: 1px solid var(--status-error-border); }
+        .do-box-title { font-size: var(--text-sm); font-weight: 600; color: var(--status-success); margin-bottom: var(--space-2); }
+        .dont-box-title { font-size: var(--text-sm); font-weight: 600; color: var(--status-error); margin-bottom: var(--space-2); }
+        .do-box li, .dont-box li { font-size: 12px; color: var(--text-secondary); line-height: 1.7; margin-left: var(--space-4); }
+
+        @media (max-width: 768px) {
+            .do-dont { grid-template-columns: 1fr; }
+            .annotation-grid { grid-template-columns: 1fr; }
+            .hubbar-expanded-body { grid-template-columns: 1fr; }
+        }
+
+        /* Width context demos */
+        .width-demo {
+            display: flex; gap: var(--space-4); margin-bottom: var(--space-8); flex-wrap: wrap;
+        }
+        .width-demo-item {
+            flex: 1; min-width: 300px;
+        }
+        .width-demo-item .demo-label { margin-bottom: var(--space-2); }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-brand">
+            <img src="assets/iconmark-white.png" alt="DeepFlow">
+            <span class="nav-divider"></span>
+            <span class="nav-subtitle">Hub Bar Spec</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Guidelines</a></li>
+            <li><a href="views.html">Views</a></li>
+            <li><a href="wireframes.html">Wireframes</a></li>
+            <li><a href="hubbar.html" class="active" style="color: var(--brand-solid); font-weight: 600;">Hub Bar</a></li>
+            <li><a href="sidebar.html">Sidebar</a></li>
+            <li><a href="mobile.html">📱 Mobile</a></li>
+            <li><a href="brief.md">📋 Brief</a></li>
+        </ul>
+        <div class="theme-toggle" role="radiogroup" aria-label="Theme switcher">
+            <button class="theme-toggle-option active" data-theme-value="light">☀️ Light</button>
+            <button class="theme-toggle-option" data-theme-value="dark">🌙 Dark</button>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+    <div class="container">
+        <div style="display:inline-flex; align-items:center; gap:var(--space-2); padding:var(--space-2) var(--space-4); background:var(--surface-raised); border:1px solid var(--surface-card-border); border-radius:var(--radius-full); font-size:var(--text-sm); color:var(--text-tertiary); margin-bottom:var(--space-6);">
+            <span style="width:6px;height:6px;background:var(--brand-solid);border-radius:50%;"></span>
+            Component Specification
+        </div>
+        <h1>The <span class="gradient-text">Hub Bar</span></h1>
+        <p class="hero-sub">
+            The collapsible workflow control centre. One glance tells you if the workflow is healthy. One click gives you the full picture — stats, team, resources, metadata.
+        </p>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- ==============================
+         1. DESIGN PHILOSOPHY
+         ============================== -->
+    <section class="section" id="philosophy">
+        <div class="section-header">
+            <div class="section-number">Philosophy</div>
+            <h2 class="section-title">Glanceable Health</h2>
+            <p class="section-desc">The Hub Bar answers one question instantly: <strong style="color:var(--text-primary);">"Is this workflow on track?"</strong> Collapsed, it's a 36px strip of vital signs. Expanded, it's a pull-down control panel — never a separate page.</p>
+        </div>
+
+        <div class="brand-statement">
+            Collapsed = heartbeat monitor. <em>Expanded = operating theatre.</em> The user chooses the depth.
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:var(--space-4); margin-bottom: var(--space-8);">
+            <div class="card">
+                <div class="card-title">36px of Truth</div>
+                <p class="card-text">The collapsed bar shows progress percentage, status counts, health meter, and due date. Every data point earns its pixels. Sarah glances at this 50 times a day — it must be instantly readable.</p>
+            </div>
+            <div class="card">
+                <div class="card-title">Pull-Down, Not Pop-Up</div>
+                <p class="card-text">Expanding the Hub Bar pushes the canvas down — it doesn't float over content. The user maintains spatial context. The graph is still visible below; they haven't left the view.</p>
+            </div>
+            <div class="card">
+                <div class="card-title">Single Line System</div>
+                <p class="card-text">The bottom accent line (brand gradient) signals interactivity. On hover, the line brightens to full opacity — a subtle invitation to click. Expanded, the gradient line frames the bottom of the panel.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         2. COLLAPSED STATE
+         ============================== -->
+    <section class="section" id="collapsed">
+        <div class="section-header">
+            <div class="section-number">Collapsed State</div>
+            <h2 class="section-title">36px — The Vital Signs</h2>
+            <p class="section-desc">Always visible in Graph View and Workspace. Sits between Top Bar and content area. Every element is chosen because Sarah needs it at a glance.</p>
+        </div>
+
+        <!-- Demo at 824px (no detail panel) -->
+        <div class="demo-frame">
+            <div class="demo-label">824px width — Detail panel closed</div>
+            <div style="width: 824px; max-width: 100%;">
+                <div class="hubbar-collapsed">
+                    <div class="hubbar-chevron" title="Expand Hub Bar">▾</div>
+                    <div class="hubbar-name">ICAAP 2026</div>
+                    <div class="hubbar-sep"></div>
+                    <div class="hubbar-progress">
+                        <div class="hubbar-progress-bar"><div class="hubbar-progress-fill" style="width: 42%"></div></div>
+                        <span class="hubbar-progress-pct">42%</span>
+                    </div>
+                    <div class="hubbar-sep"></div>
+                    <div class="hubbar-counts">
+                        <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-complete)"></div><span style="color:var(--task-complete)">12</span></div>
+                        <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-active)"></div><span style="color:var(--task-active)">3</span></div>
+                        <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--status-warning)"></div><span style="color:var(--status-warning)">1</span></div>
+                        <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-pending)"></div><span style="color:var(--task-pending)">8</span></div>
+                    </div>
+                    <div class="hubbar-sep"></div>
+                    <div class="hubbar-health" title="Workflow health: Good">
+                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                        <div class="hubbar-health-seg" style="background:var(--status-warning)"></div>
+                        <div class="hubbar-health-seg"></div>
+                    </div>
+                    <div class="hubbar-spacer"></div>
+                    <div class="hubbar-due">Due 28 Mar</div>
+                    <div class="hubbar-sep"></div>
+                    <div class="hubbar-team">
+                        <div class="avatar" style="background:#3B82F6">RM</div>
+                        <div class="avatar" style="background:#14B8A6">SC</div>
+                        <div class="avatar ai" style="background:var(--brand-gradient)">⬡</div>
+                        <div class="avatar avatar-overflow">+2</div>
+                    </div>
+                    <div class="hubbar-sep"></div>
+                    <div class="hubbar-resources" title="5 resources attached">📎 5</div>
+                </div>
+            </div>
+            <div class="demo-width-label">824px (full content area, detail panel closed)</div>
+        </div>
+
+        <!-- Demo at 464px (detail panel open) -->
+        <div class="demo-frame">
+            <div class="demo-label">464px width — Detail panel open (compact mode)</div>
+            <div style="width: 464px; max-width: 100%;">
+                <div class="hubbar-collapsed">
+                    <div class="hubbar-chevron" title="Expand Hub Bar">▾</div>
+                    <div class="hubbar-name" style="max-width:80px;">ICAAP 2026</div>
+                    <div class="hubbar-sep"></div>
+                    <div class="hubbar-progress">
+                        <div class="hubbar-progress-bar" style="width:48px;"><div class="hubbar-progress-fill" style="width: 42%"></div></div>
+                        <span class="hubbar-progress-pct">42%</span>
+                    </div>
+                    <div class="hubbar-sep"></div>
+                    <div class="hubbar-counts">
+                        <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-complete)"></div><span style="color:var(--task-complete)">12</span></div>
+                        <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-active)"></div><span style="color:var(--task-active)">3</span></div>
+                        <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--status-warning)"></div><span style="color:var(--status-warning)">1</span></div>
+                    </div>
+                    <div class="hubbar-spacer"></div>
+                    <div class="hubbar-health" title="Workflow health">
+                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                        <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                        <div class="hubbar-health-seg" style="background:var(--status-warning)"></div>
+                        <div class="hubbar-health-seg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="demo-width-label">464px — due date, team, resources hidden (available in expanded view)</div>
+        </div>
+
+        <!-- Annotations -->
+        <div class="annotation-grid">
+            <div class="annotation-card">
+                <div class="annotation-card-title">▾ Chevron Toggle</div>
+                <div class="annotation-card-text">Click to expand. Rotates 180° to ▴ when expanded. Also responds to keyboard: <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">H</code> when Hub Bar is focused.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">Workflow Name</div>
+                <div class="annotation-card-text">Truncated with ellipsis if space is tight. Full name shown in expanded view and on hover (tooltip). Clickable — opens workflow settings.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">Progress Bar + %</div>
+                <div class="annotation-card-text">Calculated as <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">completed / total</code> tasks. Brand gradient fill. Monospace percentage for stable width.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">Status Counts</div>
+                <div class="annotation-card-text">Coloured dots + numbers. Uses task status colours from the design system. At 464px width, only the 3 most important counts show (complete, active, blocked). Pending count dropped first.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">Health Meter</div>
+                <div class="annotation-card-text">5-segment bar. Green = on track, Amber = at risk, Empty = no data. Derived from: overdue tasks, blocked percentage, time remaining vs progress. The glance-and-go indicator.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">Team Stack + Resources</div>
+                <div class="annotation-card-text">Avatar stack shows top 3 contributors + overflow count. Hexagonal avatar for AI agents (shape, not colour). Resource paperclip + count. Both are hover-targetable for tooltips.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         3. EXPANDED STATE
+         ============================== -->
+    <section class="section" id="expanded">
+        <div class="section-header">
+            <div class="section-number">Expanded State</div>
+            <h2 class="section-title">~220px — The Control Panel</h2>
+            <p class="section-desc">Three columns: Stats & Progress, Team & Access, Resources & Metadata. Each column is independently useful. The collapsed row persists at the top as a header.</p>
+        </div>
+
+        <!-- Demo at 824px -->
+        <div class="demo-frame">
+            <div class="demo-label">824px width — Full expanded view</div>
+            <div style="width: 824px; max-width: 100%;">
+                <div class="hubbar-expanded">
+                    <!-- Header (same as collapsed) -->
+                    <div class="hubbar-expanded-header">
+                        <div class="hubbar-chevron" title="Collapse Hub Bar">▴</div>
+                        <div class="hubbar-name">ICAAP 2026</div>
+                        <div class="hubbar-sep"></div>
+                        <div class="hubbar-progress">
+                            <div class="hubbar-progress-bar"><div class="hubbar-progress-fill" style="width: 42%"></div></div>
+                            <span class="hubbar-progress-pct">42%</span>
+                        </div>
+                        <div class="hubbar-sep"></div>
+                        <div class="hubbar-counts">
+                            <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-complete)"></div><span style="color:var(--task-complete)">12</span></div>
+                            <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-active)"></div><span style="color:var(--task-active)">3</span></div>
+                            <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--status-warning)"></div><span style="color:var(--status-warning)">1</span></div>
+                            <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-pending)"></div><span style="color:var(--task-pending)">8</span></div>
+                        </div>
+                        <div class="hubbar-spacer"></div>
+                        <div class="hubbar-due">Due 28 Mar</div>
+                    </div>
+
+                    <!-- Expanded body: 3 columns -->
+                    <div class="hubbar-expanded-body">
+
+                        <!-- Column 1: Stats & Progress -->
+                        <div class="hubbar-panel">
+                            <div class="hubbar-panel-title">
+                                <span>📊</span> Stats & Progress
+                            </div>
+                            <div class="hubbar-stats-row">
+                                <!-- Donut chart -->
+                                <div class="hubbar-donut">
+                                    <svg viewBox="0 0 36 36">
+                                        <!-- Background ring -->
+                                        <circle cx="18" cy="18" r="14" fill="none" stroke="var(--surface-card-border)" stroke-width="3.5"></circle>
+                                        <!-- Complete: 50% (12/24) -->
+                                        <circle cx="18" cy="18" r="14" fill="none" stroke="var(--task-complete)" stroke-width="3.5"
+                                            stroke-dasharray="44 88" stroke-dashoffset="0" stroke-linecap="round"></circle>
+                                        <!-- Active: 12.5% (3/24) -->
+                                        <circle cx="18" cy="18" r="14" fill="none" stroke="var(--task-active)" stroke-width="3.5"
+                                            stroke-dasharray="11 77" stroke-dashoffset="-44" stroke-linecap="round"></circle>
+                                        <!-- Blocked: 4% (1/24) -->
+                                        <circle cx="18" cy="18" r="14" fill="none" stroke="var(--status-warning)" stroke-width="3.5"
+                                            stroke-dasharray="3.7 84.3" stroke-dashoffset="-55" stroke-linecap="round"></circle>
+                                        <!-- Pending: rest -->
+                                        <circle cx="18" cy="18" r="14" fill="none" stroke="var(--task-pending)" stroke-width="3.5"
+                                            stroke-dasharray="29.3 58.7" stroke-dashoffset="-58.7" stroke-linecap="round" opacity="0.5"></circle>
+                                    </svg>
+                                    <div class="hubbar-donut-center">24</div>
+                                </div>
+                                <!-- Breakdown bars -->
+                                <div class="hubbar-status-bars">
+                                    <div class="hubbar-status-bar">
+                                        <div class="hubbar-status-bar-dot" style="background:var(--task-complete)"></div>
+                                        <span class="hubbar-status-bar-label">Complete</span>
+                                        <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:50%;background:var(--task-complete)"></div></div>
+                                        <span class="hubbar-status-bar-num">12</span>
+                                    </div>
+                                    <div class="hubbar-status-bar">
+                                        <div class="hubbar-status-bar-dot" style="background:var(--task-active)"></div>
+                                        <span class="hubbar-status-bar-label">Active</span>
+                                        <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:12.5%;background:var(--task-active)"></div></div>
+                                        <span class="hubbar-status-bar-num">3</span>
+                                    </div>
+                                    <div class="hubbar-status-bar">
+                                        <div class="hubbar-status-bar-dot" style="background:var(--status-warning)"></div>
+                                        <span class="hubbar-status-bar-label">Blocked</span>
+                                        <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:4%;background:var(--status-warning)"></div></div>
+                                        <span class="hubbar-status-bar-num">1</span>
+                                    </div>
+                                    <div class="hubbar-status-bar">
+                                        <div class="hubbar-status-bar-dot" style="background:var(--task-pending)"></div>
+                                        <span class="hubbar-status-bar-label">Pending</span>
+                                        <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:33%;background:var(--task-pending);opacity:0.5"></div></div>
+                                        <span class="hubbar-status-bar-num">8</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Health meter expanded -->
+                            <div class="hubbar-health-expanded">
+                                <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
+                                <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
+                                <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
+                                <div class="hubbar-health-expanded-seg" style="background:var(--status-warning)"></div>
+                                <div class="hubbar-health-expanded-seg"></div>
+                                <span class="hubbar-health-label">Health: Good</span>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Team & Access -->
+                        <div class="hubbar-panel">
+                            <div class="hubbar-panel-title">
+                                <span>👥</span> Team & Access
+                            </div>
+                            <ul class="hubbar-team-list">
+                                <li class="hubbar-team-member">
+                                    <div class="hubbar-team-online"></div>
+                                    <div class="hubbar-team-avatar" style="background:#3B82F6">RM</div>
+                                    <span class="hubbar-team-name">Ravi Mehta</span>
+                                    <span class="hubbar-team-role">Owner</span>
+                                </li>
+                                <li class="hubbar-team-member">
+                                    <div class="hubbar-team-online"></div>
+                                    <div class="hubbar-team-avatar" style="background:#14B8A6">SC</div>
+                                    <span class="hubbar-team-name">Sarah Chen</span>
+                                    <span class="hubbar-team-role">Manager</span>
+                                </li>
+                                <li class="hubbar-team-member">
+                                    <div style="width:6px;height:6px;border-radius:50%;background:var(--task-pending);flex-shrink:0"></div>
+                                    <div class="hubbar-team-avatar" style="background:#8B5CF6">JW</div>
+                                    <span class="hubbar-team-name">James Whitfield</span>
+                                    <span class="hubbar-team-role">Reviewer</span>
+                                </li>
+                                <li class="hubbar-team-member">
+                                    <div class="hubbar-team-online"></div>
+                                    <div class="hubbar-team-avatar ai" style="background:var(--brand-gradient)">⬡</div>
+                                    <span class="hubbar-team-name">DeepFlow Agent</span>
+                                    <span class="hubbar-team-role" style="color:var(--brand-solid)">AI Agent</span>
+                                </li>
+                            </ul>
+                            <div class="hubbar-team-add" style="margin-top:var(--space-2);">
+                                <span>+</span> Add team member
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Resources & Metadata -->
+                        <div class="hubbar-panel" style="border-right:none;">
+                            <div class="hubbar-panel-title">
+                                <span>📎</span> Resources & Info
+                            </div>
+                            <ul class="hubbar-resource-list">
+                                <li class="hubbar-resource-item">
+                                    <span class="hubbar-resource-icon">📄</span>
+                                    <span class="hubbar-resource-name">ICAAP_Framework_v3.pdf</span>
+                                    <span class="hubbar-resource-meta">2.4 MB</span>
+                                </li>
+                                <li class="hubbar-resource-item">
+                                    <span class="hubbar-resource-icon">📊</span>
+                                    <span class="hubbar-resource-name">Risk_Data_Q4.xlsx</span>
+                                    <span class="hubbar-resource-meta">890 KB</span>
+                                </li>
+                                <li class="hubbar-resource-item">
+                                    <span class="hubbar-resource-icon">📝</span>
+                                    <span class="hubbar-resource-name">Regulatory_Guidance.docx</span>
+                                    <span class="hubbar-resource-meta">1.1 MB</span>
+                                </li>
+                            </ul>
+                            <div class="hubbar-resource-upload" style="margin-top:var(--space-1);">
+                                <span>+</span> Upload resource
+                            </div>
+                            <div class="hubbar-workflow-meta">
+                                <div class="hubbar-meta-item">
+                                    <span class="hubbar-meta-label">Due</span>
+                                    <span style="font-weight:500;color:var(--text-primary)">28 March 2026</span>
+                                    <span style="font-size:10px;color:var(--status-warning);margin-left:4px">· 14 days left</span>
+                                </div>
+                                <div class="hubbar-meta-item">
+                                    <span class="hubbar-meta-label">Owner</span>
+                                    <span style="font-weight:500;color:var(--text-primary)">Ravi Mehta</span>
+                                </div>
+                                <div class="hubbar-meta-item">
+                                    <span class="hubbar-meta-label">Desc</span>
+                                    <span style="color:var(--text-secondary);font-size:11px;">Annual ICAAP submission for regulatory…</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="demo-width-label">824px (full content area, detail panel closed)</div>
+        </div>
+
+        <!-- Demo at 464px -->
+        <div class="demo-frame">
+            <div class="demo-label">464px width — Compact expanded (detail panel open)</div>
+            <div style="width: 464px; max-width: 100%;">
+                <div class="hubbar-expanded">
+                    <div class="hubbar-expanded-header">
+                        <div class="hubbar-chevron">▴</div>
+                        <div class="hubbar-name" style="max-width:80px;">ICAAP 2026</div>
+                        <div class="hubbar-sep"></div>
+                        <div class="hubbar-progress">
+                            <div class="hubbar-progress-bar" style="width:48px;"><div class="hubbar-progress-fill" style="width:42%"></div></div>
+                            <span class="hubbar-progress-pct">42%</span>
+                        </div>
+                        <div class="hubbar-spacer"></div>
+                        <div class="hubbar-due">Due 28 Mar</div>
+                    </div>
+                    <div class="hubbar-expanded-body" style="grid-template-columns:1fr 1fr; min-height:240px;">
+                        <!-- Stats + Team side by side; Resources below -->
+                        <div class="hubbar-panel" style="grid-row: 1;">
+                            <div class="hubbar-panel-title"><span>📊</span> Stats</div>
+                            <div class="hubbar-status-bars">
+                                <div class="hubbar-status-bar">
+                                    <div class="hubbar-status-bar-dot" style="background:var(--task-complete)"></div>
+                                    <span class="hubbar-status-bar-label">Done</span>
+                                    <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:50%;background:var(--task-complete)"></div></div>
+                                    <span class="hubbar-status-bar-num">12</span>
+                                </div>
+                                <div class="hubbar-status-bar">
+                                    <div class="hubbar-status-bar-dot" style="background:var(--task-active)"></div>
+                                    <span class="hubbar-status-bar-label">Active</span>
+                                    <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:12.5%;background:var(--task-active)"></div></div>
+                                    <span class="hubbar-status-bar-num">3</span>
+                                </div>
+                                <div class="hubbar-status-bar">
+                                    <div class="hubbar-status-bar-dot" style="background:var(--status-warning)"></div>
+                                    <span class="hubbar-status-bar-label">Blocked</span>
+                                    <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:4%;background:var(--status-warning)"></div></div>
+                                    <span class="hubbar-status-bar-num">1</span>
+                                </div>
+                                <div class="hubbar-status-bar">
+                                    <div class="hubbar-status-bar-dot" style="background:var(--task-pending)"></div>
+                                    <span class="hubbar-status-bar-label">Pending</span>
+                                    <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:33%;background:var(--task-pending);opacity:0.5"></div></div>
+                                    <span class="hubbar-status-bar-num">8</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hubbar-panel" style="border-right:none; grid-row:1;">
+                            <div class="hubbar-panel-title"><span>👥</span> Team</div>
+                            <ul class="hubbar-team-list">
+                                <li class="hubbar-team-member">
+                                    <div class="hubbar-team-avatar" style="background:#3B82F6;width:20px;height:20px;font-size:8px;">RM</div>
+                                    <span class="hubbar-team-name" style="font-size:11px;">Ravi Mehta</span>
+                                    <span class="hubbar-team-role">Owner</span>
+                                </li>
+                                <li class="hubbar-team-member">
+                                    <div class="hubbar-team-avatar" style="background:#14B8A6;width:20px;height:20px;font-size:8px;">SC</div>
+                                    <span class="hubbar-team-name" style="font-size:11px;">Sarah Chen</span>
+                                    <span class="hubbar-team-role">Mgr</span>
+                                </li>
+                                <li class="hubbar-team-member">
+                                    <div class="hubbar-team-avatar ai" style="background:var(--brand-gradient);width:20px;height:20px;font-size:8px;">⬡</div>
+                                    <span class="hubbar-team-name" style="font-size:11px;">AI Agent</span>
+                                    <span class="hubbar-team-role" style="color:var(--brand-solid)">AI</span>
+                                </li>
+                            </ul>
+                            <div class="hubbar-team-add" style="margin-top:var(--space-1);font-size:10px;">+ Add</div>
+                        </div>
+                        <div class="hubbar-panel" style="grid-column: 1 / -1; border-right:none; border-top: 1px solid var(--surface-card-border);">
+                            <div class="hubbar-panel-title"><span>📎</span> Resources</div>
+                            <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+                                <div class="hubbar-resource-item" style="flex:1;min-width:120px;">
+                                    <span class="hubbar-resource-icon">📄</span>
+                                    <span class="hubbar-resource-name" style="font-size:11px;">ICAAP_Framework.pdf</span>
+                                </div>
+                                <div class="hubbar-resource-item" style="flex:1;min-width:120px;">
+                                    <span class="hubbar-resource-icon">📊</span>
+                                    <span class="hubbar-resource-name" style="font-size:11px;">Risk_Data_Q4.xlsx</span>
+                                </div>
+                                <div class="hubbar-resource-upload" style="font-size:10px;">+ Upload</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="demo-width-label">464px — Two-column layout, resources row below. Donut chart hidden to save space.</div>
+        </div>
+
+        <div class="annotation-grid">
+            <div class="annotation-card">
+                <div class="annotation-card-title">📊 Stats Column</div>
+                <div class="annotation-card-text">Donut chart (total task count in centre) + per-status horizontal bars. Health meter with label at the bottom. The donut gives spatial proportion; the bars give exact numbers. Both are needed.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">👥 Team Column</div>
+                <div class="annotation-card-text">Each team member: online indicator (green dot / grey dot) + avatar + name + role tag. AI agents use hexagonal avatars per the design system. "Add team member" opens a search modal.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">📎 Resources Column</div>
+                <div class="annotation-card-text">Workflow-level files that get summarised into each task. Click a resource → opens in the canvas as a review tab. Upload button triggers a dropzone. Below: workflow metadata (due date with countdown, owner, description preview).</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">Responsive Layout</div>
+                <div class="annotation-card-text">At 824px: 3-column grid. At 464px: 2-column (stats + team) with resources as a full-width row below. Donut chart hides at narrow widths — the bars convey the same data.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">Animation</div>
+                <div class="annotation-card-text">Expand: 250ms ease. Hub Bar height transitions from 36px → ~220px. Canvas pushes down smoothly. Collapse: same timing, reverse. Use <code style="font-family:'SF Mono',monospace;font-size:10px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">max-height</code> + overflow for CSS-only toggle, or <code style="font-family:'SF Mono',monospace;font-size:10px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">framer-motion</code> for layout animation.</div>
+            </div>
+            <div class="annotation-card">
+                <div class="annotation-card-title">Keyboard</div>
+                <div class="annotation-card-text"><code style="font-family:'SF Mono',monospace;font-size:10px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">H</code> toggles Hub Bar (when graph is focused). <code style="font-family:'SF Mono',monospace;font-size:10px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">Tab</code> into the Hub Bar focuses the chevron, then the team add button, then upload button. <code style="font-family:'SF Mono',monospace;font-size:10px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">Escape</code> collapses if expanded.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         4. INTERACTIVE DEMO
+         ============================== -->
+    <section class="section" id="interactive">
+        <div class="section-header">
+            <div class="section-number">Interactive Demo</div>
+            <h2 class="section-title">Click to Toggle</h2>
+            <p class="section-desc">Click the Hub Bar to toggle between collapsed and expanded states. This demonstrates the transition in context.</p>
+        </div>
+
+        <div class="interactive-demo">
+            <!-- Fake top bar -->
+            <div class="interactive-demo-topbar">
+                <div class="interactive-demo-breadcrumb">
+                    <span>All Projects</span> › <span>ICAAP 2026</span> › Capital Modelling
+                </div>
+                <div style="margin-left:auto;display:flex;gap:var(--space-2);">
+                    <div style="padding:2px 10px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;background:rgba(0,119,221,0.08);color:var(--brand-solid);cursor:pointer;">Graph</div>
+                    <div style="padding:2px 10px;border-radius:var(--radius-sm);font-size:11px;font-weight:500;color:var(--text-tertiary);cursor:pointer;">List</div>
+                </div>
+            </div>
+
+            <!-- Hub Bar (toggleable) -->
+            <div id="hubbar-toggle" class="hubbar-interactive" onclick="toggleHubBar()">
+                <!-- Collapsed state (shown by default) -->
+                <div id="hubbar-collapsed-demo">
+                    <div class="hubbar-collapsed" style="border-radius:0;">
+                        <div class="hubbar-chevron" id="hubbar-chevron-icon">▾</div>
+                        <div class="hubbar-name">ICAAP 2026</div>
+                        <div class="hubbar-sep"></div>
+                        <div class="hubbar-progress">
+                            <div class="hubbar-progress-bar"><div class="hubbar-progress-fill" style="width: 42%"></div></div>
+                            <span class="hubbar-progress-pct">42%</span>
+                        </div>
+                        <div class="hubbar-sep"></div>
+                        <div class="hubbar-counts">
+                            <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-complete)"></div><span style="color:var(--task-complete)">12</span></div>
+                            <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-active)"></div><span style="color:var(--task-active)">3</span></div>
+                            <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--status-warning)"></div><span style="color:var(--status-warning)">1</span></div>
+                            <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-pending)"></div><span style="color:var(--task-pending)">8</span></div>
+                        </div>
+                        <div class="hubbar-sep"></div>
+                        <div class="hubbar-health">
+                            <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                            <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                            <div class="hubbar-health-seg" style="background:var(--task-complete)"></div>
+                            <div class="hubbar-health-seg" style="background:var(--status-warning)"></div>
+                            <div class="hubbar-health-seg"></div>
+                        </div>
+                        <div class="hubbar-spacer"></div>
+                        <div class="hubbar-due">Due 28 Mar</div>
+                        <div class="hubbar-sep"></div>
+                        <div class="hubbar-team">
+                            <div class="avatar" style="background:#3B82F6">RM</div>
+                            <div class="avatar" style="background:#14B8A6">SC</div>
+                            <div class="avatar ai" style="background:var(--brand-gradient)">⬡</div>
+                            <div class="avatar avatar-overflow">+2</div>
+                        </div>
+                        <div class="hubbar-sep"></div>
+                        <div class="hubbar-resources">📎 5</div>
+                    </div>
+                </div>
+
+                <!-- Expanded state (hidden by default) -->
+                <div id="hubbar-expanded-demo" style="display:none;">
+                    <div class="hubbar-expanded" style="border-radius:0;">
+                        <div class="hubbar-expanded-header">
+                            <div class="hubbar-chevron">▴</div>
+                            <div class="hubbar-name">ICAAP 2026</div>
+                            <div class="hubbar-sep"></div>
+                            <div class="hubbar-progress">
+                                <div class="hubbar-progress-bar"><div class="hubbar-progress-fill" style="width: 42%"></div></div>
+                                <span class="hubbar-progress-pct">42%</span>
+                            </div>
+                            <div class="hubbar-sep"></div>
+                            <div class="hubbar-counts">
+                                <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-complete)"></div><span style="color:var(--task-complete)">12</span></div>
+                                <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-active)"></div><span style="color:var(--task-active)">3</span></div>
+                                <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--status-warning)"></div><span style="color:var(--status-warning)">1</span></div>
+                                <div class="hubbar-count"><div class="hubbar-count-dot" style="background:var(--task-pending)"></div><span style="color:var(--task-pending)">8</span></div>
+                            </div>
+                            <div class="hubbar-spacer"></div>
+                            <div class="hubbar-due">Due 28 Mar</div>
+                        </div>
+                        <div class="hubbar-expanded-body">
+                            <div class="hubbar-panel">
+                                <div class="hubbar-panel-title"><span>📊</span> Stats & Progress</div>
+                                <div class="hubbar-stats-row">
+                                    <div class="hubbar-donut">
+                                        <svg viewBox="0 0 36 36">
+                                            <circle cx="18" cy="18" r="14" fill="none" stroke="var(--surface-card-border)" stroke-width="3.5"></circle>
+                                            <circle cx="18" cy="18" r="14" fill="none" stroke="var(--task-complete)" stroke-width="3.5" stroke-dasharray="44 88" stroke-dashoffset="0" stroke-linecap="round"></circle>
+                                            <circle cx="18" cy="18" r="14" fill="none" stroke="var(--task-active)" stroke-width="3.5" stroke-dasharray="11 77" stroke-dashoffset="-44" stroke-linecap="round"></circle>
+                                            <circle cx="18" cy="18" r="14" fill="none" stroke="var(--status-warning)" stroke-width="3.5" stroke-dasharray="3.7 84.3" stroke-dashoffset="-55" stroke-linecap="round"></circle>
+                                            <circle cx="18" cy="18" r="14" fill="none" stroke="var(--task-pending)" stroke-width="3.5" stroke-dasharray="29.3 58.7" stroke-dashoffset="-58.7" stroke-linecap="round" opacity="0.5"></circle>
+                                        </svg>
+                                        <div class="hubbar-donut-center">24</div>
+                                    </div>
+                                    <div class="hubbar-status-bars">
+                                        <div class="hubbar-status-bar">
+                                            <div class="hubbar-status-bar-dot" style="background:var(--task-complete)"></div>
+                                            <span class="hubbar-status-bar-label">Complete</span>
+                                            <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:50%;background:var(--task-complete)"></div></div>
+                                            <span class="hubbar-status-bar-num">12</span>
+                                        </div>
+                                        <div class="hubbar-status-bar">
+                                            <div class="hubbar-status-bar-dot" style="background:var(--task-active)"></div>
+                                            <span class="hubbar-status-bar-label">Active</span>
+                                            <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:12.5%;background:var(--task-active)"></div></div>
+                                            <span class="hubbar-status-bar-num">3</span>
+                                        </div>
+                                        <div class="hubbar-status-bar">
+                                            <div class="hubbar-status-bar-dot" style="background:var(--status-warning)"></div>
+                                            <span class="hubbar-status-bar-label">Blocked</span>
+                                            <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:4%;background:var(--status-warning)"></div></div>
+                                            <span class="hubbar-status-bar-num">1</span>
+                                        </div>
+                                        <div class="hubbar-status-bar">
+                                            <div class="hubbar-status-bar-dot" style="background:var(--task-pending)"></div>
+                                            <span class="hubbar-status-bar-label">Pending</span>
+                                            <div class="hubbar-status-bar-track"><div class="hubbar-status-bar-fill" style="width:33%;background:var(--task-pending);opacity:0.5"></div></div>
+                                            <span class="hubbar-status-bar-num">8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hubbar-health-expanded">
+                                    <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
+                                    <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
+                                    <div class="hubbar-health-expanded-seg" style="background:var(--task-complete)"></div>
+                                    <div class="hubbar-health-expanded-seg" style="background:var(--status-warning)"></div>
+                                    <div class="hubbar-health-expanded-seg"></div>
+                                    <span class="hubbar-health-label">Health: Good</span>
+                                </div>
+                            </div>
+                            <div class="hubbar-panel">
+                                <div class="hubbar-panel-title"><span>👥</span> Team & Access</div>
+                                <ul class="hubbar-team-list">
+                                    <li class="hubbar-team-member">
+                                        <div class="hubbar-team-online"></div>
+                                        <div class="hubbar-team-avatar" style="background:#3B82F6">RM</div>
+                                        <span class="hubbar-team-name">Ravi Mehta</span>
+                                        <span class="hubbar-team-role">Owner</span>
+                                    </li>
+                                    <li class="hubbar-team-member">
+                                        <div class="hubbar-team-online"></div>
+                                        <div class="hubbar-team-avatar" style="background:#14B8A6">SC</div>
+                                        <span class="hubbar-team-name">Sarah Chen</span>
+                                        <span class="hubbar-team-role">Manager</span>
+                                    </li>
+                                    <li class="hubbar-team-member">
+                                        <div style="width:6px;height:6px;border-radius:50%;background:var(--task-pending);flex-shrink:0"></div>
+                                        <div class="hubbar-team-avatar" style="background:#8B5CF6">JW</div>
+                                        <span class="hubbar-team-name">James Whitfield</span>
+                                        <span class="hubbar-team-role">Reviewer</span>
+                                    </li>
+                                    <li class="hubbar-team-member">
+                                        <div class="hubbar-team-online"></div>
+                                        <div class="hubbar-team-avatar ai" style="background:var(--brand-gradient)">⬡</div>
+                                        <span class="hubbar-team-name">DeepFlow Agent</span>
+                                        <span class="hubbar-team-role" style="color:var(--brand-solid)">AI</span>
+                                    </li>
+                                </ul>
+                                <div class="hubbar-team-add" style="margin-top:var(--space-2);">+ Add team member</div>
+                            </div>
+                            <div class="hubbar-panel" style="border-right:none;">
+                                <div class="hubbar-panel-title"><span>📎</span> Resources & Info</div>
+                                <ul class="hubbar-resource-list">
+                                    <li class="hubbar-resource-item">
+                                        <span class="hubbar-resource-icon">📄</span>
+                                        <span class="hubbar-resource-name">ICAAP_Framework_v3.pdf</span>
+                                        <span class="hubbar-resource-meta">2.4 MB</span>
+                                    </li>
+                                    <li class="hubbar-resource-item">
+                                        <span class="hubbar-resource-icon">📊</span>
+                                        <span class="hubbar-resource-name">Risk_Data_Q4.xlsx</span>
+                                        <span class="hubbar-resource-meta">890 KB</span>
+                                    </li>
+                                    <li class="hubbar-resource-item">
+                                        <span class="hubbar-resource-icon">📝</span>
+                                        <span class="hubbar-resource-name">Regulatory_Guidance.docx</span>
+                                        <span class="hubbar-resource-meta">1.1 MB</span>
+                                    </li>
+                                </ul>
+                                <div class="hubbar-resource-upload" style="margin-top:var(--space-1);">+ Upload resource</div>
+                                <div class="hubbar-workflow-meta">
+                                    <div class="hubbar-meta-item">
+                                        <span class="hubbar-meta-label">Due</span>
+                                        <span style="font-weight:500;color:var(--text-primary)">28 Mar 2026</span>
+                                        <span style="font-size:10px;color:var(--status-warning);margin-left:4px">· 14d left</span>
+                                    </div>
+                                    <div class="hubbar-meta-item">
+                                        <span class="hubbar-meta-label">Owner</span>
+                                        <span style="font-weight:500;color:var(--text-primary)">Ravi Mehta</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fake canvas -->
+            <div class="interactive-demo-canvas" id="demo-canvas">
+                <span style="opacity:0.5;">⬡ Graph Canvas — click Hub Bar above to toggle</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         5. SPECIFICATION TABLE
+         ============================== -->
+    <section class="section" id="spec">
+        <div class="section-header">
+            <div class="section-number">Specification</div>
+            <h2 class="section-title">Technical Details</h2>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden; margin-bottom: var(--space-8);">
+            <table class="spec-table">
+                <thead>
+                    <tr><th>Property</th><th>Collapsed</th><th>Expanded</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong style="color:var(--text-primary)">Height</strong></td><td><code>36px</code></td><td><code>~220px</code> (content-driven)</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Width</strong></td><td colspan="2">Fills content area: <code>464px</code> (detail open) to <code>824px</code> (detail closed)</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Background</strong></td><td colspan="2"><code>var(--surface-card)</code></td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Border</strong></td><td colspan="2">Sides + bottom: <code>1px solid var(--surface-card-border)</code>. No top border (inherits from Top Bar)</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Accent line</strong></td><td colspan="2">Bottom: <code>2px</code> brand gradient. Opacity <code>0.5</code> → <code>1.0</code> on hover (Single Line system)</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Transition</strong></td><td colspan="2"><code>250ms cubic-bezier(0.4, 0, 0.2, 1)</code> — height + opacity</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Toggle</strong></td><td colspan="2">Chevron click, <code>H</code> key (graph focused), <code>Escape</code> to collapse</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Visibility</strong></td><td colspan="2">Graph View + Workspace (as "Status Bar" variant). Hidden on Dashboard, Gallery, Settings</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Expanded layout</strong></td><td>—</td><td><code>3-col</code> at ≥600px, <code>2-col + row</code> at &lt;600px</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">State persistence</strong></td><td colspan="2">Expanded/collapsed state persisted in <code>layout.hubBarExpanded</code> (Zustand → IndexedDB)</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">ARIA</strong></td><td colspan="2"><code>role="region"</code>, <code>aria-label="Workflow summary"</code>, <code>aria-expanded</code> on toggle</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Data source</strong></td><td colspan="2">Derived from Zustand tree store — selectors compute counts, progress, health from <code>nodes</code> map</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="font-size:var(--text-lg);font-weight:600;color:var(--text-primary);margin-bottom:var(--space-4);">Collapsed Element Map</h3>
+        <div class="card" style="padding:0; overflow:hidden; margin-bottom: var(--space-8);">
+            <table class="spec-table">
+                <thead>
+                    <tr><th>Element</th><th>At 824px</th><th>At 464px</th><th>Interaction</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Chevron</td><td>✅</td><td>✅</td><td>Click → toggle expand</td></tr>
+                    <tr><td>Workflow name</td><td>✅ (140px max)</td><td>✅ (80px max)</td><td>Click → workflow settings. Tooltip → full name</td></tr>
+                    <tr><td>Progress bar + %</td><td>✅ (64px bar)</td><td>✅ (48px bar)</td><td>Tooltip → "12 of 24 tasks complete"</td></tr>
+                    <tr><td>Status counts (4)</td><td>✅ all 4</td><td>✅ top 3 (drop pending)</td><td>Click a count → filters graph to that status</td></tr>
+                    <tr><td>Health meter</td><td>✅</td><td>✅</td><td>Tooltip → health description</td></tr>
+                    <tr><td>Due date</td><td>✅</td><td>❌ (available in expanded)</td><td>Red text if overdue</td></tr>
+                    <tr><td>Team avatar stack</td><td>✅</td><td>❌ (available in expanded)</td><td>Tooltip → member names</td></tr>
+                    <tr><td>Resource count</td><td>✅</td><td>❌ (available in expanded)</td><td>Click → expand to resources column</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="font-size:var(--text-lg);font-weight:600;color:var(--text-primary);margin-bottom:var(--space-4);">Health Meter Calculation</h3>
+        <div class="card" style="margin-bottom: var(--space-8);">
+            <p class="card-text" style="margin-bottom:var(--space-4);">The 5-segment health meter is computed from three weighted signals:</p>
+            <table class="spec-table" style="margin-top:0;">
+                <thead><tr><th>Signal</th><th>Weight</th><th>Green</th><th>Amber</th><th>Red</th></tr></thead>
+                <tbody>
+                    <tr><td><strong style="color:var(--text-primary)">Time ratio</strong></td><td>40%</td><td>Progress ≥ time elapsed</td><td>Progress 10–30% behind time</td><td>Progress >30% behind</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Blocked %</strong></td><td>30%</td><td>0 blocked</td><td>1–2 blocked</td><td>≥3 blocked or >10% of total</td></tr>
+                    <tr><td><strong style="color:var(--text-primary)">Failed tasks</strong></td><td>30%</td><td>0 failed</td><td>1 failed</td><td>≥2 failed</td></tr>
+                </tbody>
+            </table>
+            <p class="card-text" style="margin-top:var(--space-4);">Segments fill left-to-right. Score 90–100% → 5 green. 70–89% → 4 green. 50–69% → 3 green + 1 amber. 30–49% → 2 green + 2 amber. Below 30% → red segments appear.</p>
+        </div>
+    </section>
+
+    <!-- ==============================
+         6. DO / DON'T
+         ============================== -->
+    <section class="section" id="guidelines">
+        <div class="section-header">
+            <div class="section-number">Design Guidelines</div>
+            <h2 class="section-title">Do & Don't</h2>
+        </div>
+
+        <div class="do-dont">
+            <div class="do-box">
+                <div class="do-box-title">✓ Do</div>
+                <ul>
+                    <li>Use the collapsed bar as the default — most users check it dozens of times without expanding</li>
+                    <li>Make status counts clickable (filter the graph to that status)</li>
+                    <li>Show the health meter even when all tasks are pending (empty segments = "no signal yet")</li>
+                    <li>Persist expanded/collapsed state per user — some users always want it open</li>
+                    <li>Update all counts in real-time via WebSocket — never stale</li>
+                    <li>Use the brand gradient accent line — this is the interactivity signal</li>
+                    <li>Hide lower-priority elements at narrow widths (progressive truncation)</li>
+                </ul>
+            </div>
+            <div class="dont-box">
+                <div class="dont-box-title">✗ Don't</div>
+                <ul>
+                    <li>Don't make the expanded view feel like a dashboard page — it's a quick-reference panel</li>
+                    <li>Don't show more than 4–5 team members in the expanded list — link to "View all" if more</li>
+                    <li>Don't auto-expand on page load — respect the saved state</li>
+                    <li>Don't put edit controls in the collapsed bar — it's for reading, not editing</li>
+                    <li>Don't use full borders on the Hub Bar — use the Single Line system (bottom accent only)</li>
+                    <li>Don't animate the donut chart on every data change — only on initial expand</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         7. IMPLEMENTATION NOTES
+         ============================== -->
+    <section class="section" id="implementation">
+        <div class="section-header">
+            <div class="section-number">Implementation</div>
+            <h2 class="section-title">Component Architecture</h2>
+        </div>
+
+        <div class="card" style="margin-bottom:var(--space-6);">
+            <div class="card-title">Component Structure</div>
+            <pre style="font-family:'SF Mono','Fira Code',monospace;font-size:12px;color:var(--text-secondary);line-height:1.8;overflow-x:auto;background:var(--surface-raised);padding:var(--space-4);border-radius:var(--radius-md);margin-top:var(--space-3);">
+components/shell/HubBar/
+├── HubBar.tsx              ← Main wrapper — reads layout.hubBarExpanded
+├── HubBarCollapsed.tsx     ← 36px strip — always rendered
+├── HubBarExpanded.tsx      ← Pull-down panel — mounted when expanded
+├── HubBarStats.tsx         ← Donut chart + status bars
+├── HubBarTeam.tsx          ← Team list + add member
+├── HubBarResources.tsx     ← File list + upload + metadata
+├── HubBarHealthMeter.tsx   ← 5-segment health calculation
+├── useHubBarData.ts        ← Hook: derives all stats from tree store
+└── hubbar.test.tsx         ← Unit tests
+            </pre>
+        </div>
+
+        <div class="card" style="margin-bottom:var(--space-6);">
+            <div class="card-title">Zustand Selectors (useHubBarData)</div>
+            <pre style="font-family:'SF Mono','Fira Code',monospace;font-size:12px;color:var(--text-secondary);line-height:1.8;overflow-x:auto;background:var(--surface-raised);padding:var(--space-4);border-radius:var(--radius-md);margin-top:var(--space-3);">
+// All data derived from the single Zustand tree store.
+// No separate API calls. O(n) scan of nodes map on change.
+// Memoised via Zustand selectors + useMemo.
+
+interface HubBarData {
+  workflowName: string
+  totalTasks: number
+  statusCounts: Record&lt;TaskStatus, number&gt;
+  progressPercent: number
+  healthScore: number              // 0–100, mapped to 5 segments
+  dueDate: string | null
+  isOverdue: boolean
+  daysRemaining: number | null
+  team: TeamMember[]               // from workflow metadata
+  resources: WorkflowResource[]    // from workflow metadata
+  description: string
+  owner: { name: string; avatar: string }
+}
+            </pre>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="card">
+                <div class="card-title">Responsive Breakpoints</div>
+                <p class="card-text">
+                    <strong style="color:var(--text-primary);">≥ 600px content width (3-column):</strong> Full expanded layout. Donut + bars + health | Team list + add | Resources + metadata.<br><br>
+                    <strong style="color:var(--text-primary);">&lt; 600px content width (2+1):</strong> Stats + Team side-by-side (no donut), Resources as full-width row below. Metadata inline.<br><br>
+                    <strong style="color:var(--text-primary);">Collapsed:</strong> Progressive truncation. Due date, team, resources hide at &lt; 520px.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-title">Accessibility</div>
+                <p class="card-text">
+                    <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">role="region"</code> with <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-label="Workflow summary"</code>.<br><br>
+                    Chevron: <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-expanded</code>. Health meter: <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-label="Workflow health: Good, 3 of 5 indicators positive"</code>.<br><br>
+                    Status counts use both colour + number — never colour alone. <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--surface-raised);padding:1px 4px;border-radius:3px;">aria-live="polite"</code> on counts for screen reader updates.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="padding:var(--space-12) 0;border-top:1px solid var(--surface-card-border);text-align:center;">
+        <p style="font-size:var(--text-sm);color:var(--text-tertiary);">
+            DeepFlow Hub Bar Specification — Part of the <a href="index.html" style="color:var(--brand-solid);text-decoration:none;">Design Guidelines</a>
+        </p>
+    </footer>
+
+</div>
+
+<script>
+    // Theme toggle
+    document.querySelectorAll('.theme-toggle-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.theme-toggle-option').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.documentElement.setAttribute('data-theme', btn.dataset.themeValue);
+        });
+    });
+
+    // Hub Bar toggle
+    let hubBarExpanded = false;
+    function toggleHubBar() {
+        hubBarExpanded = !hubBarExpanded;
+        document.getElementById('hubbar-collapsed-demo').style.display = hubBarExpanded ? 'none' : 'block';
+        document.getElementById('hubbar-expanded-demo').style.display = hubBarExpanded ? 'block' : 'none';
+        // Adjust canvas height
+        const canvas = document.getElementById('demo-canvas');
+        canvas.style.height = hubBarExpanded ? '80px' : '220px';
+    }
+</script>
+
+</body>
+</html>

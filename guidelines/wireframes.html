@@ -197,17 +197,27 @@
             </ul>
         </div>
 
-        <!-- Hub Bar -->
+        <!-- Hub Bar — see hubbar.html for full spec -->
         <div class="panel" style="grid-column:3; grid-row:2">
             <span class="panel-label">Hub Bar (collapsed)</span>
-            <span class="panel-dims">h:36px</span>
+            <span class="panel-dims">h:36px · <a href="hubbar.html" style="color:#0077DD;text-decoration:none;font-size:9px;">Full spec →</a></span>
             <ul class="data-list">
-                <li>Expand/collapse chevron</li>
-                <li>Workflow name</li>
-                <li>Progress bar + percentage</li>
-                <li>Status counts: ✓ done · ▶ active · ⚠ blocked · ○ pending</li>
-                <li>Health meter (5 segments: green/amber/empty)</li>
-                <li>Due date</li>
+                <li class="heading">Left zone (identity + progress):</li>
+                <li class="sub">▾ Expand/collapse chevron</li>
+                <li class="sub">Workflow name (truncated, 140px max / 80px at 464px)</li>
+                <li class="sub">Progress bar (64px, brand gradient fill) + monospace %</li>
+                <li class="heading">Centre zone (status):</li>
+                <li class="sub">Status counts: ✓ complete · ▶ active · ⚠ blocked · ○ pending</li>
+                <li class="sub">Counts use task status colours (dot + number)</li>
+                <li class="sub">At 464px: drop pending count (show top 3 only)</li>
+                <li class="sub">Health meter (5 segments: green/amber/empty)</li>
+                <li class="heading">Right zone (context):</li>
+                <li class="sub">Due date (red if overdue) — hidden at 464px</li>
+                <li class="sub">Team avatar stack (3 + overflow count) — hidden at 464px</li>
+                <li class="sub">📎 Resource count — hidden at 464px</li>
+                <li class="heading">Visual:</li>
+                <li class="sub">Bottom accent: 2px brand gradient, opacity 0.5 → 1.0 on hover</li>
+                <li class="sub">No top border (inherits from Top Bar)</li>
             </ul>
         </div>
 
@@ -264,7 +274,7 @@
     <div class="notes">
         <strong>Layout math:</strong> 56 + 320 + canvas + 360 = 1200px → canvas = 464px.<br>
         <strong>Detail panel hidden:</strong> canvas expands to 824px. Chat always remains.<br>
-        <strong>Hub bar expand:</strong> grows to ~220px, pushes canvas down. Shows donut chart, status breakdown bars, upcoming due dates, top assignees.
+        <strong>Hub bar expand:</strong> grows to ~220px, pushes canvas down. Three-column layout: (1) Stats — donut chart + per-status breakdown bars + health meter, (2) Team — member list with online status, roles, + add member, (3) Resources — workflow files + upload + metadata (due date countdown, owner, description). At 464px: 2-column + resource row. See <a href="hubbar.html" style="color:#0077DD;text-decoration:none">full Hub Bar spec</a>.
     </div>
 </div>
 
