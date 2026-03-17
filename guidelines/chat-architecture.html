@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepFlow — Non-Blocking Chat Architecture</title>
+
+    <!-- Euclid Circular B — Self-hosted -->
+    <style>
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-SemiBold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
+    <style>
+        :root {
+            --brand-cyan: #00D4F5;
+            --brand-blue: #2244FF;
+            --brand-mid: #0099FF;
+            --brand-gradient: linear-gradient(135deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-gradient-horizontal: linear-gradient(90deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-gradient-vertical: linear-gradient(180deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-solid: #0077DD;
+            --brand-solid-hover: #0066CC;
+            --brand-solid-active: #005BB5;
+
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --text-tertiary: #6B7280;
+            --text-inverse: #FFFFFF;
+
+            --surface-page: #FFFFFF;
+            --surface-raised: #F8F9FB;
+            --surface-overlay: #FFFFFF;
+            --surface-nav: rgba(255, 255, 255, 0.9);
+            --surface-card: #FFFFFF;
+            --surface-card-border: #E4E7ED;
+            --surface-hover: #F1F3F6;
+
+            --status-success: #059669;
+            --status-success-bg: rgba(5, 150, 105, 0.08);
+            --status-success-border: rgba(5, 150, 105, 0.2);
+            --status-warning: #D97706;
+            --status-warning-bg: rgba(217, 119, 6, 0.08);
+            --status-warning-border: rgba(217, 119, 6, 0.2);
+            --status-error: #DC2626;
+            --status-error-bg: rgba(220, 38, 38, 0.08);
+            --status-error-border: rgba(220, 38, 38, 0.2);
+            --status-info: #2563EB;
+            --status-info-bg: rgba(37, 99, 235, 0.08);
+            --status-info-border: rgba(37, 99, 235, 0.2);
+
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            --space-16: 64px;
+            --space-20: 80px;
+            --space-24: 96px;
+
+            --text-xs: 0.75rem;
+            --text-sm: 0.8125rem;
+            --text-base: 0.875rem;
+            --text-md: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+
+            --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+        }
+
+        [data-theme="dark"] {
+            --brand-solid: #0099FF;
+            --brand-solid-hover: #00AAFF;
+
+            --text-primary: #E8E8EF;
+            --text-secondary: #ABABBD;
+            --text-tertiary: #8585A0;
+            --text-inverse: #0A0A0F;
+
+            --surface-page: #0A0A0F;
+            --surface-raised: #111118;
+            --surface-overlay: #1C1C27;
+            --surface-nav: rgba(10, 10, 15, 0.85);
+            --surface-card: #111118;
+            --surface-card-border: #1C1C27;
+            --surface-hover: #16161F;
+
+            --status-success: #34D399;
+            --status-success-bg: rgba(52, 211, 153, 0.12);
+            --status-success-border: rgba(52, 211, 153, 0.3);
+            --status-warning: #FBBF24;
+            --status-warning-bg: rgba(251, 191, 36, 0.12);
+            --status-warning-border: rgba(251, 191, 36, 0.3);
+            --status-error: #F87171;
+            --status-error-bg: rgba(248, 113, 113, 0.12);
+            --status-error-border: rgba(248, 113, 113, 0.3);
+            --status-info: #60A5FA;
+            --status-info-bg: rgba(96, 165, 250, 0.12);
+            --status-info-border: rgba(96, 165, 250, 0.3);
+
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.25);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        /* ============================================
+           THEME TOGGLE
+           ============================================ */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-full);
+            padding: 3px;
+            cursor: pointer;
+        }
+        .theme-toggle-option {
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 500;
+            color: var(--text-tertiary);
+            transition: all var(--duration-fast) var(--ease-default);
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+        .theme-toggle-option.active {
+            background: var(--brand-solid);
+            color: white;
+        }
+
+        /* ============================================
+           BASE
+           ============================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+            background: var(--surface-page);
+            color: var(--text-secondary);
+            font-size: var(--text-base);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            transition: background var(--duration-normal) var(--ease-default), color var(--duration-normal) var(--ease-default);
+        }
+        ::selection {
+            background: rgba(0, 119, 221, 0.2);
+            color: var(--text-primary);
+        }
+        [data-theme="dark"] ::selection {
+            background: rgba(0, 153, 255, 0.3);
+        }
+
+        /* ============================================
+           NAV
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--surface-nav);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--surface-card-border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .nav-brand img { height: 28px; width: auto; filter: brightness(0); }
+        [data-theme="dark"] .nav-brand img { filter: brightness(1); }
+        .nav-divider { width: 1px; height: 24px; background: var(--surface-card-border); }
+        .nav-subtitle { font-size: var(--text-sm); font-weight: 500; color: var(--text-tertiary); }
+        .nav-links { display: flex; gap: var(--space-1); list-style: none; }
+        .nav-links a {
+            display: block;
+            padding: var(--space-2) var(--space-3);
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            transition: color var(--duration-fast) var(--ease-default), background var(--duration-fast) var(--ease-default);
+        }
+        .nav-links a:hover { color: var(--text-primary); background: var(--surface-hover); }
+        @media (max-width: 1100px) { .nav-links { display: none; } }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-8); }
+        .hero {
+            padding: 140px var(--space-8) var(--space-16);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px; left: 50%;
+            transform: translateX(-50%);
+            width: 1000px; height: 700px;
+            background: radial-gradient(ellipse, rgba(0,119,221,0.05) 0%, rgba(34,68,255,0.02) 40%, transparent 70%);
+            pointer-events: none;
+        }
+        [data-theme="dark"] .hero::before {
+            background: radial-gradient(ellipse, rgba(0,153,255,0.07) 0%, rgba(34,68,255,0.03) 40%, transparent 70%);
+        }
+        .hero h1 {
+            font-size: var(--text-5xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: var(--space-6);
+        }
+        .gradient-text {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: var(--text-lg);
+            color: var(--text-tertiary);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-8);
+        }
+        .hero-badge-dot {
+            width: 6px; height: 6px;
+            background: var(--brand-solid);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .section {
+            padding: var(--space-24) 0;
+            border-top: 1px solid var(--surface-card-border);
+        }
+        .section-header { margin-bottom: var(--space-16); }
+        .section-number {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-3);
+        }
+        .section-title {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-4);
+        }
+        .section-desc {
+            font-size: var(--text-md);
+            color: var(--text-tertiary);
+            max-width: 700px;
+            line-height: 1.7;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            transition: border-color var(--duration-normal) var(--ease-default);
+        }
+        .card:hover { border-color: rgba(107, 114, 128, 0.3); }
+        .card-title { font-size: var(--text-lg); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-3); }
+        .card-text { color: var(--text-secondary); line-height: 1.7; }
+        .card-grid { display: grid; gap: var(--space-6); }
+        .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+        @media (max-width: 768px) { .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; } }
+
+        /* Branded left-border statement */
+        .brand-statement {
+            font-size: var(--text-2xl);
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+            border-left: 3px solid;
+            border-image: var(--brand-gradient-vertical) 1;
+            padding-left: var(--space-6);
+            margin-bottom: var(--space-10);
+            max-width: 800px;
+        }
+        .brand-statement em {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: normal;
+        }
+
+        /* TL;DR box */
+        .tldr {
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-left: 4px solid;
+            border-image: var(--brand-gradient-vertical) 1;
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+            padding: var(--space-8);
+            margin-bottom: var(--space-12);
+        }
+        .tldr-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        .tldr ul {
+            list-style: none;
+            padding: 0;
+        }
+        .tldr li {
+            padding: var(--space-2) 0;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+        }
+        .tldr li::before {
+            content: '→';
+            color: var(--brand-solid);
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Layer cards */
+        .layer-card {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .layer-header {
+            padding: var(--space-5) var(--space-6);
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            border-bottom: 1px solid var(--surface-card-border);
+        }
+        .layer-icon {
+            width: 48px; height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .layer-icon-1 { background: linear-gradient(135deg, rgba(52, 211, 153, 0.15), rgba(52, 211, 153, 0.05)); }
+        .layer-icon-2 { background: linear-gradient(135deg, rgba(96, 165, 250, 0.15), rgba(96, 165, 250, 0.05)); }
+        .layer-icon-3 { background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(167, 139, 250, 0.05)); }
+        .layer-name { font-size: var(--text-lg); font-weight: 600; color: var(--text-primary); }
+        .layer-subtitle { font-size: var(--text-sm); color: var(--text-tertiary); }
+        .layer-badge {
+            margin-left: auto;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+        .layer-badge-fast { background: var(--status-success-bg); color: var(--status-success); border: 1px solid var(--status-success-border); }
+        .layer-badge-heavy { background: var(--status-info-bg); color: var(--status-info); border: 1px solid var(--status-info-border); }
+        .layer-badge-persistent { background: rgba(167, 139, 250, 0.1); color: #8B5CF6; border: 1px solid rgba(167, 139, 250, 0.25); }
+        [data-theme="dark"] .layer-badge-persistent { color: #A78BFA; }
+        .layer-body { padding: var(--space-6); }
+        .layer-body p { margin-bottom: var(--space-4); line-height: 1.7; }
+        .layer-body p:last-child { margin-bottom: 0; }
+        .layer-example {
+            background: var(--surface-raised);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+            margin: var(--space-4) 0;
+            font-size: var(--text-sm);
+        }
+        .layer-example-label {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            color: var(--brand-solid);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: var(--space-2);
+        }
+        .layer-example-user {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: var(--space-1);
+        }
+        .layer-example-response {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Code / pre blocks */
+        pre, .code-block {
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-6);
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: var(--text-sm);
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        code {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.9em;
+            background: var(--surface-raised);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            color: var(--brand-solid);
+            border: 1px solid var(--surface-card-border);
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: inherit;
+        }
+
+        /* Tables */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--text-sm);
+            margin: var(--space-6) 0;
+        }
+        .spec-table th {
+            text-align: left;
+            padding: var(--space-3) var(--space-4);
+            font-weight: 600;
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            border-bottom: 2px solid var(--surface-card-border);
+            background: var(--surface-raised);
+        }
+        .spec-table td {
+            padding: var(--space-3) var(--space-4);
+            border-bottom: 1px solid var(--surface-card-border);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+        .spec-table tr:last-child td { border-bottom: none; }
+        .spec-table tr:hover td { background: var(--surface-hover); }
+        .spec-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+        /* Escalation tree */
+        .escalation-tree {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+        }
+        .escalation-node {
+            padding: var(--space-3) var(--space-4);
+            border-left: 3px solid var(--surface-card-border);
+            margin-left: var(--space-6);
+            margin-bottom: var(--space-3);
+            position: relative;
+        }
+        .escalation-node::before {
+            content: '';
+            position: absolute;
+            left: -3px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+        }
+        .escalation-node-trivial::before { background: var(--status-success); }
+        .escalation-node-single::before { background: var(--status-info); }
+        .escalation-node-sibling::before { background: var(--status-warning); }
+        .escalation-node-project::before { background: #8B5CF6; }
+        .escalation-node-complex::before { background: var(--brand-solid); }
+        .escalation-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-1);
+        }
+        .escalation-desc {
+            font-size: var(--text-sm);
+            color: var(--text-tertiary);
+        }
+        .escalation-example {
+            font-size: var(--text-xs);
+            color: var(--text-tertiary);
+            font-style: italic;
+            margin-top: var(--space-1);
+        }
+
+        /* Flow diagram */
+        .flow-diagram {
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            overflow-x: auto;
+        }
+        .flow-step {
+            display: flex;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+            position: relative;
+        }
+        .flow-step:last-child { margin-bottom: 0; }
+        .flow-connector {
+            width: 2px;
+            background: var(--surface-card-border);
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            bottom: -24px;
+        }
+        .flow-step:last-child .flow-connector { display: none; }
+        .flow-dot {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-sm);
+            font-weight: 700;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .flow-dot-user { background: var(--surface-card); border: 2px solid var(--text-tertiary); color: var(--text-primary); }
+        .flow-dot-l1 { background: var(--status-success-bg); border: 2px solid var(--status-success); color: var(--status-success); }
+        .flow-dot-l2 { background: var(--status-info-bg); border: 2px solid var(--status-info); color: var(--status-info); }
+        .flow-dot-system { background: var(--surface-card); border: 2px dashed var(--text-tertiary); color: var(--text-tertiary); }
+        .flow-content { flex: 1; padding-top: var(--space-2); }
+        .flow-actor { font-size: var(--text-xs); font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-1); }
+        .flow-message {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3) var(--space-4);
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .flow-message strong { color: var(--text-primary); font-weight: 600; }
+        .flow-message .action-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(0, 119, 221, 0.08);
+            border: 1px solid rgba(0, 119, 221, 0.2);
+            border-radius: var(--radius-sm);
+            font-size: var(--text-xs);
+            font-weight: 500;
+            color: var(--brand-solid);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .flow-time { font-size: 10px; color: var(--text-tertiary); margin-top: var(--space-1); }
+
+        /* Principle cards with icon */
+        .pillar-icon {
+            width: 48px; height: 48px;
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: var(--space-5);
+        }
+
+        /* Tool list */
+        .tool-group {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .tool-group-header {
+            padding: var(--space-4) var(--space-6);
+            background: var(--surface-raised);
+            border-bottom: 1px solid var(--surface-card-border);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        .tool-group-badge {
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .tool-group-badge-yes { background: var(--status-success-bg); color: var(--status-success); }
+        .tool-group-badge-no { background: var(--status-error-bg); color: var(--status-error); }
+        .tool-group-badge-conditional { background: var(--status-warning-bg); color: var(--status-warning); }
+        .tool-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .tool-list li {
+            padding: var(--space-2) var(--space-6);
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--surface-card-border);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        .tool-list li:last-child { border-bottom: none; }
+        .tool-list li::before { content: '•'; color: var(--text-tertiary); flex-shrink: 0; }
+
+        /* Utility */
+        .mt-4 { margin-top: var(--space-4); }
+        .mt-6 { margin-top: var(--space-6); }
+        .mt-8 { margin-top: var(--space-8); }
+        .mb-4 { margin-bottom: var(--space-4); }
+        .mb-6 { margin-bottom: var(--space-6); }
+        .mb-8 { margin-bottom: var(--space-8); }
+        .mb-12 { margin-bottom: var(--space-12); }
+        .text-muted { color: var(--text-tertiary); }
+
+        /* Scenario narrative */
+        .scenario {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            position: relative;
+            overflow: hidden;
+        }
+        .scenario::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: var(--brand-gradient-horizontal);
+        }
+        .scenario p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-4);
+        }
+        .scenario p:last-child { margin-bottom: 0; }
+        .scenario strong { color: var(--text-primary); }
+
+        /* Meeting template steps */
+        .workflow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--surface-card-border);
+        }
+        .workflow-step:last-child { border-bottom: none; }
+        .workflow-step-phase {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 64px;
+            text-align: center;
+        }
+        .phase-prep { background: var(--status-info-bg); color: var(--status-info); }
+        .phase-exec { background: var(--status-warning-bg); color: var(--status-warning); }
+        .phase-post { background: var(--status-success-bg); color: var(--status-success); }
+        .phase-auto { background: rgba(167, 139, 250, 0.1); color: #8B5CF6; }
+        [data-theme="dark"] .phase-auto { color: #A78BFA; }
+        .workflow-step-content { flex: 1; }
+        .workflow-step-name { font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); }
+        .workflow-step-desc { font-size: var(--text-xs); color: var(--text-tertiary); margin-top: 2px; }
+        .workflow-step-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+        }
+        .badge-auto { background: var(--status-success-bg); color: var(--status-success); }
+        .badge-approval { background: var(--status-warning-bg); color: var(--status-warning); }
+        .badge-trigger { background: rgba(167, 139, 250, 0.1); color: #8B5CF6; }
+        [data-theme="dark"] .badge-trigger { color: #A78BFA; }
+
+        /* Footer */
+        .footer {
+            padding: var(--space-12) 0;
+            border-top: 1px solid var(--surface-card-border);
+            text-align: center;
+        }
+        .footer p { font-size: var(--text-sm); color: var(--text-tertiary); }
+        .footer a { color: var(--brand-solid); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand">
+                <img src="assets/iconmark-white.png" alt="DeepFlow">
+                <span class="nav-divider"></span>
+                <span class="nav-subtitle">Chat Architecture Spec</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Guidelines</a></li>
+                <li><a href="views.html">Views</a></li>
+                <li><a href="wireframes.html">Wireframes</a></li>
+                <li><a href="hubbar.html">Hub Bar</a></li>
+                <li><a href="sidebar.html">Sidebar</a></li>
+                <li><a href="mobile.html">📱 Mobile</a></li>
+                <li><a href="chat-architecture.html" style="color: var(--brand-solid); font-weight: 600;">💬 Chat Architecture</a></li>
+                <li><a href="review.html">📝 Review</a></li>
+                <li><a href="brief.md">📋 Brief</a></li>
+            </ul>
+            <div class="theme-toggle" role="radiogroup" aria-label="Theme switcher">
+                <button class="theme-toggle-option active" data-theme-value="light" aria-checked="true" role="radio">☀️ Light</button>
+                <button class="theme-toggle-option" data-theme-value="dark" aria-checked="false" role="radio">🌙 Dark</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                Architecture Specification
+            </div>
+            <h1>Non-Blocking <span class="gradient-text">Chat Architecture</span></h1>
+            <p class="hero-sub">
+                DeepFlow's chat is not a chatbot. It's a command layer — fast for status, smart for planning, and never, ever blocked. Three layers. One seamless experience.
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- ==========================================
+             TL;DR
+             ========================================== -->
+        <div class="tldr" id="tldr">
+            <div class="tldr-title">⚡ TL;DR — 30 Second Summary</div>
+            <ul>
+                <li>Chat uses a <strong style="color: var(--text-primary);">three-layer architecture</strong>: fast responder (&lt;2s), heavy planner (~5s), and persistent world model (graph DB)</li>
+                <li><strong style="color: var(--text-primary);">Never blocks.</strong> You can ask "what's blocked?" while a report is being generated. The fast layer answers instantly; the heavy layer works in the background</li>
+                <li>Non-trivial requests become <strong style="color: var(--text-primary);">tasks in the project graph</strong> — not inline chat responses. "Book a meeting" creates 6 linked tasks, not one reply</li>
+                <li>Tasks execute in <strong style="color: var(--text-primary);">complete isolation</strong> — only see their description + upstream inputs. Task description quality is critical</li>
+                <li>Chat <strong style="color: var(--text-primary);">never sends emails, creates calendar events, or calls external APIs</strong> directly. It creates tasks. Task executors have the tools. Safer, auditable, reversible</li>
+                <li><strong style="color: var(--text-primary);">Proactive gap-filling:</strong> chat doesn't just respond — it scans for stalled tasks, missed deadlines, and context gaps on a configurable heartbeat</li>
+                <li>User configures <strong style="color: var(--text-primary);">authority rules</strong>: what chat can auto-execute vs. what needs approval</li>
+            </ul>
+        </div>
+
+        <!-- ==========================================
+             RAVI'S DAY
+             ========================================== -->
+        <section id="problem" class="section">
+            <div class="section-header">
+                <div class="section-number">THE PROBLEM</div>
+                <h2 class="section-title">Ravi's Day</h2>
+                <p class="section-desc">Why single-threaded chat is broken for the people DeepFlow serves.</p>
+            </div>
+
+            <div class="scenario">
+                <p>
+                    <strong>It's 10:47 AM.</strong> Ravi is in a cab between meetings. He has 12 minutes before his next call. His phone buzzes — WhatsApp from a client, two unread LinkedIn InMails, an email from his accountant, and a Slack ping from the contractor he hired last week. He's already mentally composing a reply to the WhatsApp while skimming the email subject lines.
+                </p>
+                <p>
+                    Ravi runs a solo consultancy. He <em>is</em> the CEO, the project manager, the analyst, and the client-facer. He juggles five systems — WhatsApp, email, CRM, LinkedIn, MS Word — and context-switches every five minutes. That's not a complaint; it's his operating model.
+                </p>
+                <p>
+                    He opens DeepFlow on his phone. He needs two things: <strong>"What's blocked in ICAAP?"</strong> and <strong>"Set up that review meeting with Sarah."</strong> Two requests. Maybe 15 seconds of his attention.
+                </p>
+                <p>
+                    But here's the problem. He asked DeepFlow to <strong>"write the ICAAP executive summary"</strong> earlier this morning. That task is still generating. The chat is <strong>blocked</strong>. A spinning indicator. He can't type. He can't ask about status. He can't give new instructions. The entire interface is frozen on a single long-running response.
+                </p>
+                <p>
+                    <strong>That's unacceptable.</strong> For someone juggling five systems in a 12-minute window, a chat that blocks for 60 seconds isn't just slow — it's useless. Ravi closes the app and sends a WhatsApp instead.
+                </p>
+                <p>
+                    The single-threaded chat model assumes the user will wait. Ravi never waits. He dips in, checks status, fires instructions, and moves on. DeepFlow's chat must work <em>the way Ravi works</em> — instant for the simple stuff, asynchronous for the heavy stuff, and <strong>never, ever blocked</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             THREE-LAYER ARCHITECTURE
+             ========================================== -->
+        <section id="layers" class="section">
+            <div class="section-header">
+                <div class="section-number">ARCHITECTURE</div>
+                <h2 class="section-title">Three-Layer Chat Architecture</h2>
+                <p class="section-desc">Every message hits Layer 1 first. Layer 1 answers what it can, routes what it can't, and the user never waits.</p>
+            </div>
+
+            <!-- Layer 1 -->
+            <div class="layer-card mb-8">
+                <div class="layer-header">
+                    <div class="layer-icon layer-icon-1">⚡</div>
+                    <div>
+                        <div class="layer-name">Layer 1: Fast Responder</div>
+                        <div class="layer-subtitle">Lightweight model · Always-on · Instant</div>
+                    </div>
+                    <span class="layer-badge layer-badge-fast">&lt; 2 SECONDS</span>
+                </div>
+                <div class="layer-body">
+                    <p>
+                        <strong style="color: var(--text-primary);">Handles:</strong> status queries, quick answers, task capture, context inference, trivial acknowledgements, and routing decisions.
+                    </p>
+                    <p>
+                        Layer 1 is a lightweight model that sits between the user and everything else. It has read access to the project graph, calendar, and task history. It answers what it can directly — no task created, no heavy model invoked. If the request is non-trivial, it routes to Layer 2 immediately and tells the user it's being handled.
+                    </p>
+
+                    <div class="layer-example">
+                        <div class="layer-example-label">Example 1 — Status Query</div>
+                        <div class="layer-example-user">"When's my next 30min slot?"</div>
+                        <div class="layer-example-response">→ Reads calendar directly. "You're free 2:00–2:30 PM today."</div>
+                    </div>
+                    <div class="layer-example">
+                        <div class="layer-example-label">Example 2 — Project Status</div>
+                        <div class="layer-example-user">"What's blocked in ICAAP?"</div>
+                        <div class="layer-example-response">→ Reads project graph from DB. "Stress testing is blocked by capital model (72% complete, running now). Everything else is on track."</div>
+                    </div>
+                    <div class="layer-example">
+                        <div class="layer-example-label">Example 3 — Routing to Layer 2</div>
+                        <div class="layer-example-user">"Book a 45min meeting with Sarah today"</div>
+                        <div class="layer-example-response">→ Detects non-trivial multi-step request. Routes to Layer 2. Immediately replies: "Setting that up now…"</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer 2 -->
+            <div class="layer-card mb-8">
+                <div class="layer-header">
+                    <div class="layer-icon layer-icon-2">🧠</div>
+                    <div>
+                        <div class="layer-name">Layer 2: Planner</div>
+                        <div class="layer-subtitle">Heavy model · Called on demand · Creates task DAGs</div>
+                    </div>
+                    <span class="layer-badge layer-badge-heavy">~ 5 SECONDS</span>
+                </div>
+                <div class="layer-body">
+                    <p>
+                        <strong style="color: var(--text-primary);">Handles:</strong> writing detailed task descriptions, decomposing requests into task DAGs, matching workflow templates, deciding execution model per task, checking calendars and availability.
+                    </p>
+                    <p>
+                        Layer 2 is not always running. It's invoked by Layer 1 when a request needs planning. It has access to the world model (Layer 3) and creates structured, executable task graphs. The user is never waiting for Layer 2 — they got a fast acknowledgement from Layer 1 and can continue chatting.
+                    </p>
+
+                    <div class="layer-example">
+                        <div class="layer-example-label">Example — Meeting Workflow</div>
+                        <div class="layer-example-user">"Book a 45min meeting with Sarah today"</div>
+                        <div class="layer-example-response">
+                            → Layer 2 checks Ravi's calendar + Sarah's availability<br>
+                            → Creates a meeting project from template:<br>
+                            &nbsp;&nbsp;Task 1: Find available slot → <em>auto-execute</em><br>
+                            &nbsp;&nbsp;Task 2: Send calendar invite → <em>auto-execute</em><br>
+                            &nbsp;&nbsp;Task 3: Create prep doc from ICAAP status → <em>auto-execute</em><br>
+                            &nbsp;&nbsp;Task 4: Set up recording → <em>fires at meeting time</em><br>
+                            &nbsp;&nbsp;Task 5: Post-meeting: transcribe + summarise → <em>fires after</em><br>
+                            &nbsp;&nbsp;Task 6: Send notes to Sarah → <em>needs approval</em><br>
+                            &nbsp;&nbsp;Task 7: Add action items to ICAAP → <em>needs approval</em>
+                        </div>
+                    </div>
+                    <div class="layer-example">
+                        <div class="layer-example-label">Example — Research Task</div>
+                        <div class="layer-example-user">"Research competitor pricing in UK market"</div>
+                        <div class="layer-example-response">
+                            → Layer 2 writes a detailed task description with expected output format<br>
+                            → Assigns to AI agent<br>
+                            → Fires execution<br>
+                            → User gets notification when research is complete
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer 3 -->
+            <div class="layer-card mb-8">
+                <div class="layer-header">
+                    <div class="layer-icon layer-icon-3">🌐</div>
+                    <div>
+                        <div class="layer-name">Layer 3: World Model</div>
+                        <div class="layer-subtitle">Persistent · Stored in graph DB · Always updating</div>
+                    </div>
+                    <span class="layer-badge layer-badge-persistent">PERSISTENT</span>
+                </div>
+                <div class="layer-body">
+                    <p>
+                        <strong style="color: var(--text-primary);">Contains:</strong> a map of Ravi's projects, people, commitments, preferences, and working patterns. This is not a chat context window — it's a structured database that outlives any conversation.
+                    </p>
+                    <p>
+                        <strong style="color: var(--text-primary);">NOT stored in model context.</strong> Stored in DeepFlow's graph database. This means it doesn't degrade as conversations get longer, doesn't get "forgotten," and can be queried, updated, and audited independently.
+                    </p>
+                    <p>
+                        <strong style="color: var(--text-primary);">Updated by:</strong> task outputs (when a research task completes, its findings update the world model), chat conversations (when Ravi mentions a new contact or preference), and proactive questions (chat asks "Is Sarah still on the board review?" to keep the model accurate).
+                    </p>
+                    <p>
+                        Chat reads from the world model to infer context, answer questions, and detect gaps. It's what allows Layer 1 to know that "the meeting" means "the ICAAP review with Sarah on Thursday" without being told.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TASK ESCALATION LADDER
+             ========================================== -->
+        <section id="escalation" class="section">
+            <div class="section-header">
+                <div class="section-number">ROUTING</div>
+                <h2 class="section-title">Task Escalation Ladder</h2>
+                <p class="section-desc">Every user request is classified and routed to the right level of response. The decision tree is deterministic.</p>
+            </div>
+
+            <div class="escalation-tree">
+                <div style="font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-6); padding-bottom: var(--space-4); border-bottom: 1px solid var(--surface-card-border);">
+                    User request received →
+                </div>
+
+                <div class="escalation-node escalation-node-trivial">
+                    <div class="escalation-label">Trivial? → Answer directly. No task created.</div>
+                    <div class="escalation-desc">Layer 1 handles it in &lt;2 seconds from existing data.</div>
+                    <div class="escalation-example">"When's my next free slot?" · "What's the status of ICAAP?" · "Thanks"</div>
+                </div>
+
+                <div class="escalation-node escalation-node-single">
+                    <div class="escalation-label">Single action? → Create task, execute as sub-agent.</div>
+                    <div class="escalation-desc">One discrete piece of work. Layer 2 writes description, fires execution.</div>
+                    <div class="escalation-example">"Research competitor pricing" · "Draft a meeting prep doc for Thursday"</div>
+                </div>
+
+                <div class="escalation-node escalation-node-sibling">
+                    <div class="escalation-label">Related to existing task? → Create sibling task, link under same project.</div>
+                    <div class="escalation-desc">Context inferred from conversation or active screen. New task linked as sibling.</div>
+                    <div class="escalation-example">"Also prepare slides for that meeting"</div>
+                </div>
+
+                <div class="escalation-node escalation-node-project">
+                    <div class="escalation-label">Related to existing project? → Add task to that project.</div>
+                    <div class="escalation-desc">Enriches an existing project graph with a new node.</div>
+                    <div class="escalation-example">"Add a risk review step to ICAAP"</div>
+                </div>
+
+                <div class="escalation-node escalation-node-complex">
+                    <div class="escalation-label">New complex project? → Create project (from template or AI-generated DAG).</div>
+                    <div class="escalation-desc">Layer 2 decomposes into a full task graph with dependencies, assignees, and execution model.</div>
+                    <div class="escalation-example">"Set up everything for the board presentation next month"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             MEETING TEMPLATE EXAMPLE
+             ========================================== -->
+        <section id="meeting-template" class="section">
+            <div class="section-header">
+                <div class="section-number">EXAMPLE</div>
+                <h2 class="section-title">Meeting Template — Full Workflow</h2>
+                <p class="section-desc">"Book a meeting" is never just one task. Here's what Layer 2 actually creates.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title mb-6">Meeting with Sarah — Workflow Expansion</div>
+
+                <div class="workflow-step">
+                    <span class="workflow-step-phase phase-prep">Prep</span>
+                    <div class="workflow-step-content">
+                        <div class="workflow-step-name">Find available slot</div>
+                        <div class="workflow-step-desc">Cross-reference Ravi's calendar with Sarah's availability. Propose best 45min window.</div>
+                    </div>
+                    <span class="workflow-step-badge badge-auto">Auto</span>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="workflow-step-phase phase-prep">Prep</span>
+                    <div class="workflow-step-content">
+                        <div class="workflow-step-name">Send calendar invite</div>
+                        <div class="workflow-step-desc">Create and send calendar event to Ravi + Sarah with video link.</div>
+                    </div>
+                    <span class="workflow-step-badge badge-auto">Auto</span>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="workflow-step-phase phase-prep">Prep</span>
+                    <div class="workflow-step-content">
+                        <div class="workflow-step-name">Create prep document</div>
+                        <div class="workflow-step-desc">Pull current ICAAP status, open issues, and recent progress into a meeting prep doc.</div>
+                    </div>
+                    <span class="workflow-step-badge badge-auto">Auto</span>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="workflow-step-phase phase-exec">Execute</span>
+                    <div class="workflow-step-content">
+                        <div class="workflow-step-name">Record meeting</div>
+                        <div class="workflow-step-desc">Activate recording and transcription when meeting starts.</div>
+                    </div>
+                    <span class="workflow-step-badge badge-trigger">Trigger: meeting start</span>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="workflow-step-phase phase-post">Post</span>
+                    <div class="workflow-step-content">
+                        <div class="workflow-step-name">Transcribe &amp; summarise</div>
+                        <div class="workflow-step-desc">Process recording → generate structured meeting notes with key decisions and action items.</div>
+                    </div>
+                    <span class="workflow-step-badge badge-trigger">Trigger: meeting end</span>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="workflow-step-phase phase-post">Post</span>
+                    <div class="workflow-step-content">
+                        <div class="workflow-step-name">Send notes to Sarah</div>
+                        <div class="workflow-step-desc">Email meeting notes and action items to all participants.</div>
+                    </div>
+                    <span class="workflow-step-badge badge-approval">Needs approval</span>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="workflow-step-phase phase-post">Post</span>
+                    <div class="workflow-step-content">
+                        <div class="workflow-step-name">Add action items to DeepFlow</div>
+                        <div class="workflow-step-desc">Extract action items from meeting notes → create tasks in the relevant project graph.</div>
+                    </div>
+                    <span class="workflow-step-badge badge-approval">Needs approval</span>
+                </div>
+            </div>
+
+            <p class="text-muted mt-6" style="font-size: var(--text-sm); line-height: 1.7;">
+                This is a <strong style="color: var(--text-primary);">workflow template</strong> that fires automatically. Ravi said "book a meeting" — one sentence. Layer 2 expanded it into 7 linked tasks spanning prep, execution, and post-meeting. Some auto-execute; some need approval. The template is reusable across all meetings.
+            </p>
+        </section>
+
+        <!-- ==========================================
+             EXECUTION ISOLATION
+             ========================================== -->
+        <section id="isolation" class="section">
+            <div class="section-header">
+                <div class="section-number">EXECUTION</div>
+                <h2 class="section-title">Execution Isolation</h2>
+                <p class="section-desc">Each task executes in a sealed environment. It sees only what it needs. This makes the system safer, more auditable, and more parallelisable.</p>
+            </div>
+
+            <div class="brand-statement">
+                A task executor is like a contractor you hand a brief to. It gets the description, the inputs from upstream tasks, and the hub-level resources. <em>Nothing else.</em>
+            </div>
+
+            <div class="card-grid card-grid-2 mb-8">
+                <div class="card">
+                    <div class="pillar-icon">✅</div>
+                    <div class="card-title">What a task executor sees</div>
+                    <p class="card-text">
+                        Its own task description (written by Layer 2) — detailed, specific, with expected output format. Inputs from upstream dependencies — files, data, context from completed tasks. Hub-level resources — documents and references attached to the project. That's it.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="pillar-icon">🚫</div>
+                    <div class="card-title">What a task executor does NOT see</div>
+                    <p class="card-text">
+                        Chat history. Other tasks' internals. The user's full context. Sibling tasks' working state. Anything outside its explicit scope. This isn't a limitation — it's a feature.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 3px solid var(--status-warning); border-image: none;">
+                <div class="card-title">⚠️ Implication: Task Description Quality Is Critical</div>
+                <p class="card-text">
+                    Because task executors see <em>only</em> their description plus upstream inputs, the quality of that description determines the quality of the output. Layer 2 (the Planner) must write <strong style="color: var(--text-primary);">detailed, specific, unambiguous descriptions</strong> — because that's all the executor has to work with.
+                </p>
+                <p class="card-text mt-4">
+                    A vague description like "Write the report" will produce vague output. A description like "Write the ICAAP executive summary (2–3 pages, formal tone) covering: capital adequacy assessment, stress test results (from upstream Task 3 output), risk appetite alignment, and board recommendations. Format: Word document, include charts from the capital model output." — that produces something useful.
+                </p>
+            </div>
+
+            <div class="card mt-6">
+                <div class="card-title">Output Flow</div>
+                <p class="card-text">
+                    When a task completes: a <strong style="color: var(--text-primary);">summary</strong> is returned to the chat panel (user sees "Research is done. 3 competitors identified."). The <strong style="color: var(--text-primary);">full output</strong> is written to the task's canvas (Workspace). Downstream tasks that depended on this task <strong style="color: var(--text-primary);">can now fire</strong> — they receive this task's output as their input.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             CONTEXT INFERENCE
+             ========================================== -->
+        <section id="context" class="section">
+            <div class="section-header">
+                <div class="section-number">INTELLIGENCE</div>
+                <h2 class="section-title">Context Inference</h2>
+                <p class="section-desc">How chat knows what you're talking about — without you explaining it.</p>
+            </div>
+
+            <p class="mb-6" style="line-height: 1.7;">Chat infers the user's intent from three signals, weighted in this order:</p>
+
+            <div class="card-grid card-grid-3 mb-8">
+                <div class="card">
+                    <div class="pillar-icon">👁️</div>
+                    <div class="card-title">1. What's on screen</div>
+                    <p class="card-text">Active project, selected node, open canvas tab. If Ravi is looking at the ICAAP graph with the "Risk Assessment" node selected, "what's the status?" means that node.</p>
+                </div>
+                <div class="card">
+                    <div class="pillar-icon">💬</div>
+                    <div class="card-title">2. Recent conversation</div>
+                    <p class="card-text">Last few messages in the chat thread. "Also add slides for that" — "that" refers to the meeting just discussed.</p>
+                </div>
+                <div class="card">
+                    <div class="pillar-icon">⚙️</div>
+                    <div class="card-title">3. Running tasks</div>
+                    <p class="card-text">Currently executing tasks and sub-agents. "Is it done yet?" likely refers to the task that's actively running.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 3px solid var(--brand-solid); border-image: none;">
+                <div class="card-title">Confidence Threshold: 80%</div>
+                <p class="card-text">
+                    If chat is <strong style="color: var(--text-primary);">80%+ confident</strong> about what the user means, it assumes the context and acts. Below 80%, it asks — but concisely, with options:
+                </p>
+                <div style="background: var(--surface-raised); border-radius: var(--radius-md); padding: var(--space-4); margin-top: var(--space-4); font-size: var(--text-sm);">
+                    <span style="color: var(--text-tertiary);">💬</span> <em>"Are you asking about the <strong style="color: var(--text-primary);">ICAAP workflow</strong> (on screen) or the <strong style="color: var(--text-primary);">competitor research</strong> (running in background)?"</em>
+                </div>
+                <p class="card-text mt-4">
+                    Not a paragraph of explanation. Just the choices. Respect the user's time.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             CHAT TOOLS vs TASK EXECUTOR TOOLS
+             ========================================== -->
+        <section id="tools" class="section">
+            <div class="section-header">
+                <div class="section-number">SECURITY</div>
+                <h2 class="section-title">Chat Tools vs Task Executor Tools</h2>
+                <p class="section-desc">A deliberate separation. Chat reads and creates. Task executors act. This boundary makes the system safer, more auditable, and reversible.</p>
+            </div>
+
+            <div class="card-grid card-grid-2 mb-8">
+                <div class="tool-group">
+                    <div class="tool-group-header">
+                        💬 Chat Agent
+                        <span class="tool-group-badge tool-group-badge-yes">Read + Create</span>
+                    </div>
+                    <ul class="tool-list">
+                        <li>Read DB — projects, tasks, status, history</li>
+                        <li>Create and update tasks and projects</li>
+                        <li>Query calendar and search</li>
+                        <li>Ask the user questions</li>
+                        <li>Create notifications</li>
+                    </ul>
+                </div>
+                <div class="tool-group">
+                    <div class="tool-group-header">
+                        💬 Chat Agent
+                        <span class="tool-group-badge tool-group-badge-no">Does NOT have</span>
+                    </div>
+                    <ul class="tool-list">
+                        <li>Email sending</li>
+                        <li>Calendar event creation</li>
+                        <li>External API calls</li>
+                        <li>File generation</li>
+                        <li>Web browsing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tool-group mb-8">
+                <div class="tool-group-header">
+                    ⚙️ Task Executors
+                    <span class="tool-group-badge tool-group-badge-conditional">Per task type</span>
+                </div>
+                <ul class="tool-list">
+                    <li>Email — send meeting notes, share reports</li>
+                    <li>Calendar — create/modify events</li>
+                    <li>Document generation — Word, PDF, slides</li>
+                    <li>Web search/browsing — research tasks</li>
+                    <li>Code execution — data analysis</li>
+                    <li>Image generation — brand tasks</li>
+                    <li>External APIs — CRM, LinkedIn, etc.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left: 3px solid var(--status-success); border-image: none;">
+                <div class="card-title">Why This Matters</div>
+                <p class="card-text">
+                    Chat <strong style="color: var(--text-primary);">never sends an email directly</strong>. It creates a task: "Send meeting notes to Sarah." A task executor with email tools picks it up, executes it, and marks it done. This means every external action is:
+                </p>
+                <p class="card-text mt-4">
+                    <strong style="color: var(--status-success);">Safer</strong> — chat can't accidentally email the wrong person. The task description specifies the recipient.<br>
+                    <strong style="color: var(--status-success);">Auditable</strong> — every email sent has a task record: who requested it, when, what was sent, approval status.<br>
+                    <strong style="color: var(--status-success);">Reversible</strong> — tasks that need approval can be reviewed before execution. You can't un-send an email, but you can reject a task.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PROACTIVE GAP-FILLING
+             ========================================== -->
+        <section id="proactive" class="section">
+            <div class="section-header">
+                <div class="section-number">PROACTIVE</div>
+                <h2 class="section-title">Proactive Gap-Filling</h2>
+                <p class="section-desc">Chat doesn't just respond. It actively maintains the world model, fills in gaps, and surfaces what needs attention — before the user asks.</p>
+            </div>
+
+            <div class="card-grid card-grid-2 mb-8">
+                <div class="card">
+                    <div class="card-title">⚡ Trigger-Based (Immediate)</div>
+                    <p class="card-text">Fired by events — task completion, meeting end, upstream dependency resolved.</p>
+                    <div style="margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3);">
+                        <div style="background: var(--surface-raised); border-radius: var(--radius-md); padding: var(--space-3); font-size: var(--text-sm);">
+                            <strong style="color: var(--text-primary);">Meeting ended →</strong> "Want me to transcribe and summarise?"
+                        </div>
+                        <div style="background: var(--surface-raised); border-radius: var(--radius-md); padding: var(--space-3); font-size: var(--text-sm);">
+                            <strong style="color: var(--text-primary);">Task output ready →</strong> "Competitor research is done. <span style="color: var(--brand-solid); cursor: pointer;">[View report →]</span>"
+                        </div>
+                        <div style="background: var(--surface-raised); border-radius: var(--radius-md); padding: var(--space-3); font-size: var(--text-sm);">
+                            <strong style="color: var(--text-primary);">Upstream complete →</strong> "Capital model is done. Ready to start the executive summary?"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">💓 Heartbeat-Based (Periodic)</div>
+                    <p class="card-text">User-configurable interval: 30 / 60 / 120 minutes. Scans for things that need attention.</p>
+                    <div style="margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3);">
+                        <div style="background: var(--surface-raised); border-radius: var(--radius-md); padding: var(--space-3); font-size: var(--text-sm);">
+                            <strong style="color: var(--text-primary);">Stalled task →</strong> "Stress test hasn't progressed in 3 days. What's the situation?"
+                        </div>
+                        <div style="background: var(--surface-raised); border-radius: var(--radius-md); padding: var(--space-3); font-size: var(--text-sm);">
+                            <strong style="color: var(--text-primary);">Upcoming deadline →</strong> "ICAAP board meeting is Thursday. Prep doc isn't started."
+                        </div>
+                        <div style="background: var(--surface-raised); border-radius: var(--radius-md); padding: var(--space-3); font-size: var(--text-sm);">
+                            <strong style="color: var(--text-primary);">Offline changes →</strong> "Sarah was added to the project but has no tasks. Assign the risk review?"
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🔧 User-Configurable Rules</div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); margin-top: var(--space-4);">
+                    <div style="font-size: var(--text-sm); color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-2);">
+                        <span style="color: var(--brand-solid);">⏱</span> Heartbeat frequency: 30 / 60 / 120 min
+                    </div>
+                    <div style="font-size: var(--text-sm); color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-2);">
+                        <span style="color: var(--brand-solid);">🔔</span> Which prompt types to receive
+                    </div>
+                    <div style="font-size: var(--text-sm); color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-2);">
+                        <span style="color: var(--brand-solid);">🌙</span> Quiet hours (no proactive prompts)
+                    </div>
+                    <div style="font-size: var(--text-sm); color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-2);">
+                        <span style="color: var(--brand-solid);">🤖</span> Authority level: auto-execute certain task types?
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             USER AUTHORITY RULES
+             ========================================== -->
+        <section id="authority" class="section">
+            <div class="section-header">
+                <div class="section-number">GOVERNANCE</div>
+                <h2 class="section-title">User Authority Rules</h2>
+                <p class="section-desc">The user controls what chat can do autonomously and what requires explicit approval. Sensible defaults. Full configurability.</p>
+            </div>
+
+            <div class="card">
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Default</th>
+                            <th>Configurable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Create tasks</td>
+                            <td><span style="color: var(--status-success); font-weight: 600;">Auto</span></td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>Execute trivial tasks</td>
+                            <td><span style="color: var(--status-success); font-weight: 600;">Auto</span></td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>Send emails/messages</td>
+                            <td><span style="color: var(--status-warning); font-weight: 600;">Ask first</span></td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>Modify calendar</td>
+                            <td><span style="color: var(--status-warning); font-weight: 600;">Ask first</span></td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>Share externally</td>
+                            <td><span style="color: var(--status-warning); font-weight: 600;">Ask first</span></td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>Update task status</td>
+                            <td><span style="color: var(--status-success); font-weight: 600;">Auto</span></td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>Add team members</td>
+                            <td><span style="color: var(--status-warning); font-weight: 600;">Ask first</span></td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>Delete tasks</td>
+                            <td><span style="color: var(--status-error); font-weight: 600;">Ask first</span></td>
+                            <td>✗ <span style="color: var(--text-tertiary);">(always ask)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             COMPLETE FLOW
+             ========================================== -->
+        <section id="complete-flow" class="section">
+            <div class="section-header">
+                <div class="section-number">END TO END</div>
+                <h2 class="section-title">The Complete Flow</h2>
+                <p class="section-desc">A full example: Ravi on his phone between meetings. Every layer, every handoff, from first message to post-meeting follow-up.</p>
+            </div>
+
+            <div class="flow-diagram">
+                <!-- Step 1: User asks status -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-user">R</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Ravi — on phone between meetings</div>
+                        <div class="flow-message"><strong>"How's ICAAP going?"</strong></div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 2: L1 responds -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-l1">L1</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Layer 1 — fast responder</div>
+                        <div class="flow-message">
+                            2 of 5 tasks done. Capital model running (72%). Risk data looks clean. <strong>On track for Thursday.</strong>
+                        </div>
+                        <div class="flow-time">&lt; 2 seconds</div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 3: User asks for meeting -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-user">R</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Ravi</div>
+                        <div class="flow-message"><strong>"Set up a review meeting with Sarah for tomorrow afternoon"</strong></div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 4: L1 routes -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-l1">L1</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Layer 1 — detects non-trivial, routes to Layer 2</div>
+                        <div class="flow-message"><strong>Setting that up now…</strong></div>
+                        <div class="flow-time">Instant acknowledgement</div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 5: L2 plans -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-l2">L2</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Layer 2 — planner (background)</div>
+                        <div class="flow-message">
+                            Checked Ravi's calendar + Sarah's availability. Created meeting project from template:<br><br>
+                            <span style="color: var(--status-success);">✓</span> Task 1: Send calendar invite <span style="font-size: 10px; color: var(--text-tertiary);">(auto-execute)</span><br>
+                            <span style="color: var(--status-success);">✓</span> Task 2: Create prep doc from ICAAP status <span style="font-size: 10px; color: var(--text-tertiary);">(auto-execute)</span><br>
+                            <span style="color: var(--text-tertiary);">○</span> Task 3: Record meeting <span style="font-size: 10px; color: var(--text-tertiary);">(fires at meeting time)</span><br>
+                            <span style="color: var(--text-tertiary);">○</span> Task 4: Transcribe + summarise <span style="font-size: 10px; color: var(--text-tertiary);">(fires after meeting)</span><br>
+                            <span style="color: var(--status-warning);">⚠</span> Task 5: Send notes to Sarah <span style="font-size: 10px; color: var(--text-tertiary);">(needs approval)</span><br>
+                            <span style="color: var(--status-warning);">⚠</span> Task 6: Add action items to ICAAP <span style="font-size: 10px; color: var(--text-tertiary);">(needs approval)</span>
+                        </div>
+                        <div class="flow-time">~5 seconds</div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 6: L1 confirms -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-l1">L1</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Layer 1 — relays result to Ravi</div>
+                        <div class="flow-message">
+                            <strong>Done.</strong> Meeting with Sarah tomorrow at 2pm. Prep doc will be ready by EOD. <span class="action-chip">[View tasks →]</span>
+                        </div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 7: Thanks -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-user">R</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Ravi</div>
+                        <div class="flow-message"><strong>"Thanks"</strong></div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 8: L1 ack -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-l1">L1</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Layer 1 — trivial, no task needed</div>
+                        <div class="flow-message">👍</div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 9: EOD heartbeat -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-system">💓</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Heartbeat — end of day</div>
+                        <div class="flow-message">
+                            Your ICAAP review prep doc is ready. Want to review before tomorrow's meeting? <span class="action-chip">[Open →]</span>
+                        </div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 10: Meeting ended trigger -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-system">⚡</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Trigger — after meeting</div>
+                        <div class="flow-message">
+                            Meeting with Sarah ended. <strong>Transcribing now…</strong>
+                        </div>
+                    </div>
+                    <div class="flow-connector"></div>
+                </div>
+
+                <!-- Step 11: Notes ready -->
+                <div class="flow-step">
+                    <div class="flow-dot flow-dot-system">⚡</div>
+                    <div class="flow-content">
+                        <div class="flow-actor">Trigger — 3 minutes later</div>
+                        <div class="flow-message">
+                            <strong>Meeting notes ready.</strong> 3 action items found. Review before I send to Sarah? <span class="action-chip">[View notes →]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /.container -->
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p>DeepFlow — Non-Blocking Chat Architecture Specification · <a href="index.html">Design Guidelines</a> · <a href="brief.md">Technical Brief</a></p>
+        </div>
+    </footer>
+
+    <!-- THEME TOGGLE SCRIPT -->
+    <script>
+        const toggleBtns = document.querySelectorAll('.theme-toggle-option');
+        const root = document.documentElement;
+
+        function setTheme(theme) {
+            root.setAttribute('data-theme', theme);
+            toggleBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.themeValue === theme);
+                btn.setAttribute('aria-checked', btn.dataset.themeValue === theme);
+            });
+            localStorage.setItem('df-theme', theme);
+        }
+
+        toggleBtns.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.themeValue)));
+        const saved = localStorage.getItem('df-theme');
+        if (saved) setTheme(saved);
+    </script>
+
+</body>
+</html>
