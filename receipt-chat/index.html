@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DeepFlow — Receipt Chat v2</title>
+<title>DeepFlow — Receipt Chat v3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after {
     margin: 0;
@@ -27,33 +27,17 @@
     --red: #f87171;
     --red-dim: rgba(248, 113, 113, 0.08);
     --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
-    --font-sans: 'Euclid Circular B', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font: var(--font-mono);
-    --tear-color: #252a35;
   }
 
   html, body {
     height: 100%;
     background: var(--bg-dark);
-    font-family: var(--font);
+    font-family: var(--font-mono);
     font-size: 13px;
     line-height: 1.65;
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
-  }
-
-  body.font-sans {
-    --font: var(--font-sans);
-    font-family: var(--font-sans);
-  }
-
-  body.font-sans .receipt-container,
-  body.font-sans .input-field,
-  body.font-sans .chip,
-  body.font-sans .disclosure-label,
-  body.font-sans .msg-text {
-    font-family: var(--font-sans);
   }
 
   /* === LAYOUT — FULL WIDTH === */
@@ -74,53 +58,6 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.015'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 0;
-  }
-
-  /* === FONT TOGGLE === */
-  .font-toggle-bar {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 20px;
-    background: var(--bg-dark);
-    border-bottom: 1px solid #1e2430;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-  }
-
-  .font-toggle-label {
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    margin-right: 6px;
-  }
-
-  .font-toggle-btn {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    padding: 4px 12px;
-    border: 1px solid #2a3040;
-    background: transparent;
-    color: var(--text-dim);
-    cursor: pointer;
-    transition: all 0.15s;
-    border-radius: 2px;
-  }
-
-  .font-toggle-btn:hover {
-    border-color: var(--text-dim);
-    color: var(--text-primary);
-  }
-
-  .font-toggle-btn.active {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    background: rgba(0, 212, 245, 0.06);
   }
 
   /* === SCROLL AREA === */
@@ -271,6 +208,7 @@
   .msg-text {
     white-space: pre-wrap;
     word-break: break-word;
+    font-family: var(--font-mono);
   }
 
   .msg-text .bullet-list {
@@ -338,7 +276,7 @@
     border-radius: 3px;
     background: rgba(255,255,255, 0.02);
     border: none;
-    font-family: inherit;
+    font-family: var(--font-mono);
     font-size: 11.5px;
     color: var(--text-dim);
     transition: background 0.15s;
@@ -365,6 +303,7 @@
     font-size: 11.5px;
     color: var(--text-dim);
     letter-spacing: 0.3px;
+    font-family: var(--font-mono);
   }
 
   .disclosure-label .tool-icon {
@@ -381,6 +320,7 @@
     border-left: 1px solid #252a35;
     margin-left: 12px;
     margin-top: 2px;
+    font-family: var(--font-mono);
   }
 
   .disclosure.open .disclosure-content {
@@ -388,203 +328,63 @@
   }
 
   /* ═══════════════════════════════════════
-     THREAD BREAK OPTIONS
+     COMBINED THREAD BREAK
+     fade out → dark gap → dateline rule → header → new thread
      ═══════════════════════════════════════ */
-
-  .thread-break-label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--cyan);
-    opacity: 0.5;
-    text-align: center;
-    margin: 10px 0 4px;
-  }
-
-  /* --- Option A: Zigzag tear --- */
-  .break-zigzag {
+  .thread-break {
     position: relative;
-    height: 32px;
-    margin: 28px 0 20px;
-    overflow: hidden;
+    margin: 0 -20px; /* bleed to edges */
   }
 
-  .break-zigzag::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 16px;
-    background: var(--paper);
-    clip-path: polygon(
-      0% 0%, 100% 0%,
-      100% 40%,
-      97% 80%, 94% 50%, 91% 90%, 88% 55%, 85% 85%,
-      82% 45%, 79% 75%, 76% 50%, 73% 95%, 70% 55%,
-      67% 80%, 64% 40%, 61% 70%, 58% 45%, 55% 90%,
-      52% 50%, 49% 85%, 46% 55%, 43% 75%, 40% 40%,
-      37% 90%, 34% 55%, 31% 80%, 28% 45%, 25% 95%,
-      22% 50%, 19% 75%, 16% 45%, 13% 85%, 10% 50%,
-      7% 70%, 4% 45%, 1% 80%, 0% 50%
-    );
-    z-index: 2;
-  }
-
-  .break-zigzag .perf {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    border: none;
-    border-top: 2px dashed var(--tear-color);
-    z-index: 1;
-  }
-
-  .break-zigzag::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 16px;
-    background: var(--paper);
-    clip-path: polygon(
-      0% 100%, 100% 100%,
-      100% 60%,
-      97% 20%, 94% 50%, 91% 10%, 88% 45%, 85% 15%,
-      82% 55%, 79% 25%, 76% 50%, 73% 5%, 70% 45%,
-      67% 20%, 64% 60%, 61% 30%, 58% 55%, 55% 10%,
-      52% 50%, 49% 15%, 46% 45%, 43% 25%, 40% 60%,
-      37% 10%, 34% 45%, 31% 20%, 28% 55%, 25% 5%,
-      22% 50%, 19% 25%, 16% 55%, 13% 15%, 10% 50%,
-      7% 30%, 4% 55%, 1% 20%, 0% 50%
-    );
-    z-index: 2;
-  }
-
-  .break-zigzag .break-gap {
-    position: absolute;
-    top: 14px;
-    bottom: 14px;
-    left: 0;
-    right: 0;
-    background: var(--bg-dark);
-    z-index: 0;
-  }
-
-  /* --- Option B: Perforated line --- */
-  .break-perforation {
-    margin: 32px 0;
-    text-align: center;
-    position: relative;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .break-perforation::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    height: 0;
-    border-top: 2px dashed #2a3040;
-  }
-
-  /* --- Option C: Scissors cut --- */
-  .break-scissors {
-    margin: 32px 0;
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .break-scissors::before {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: repeating-linear-gradient(
-      to right,
-      #2a3040 0px, #2a3040 6px,
-      transparent 6px, transparent 10px
-    );
-  }
-
-  .break-scissors .scissors-icon {
-    color: var(--text-muted);
-    font-size: 14px;
-    opacity: 0.5;
-    flex-shrink: 0;
-  }
-
-  .break-scissors::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: repeating-linear-gradient(
-      to right,
-      #2a3040 0px, #2a3040 6px,
-      transparent 6px, transparent 10px
-    );
-  }
-
-  /* --- Option D: Fade to black --- */
-  .break-fade {
-    margin: 8px 0;
-    position: relative;
-  }
-
-  .break-fade .fade-out {
-    height: 28px;
+  .thread-break .break-fade-out {
+    height: 48px;
     background: linear-gradient(to bottom, var(--paper), var(--bg-dark));
   }
 
-  .break-fade .fade-gap {
-    height: 18px;
+  .thread-break .break-gap {
+    height: 24px;
     background: var(--bg-dark);
   }
 
-  .break-fade .fade-in {
-    height: 28px;
-    background: linear-gradient(to bottom, var(--bg-dark), var(--paper));
-  }
-
-  /* --- Option E: Horizontal rule with timestamp --- */
-  .break-timestamp {
-    margin: 36px 0;
+  .thread-break .break-dateline {
+    background: var(--bg-dark);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+    padding: 0 24px;
   }
 
-  .break-timestamp::before,
-  .break-timestamp::after {
+  .thread-break .break-dateline::before,
+  .thread-break .break-dateline::after {
     content: '';
     flex: 1;
     height: 1px;
     background: #252a35;
   }
 
-  .break-timestamp .ts-label {
+  .thread-break .break-dateline .break-ts {
     font-family: var(--font-mono);
     font-size: 10px;
     color: var(--text-muted);
     letter-spacing: 1px;
     white-space: nowrap;
-    opacity: 0.7;
+    opacity: 0.6;
   }
 
-  /* --- Option F: Receipt header repeat --- */
-  .break-receipt-header {
-    margin: 28px 0 8px;
-    padding-top: 16px;
-    border-top: 1px solid #1e2430;
+  .thread-break .break-gap-sm {
+    height: 16px;
+    background: var(--bg-dark);
+  }
+
+  .thread-break .break-fade-in {
+    height: 48px;
+    background: linear-gradient(to bottom, var(--bg-dark), var(--paper));
+  }
+
+  /* The header inside a thread break */
+  .thread-break .thread-header {
+    background: var(--paper);
+    padding-top: 0;
   }
 
   /* === INPUT AREA === */
@@ -606,7 +406,7 @@
   }
 
   .chip {
-    font-family: var(--font);
+    font-family: var(--font-mono);
     font-size: 11px;
     padding: 4px 0 4px 10px;
     border: none;
@@ -656,7 +456,7 @@
 
   .input-field {
     flex: 1;
-    font-family: var(--font);
+    font-family: var(--font-mono);
     font-size: 13px;
     color: var(--text-primary);
     background: transparent;
@@ -710,24 +510,18 @@
   .msg:nth-child(4) { animation-delay: 0.15s; }
   .msg:nth-child(5) { animation-delay: 0.2s; }
 
-  /* === SECTION DIVIDER === */
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    opacity: 0.4;
-    text-align: center;
-    margin: 40px 0 8px;
-    padding-top: 16px;
-    border-top: 1px dashed #1e2430;
-  }
-
   /* === RESPONSIVE === */
   @media (max-width: 480px) {
     .receipt-tape {
       padding: 16px 16px 20px;
+    }
+
+    .thread-break {
+      margin: 0 -16px;
+    }
+
+    .thread-break .break-dateline {
+      padding: 0 20px;
     }
 
     .input-area {
@@ -735,28 +529,17 @@
     }
 
     body { font-size: 12.5px; }
-
-    .font-toggle-bar {
-      padding: 8px 16px;
-    }
   }
 </style>
 </head>
 <body>
-
-<!-- ═══════ FONT TOGGLE ═══════ -->
-<div class="font-toggle-bar">
-  <span class="font-toggle-label">Font:</span>
-  <button class="font-toggle-btn active" id="btn-mono" onclick="setFont('mono')">Mono</button>
-  <button class="font-toggle-btn" id="btn-sans" onclick="setFont('sans')">Sans</button>
-</div>
 
 <div class="receipt-container">
   <div class="receipt-scroll" id="scroll">
     <div class="receipt-tape">
 
       <!-- ═══════════════════════════════════════
-           SECTION 1: GREETING + CONVERSATION
+           THREAD 1: MORNING GREETING + CONVERSATION
            ═══════════════════════════════════════ -->
 
       <div class="thread-header">
@@ -827,7 +610,7 @@ Want me to chase Sarah on the risk weightings?</div>
 
       <div class="msg-gap"></div>
 
-      <!-- Machine response with tool call disclosure -->
+      <!-- Machine response with tool call disclosures -->
       <div class="msg machine">
         <div class="disclosure" id="disc-tool2">
           <button class="disclosure-toggle" onclick="toggleDisclosure('disc-tool2')">
@@ -849,7 +632,7 @@ Priority: High
 Source: finance-q4-actuals-2024.xlsx (2,412 rows)
 Status: Running…</div>
         </div>
-        <div class="msg-text" style="margin-top: 4px;">Done. Two tasks created:
+        <div class="msg-text" style="margin-top: 4px;">Done. Two actions taken:
 
 <span class="status-done">✓</span> Chase Sarah re: risk weightings → sent via Slack
 <span class="status-running">⟳</span> Import Q4 actuals into capital model → running now
@@ -874,58 +657,28 @@ I'll let you know when the import completes.</div>
 
 
       <!-- ═══════════════════════════════════════
-           SECTION 2: THREAD BREAK OPTIONS
+           THREAD BREAK 1
+           fade → gap → dateline → header
            ═══════════════════════════════════════ -->
 
-      <div class="section-label">Thread Break Options</div>
-
-      <!-- Option A: Zigzag tear -->
-      <div class="thread-break-label">Option A — Zigzag Tear</div>
-      <div class="break-zigzag">
+      <div class="thread-break">
+        <div class="break-fade-out"></div>
         <div class="break-gap"></div>
-        <div class="perf"></div>
-      </div>
-
-      <!-- Option B: Perforated line -->
-      <div class="thread-break-label">Option B — Perforated Line</div>
-      <div class="break-perforation"></div>
-
-      <!-- Option C: Scissors cut -->
-      <div class="thread-break-label">Option C — Scissors Cut</div>
-      <div class="break-scissors">
-        <span class="scissors-icon">✂</span>
-      </div>
-
-      <!-- Option D: Fade to black -->
-      <div class="thread-break-label">Option D — Fade to Black</div>
-      <div class="break-fade">
-        <div class="fade-out"></div>
-        <div class="fade-gap"></div>
-        <div class="fade-in"></div>
-      </div>
-
-      <!-- Option E: Horizontal rule with timestamp -->
-      <div class="thread-break-label">Option E — Rule + Timestamp</div>
-      <div class="break-timestamp">
-        <span class="ts-label">Mon, 23 Mar · 11:42</span>
-      </div>
-
-      <!-- Option F: Receipt header repeat -->
-      <div class="thread-break-label">Option F — Receipt Header Repeat</div>
-      <div class="break-receipt-header">
-        <div class="thread-header">
-          <div class="thread-brand"><span class="hex">⬡</span> DeepFlow</div>
-          <div class="thread-dateline">Mon, 23 Mar · 11:42</div>
+        <div class="break-dateline">
+          <span class="break-ts">Mon, 23 Mar · 11:42</span>
         </div>
+        <div class="break-gap-sm"></div>
+        <div class="break-fade-in"></div>
       </div>
-
 
       <!-- ═══════════════════════════════════════
-           SECTION 3: MORE CONVERSATION
-           (longer response, task card, error)
+           THREAD 2: QUICK UPDATE
            ═══════════════════════════════════════ -->
 
-      <div class="section-label">More Examples</div>
+      <div class="thread-header">
+        <div class="thread-brand"><span class="hex">⬡</span> DeepFlow</div>
+        <div class="thread-dateline">Mon, 23 Mar · 11:42</div>
+      </div>
 
       <div class="msg machine">
         <div class="msg-text">Quick update: Q4 actuals imported successfully.
@@ -965,17 +718,17 @@ Due: Thursday, 26 Mar · Draft: 60% complete
 Sections complete:
   • Executive summary — <span class="status-done">done</span>
   • Financial overview — <span class="status-done">done</span>
-  • Risk & compliance — <span class="status-running">in progress</span> (waiting on capital model output)
+  • Risk & compliance — <span class="status-running">in progress</span> (waiting on capital model)
   • Operational metrics — <span class="status-done">done</span>
   • Strategic initiatives — <span class="status-running">in progress</span> (Ali to review)
   • Appendices — not started
 
 Key blockers:
   • Risk section depends on capital model (running now)
-  • Strategic initiatives need your sign-off on the 3 new proposals
+  • Strategic initiatives need your sign-off on 3 proposals
   • Appendix data from finance due tomorrow
 
-Estimated time to complete after blockers clear: ~4 hours of focused work.
+Estimated time to complete after blockers clear: ~4 hours.
 
 Want me to schedule a drafting block in your calendar?</div>
         <div class="msg-time">11:44</div>
@@ -983,7 +736,6 @@ Want me to schedule a drafting block in your calendar?</div>
 
       <div class="msg-gap"></div>
 
-      <!-- Task created confirmation -->
       <div class="msg machine">
         <div class="msg-text"><span class="task-confirm"><span class="check-icon">✓</span> Task created: <a href="#">Review strategic initiative proposals</a></span>
 
@@ -993,7 +745,6 @@ Added to your focus list for this afternoon.</div>
 
       <div class="msg-gap"></div>
 
-      <!-- Machine response with a link/task card -->
       <div class="msg machine">
         <div class="msg-text">Capital model completed. Results look reasonable — Tier 1 ratio at 14.2% (up from 13.8%).
 
@@ -1012,12 +763,90 @@ Want me to drop these numbers into the board pack risk section?</div>
 
       <div class="msg-gap"></div>
 
+      <div class="msg machine">
+        <div class="disclosure" id="disc-tool5">
+          <button class="disclosure-toggle" onclick="toggleDisclosure('disc-tool5')">
+            <span class="disclosure-chevron">▶</span>
+            <span class="disclosure-label"><span class="tool-icon">⚙</span> Updating board pack</span>
+          </button>
+          <div class="disclosure-content">Target: Board Pack Q4 — Risk & Compliance section
+Inserting: Capital model results (Tier 1: 14.2%, RWA delta, stress scenarios)
+Status: Writing…</div>
+        </div>
+        <div class="msg-text" style="margin-top: 4px;"><span class="status-done">✓</span> Board pack updated — risk section now complete
+<span class="status-done">✓</span> Results sent to Sarah via Slack
+
+Board pack is now 80% done. Remaining: strategic initiatives (your review) and appendices (finance, due tomorrow).</div>
+        <div class="msg-time">11:50</div>
+      </div>
+
+
+      <!-- ═══════════════════════════════════════
+           THREAD BREAK 2
+           fade → gap → dateline → header
+           ═══════════════════════════════════════ -->
+
+      <div class="thread-break">
+        <div class="break-fade-out"></div>
+        <div class="break-gap"></div>
+        <div class="break-dateline">
+          <span class="break-ts">Mon, 23 Mar · 14:55</span>
+        </div>
+        <div class="break-gap-sm"></div>
+        <div class="break-fade-in"></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           THREAD 3: AFTERNOON CONTEXT
+           ═══════════════════════════════════════ -->
+
+      <div class="thread-header">
+        <div class="thread-brand"><span class="hex">⬡</span> DeepFlow</div>
+        <div class="thread-dateline">Mon, 23 Mar · 14:55</div>
+      </div>
+
+      <div class="msg machine">
+        <div class="msg-text">Board pack review meeting ended 25 minutes ago. Quick recap:
+
+  • James approved the financial overview as-is
+  • Risk section accepted — one minor wording tweak flagged
+  • Strategic initiatives: 2 of 3 proposals approved, one deferred
+
+Remaining work:
+  • Apply James's wording tweak to risk section
+  • Update strategic initiatives (remove deferred proposal)
+  • Appendices — still waiting on finance
+
+Shall I handle the tweaks now?</div>
+        <div class="msg-time">14:55</div>
+      </div>
+
+      <div class="msg-gap"></div>
+
+      <div class="msg user">
+        <div class="msg-text"><span class="prompt">›</span> Yes, handle the tweaks. And chase finance on the appendix data</div>
+        <div class="msg-time">14:56</div>
+      </div>
+
+      <div class="msg-gap"></div>
+
+      <div class="msg machine">
+        <div class="msg-text"><span class="status-done">✓</span> Risk section — wording tweak applied
+<span class="status-done">✓</span> Strategic initiatives — deferred proposal removed, narrative updated
+<span class="status-running">⟳</span> Chasing finance on appendix data → Slack message sent
+
+Board pack is now 95% complete. Just the appendices to go once finance delivers.</div>
+        <div class="msg-time">14:57</div>
+      </div>
+
+      <div class="msg-gap"></div>
+
       <!-- Error / warning message -->
       <div class="msg machine error">
-        <div class="msg-text"><span class="error-icon">⚠</span> Couldn't update the board pack — the Google Doc is locked by another editor (James, since 11:30).
+        <div class="msg-text"><span class="error-icon">⚠</span> Google Calendar sync failed — token expired. Re-auth needed.
 
-I've queued the update and will retry in 5 minutes. Sarah has been sent the results via Slack.</div>
-        <div class="msg-time">11:49</div>
+This won't affect your work today. I'll remind you to reconnect tomorrow morning.</div>
+        <div class="msg-time">14:58</div>
       </div>
 
       <div class="msg-gap-lg"></div>
@@ -1044,21 +873,6 @@ I've queued the update and will retry in 5 minutes. Sarah has been sent the resu
 </div>
 
 <script>
-  // Font toggle
-  function setFont(type) {
-    if (type === 'sans') {
-      document.body.classList.add('font-sans');
-      document.body.classList.remove('font-mono');
-      document.getElementById('btn-sans').classList.add('active');
-      document.getElementById('btn-mono').classList.remove('active');
-    } else {
-      document.body.classList.remove('font-sans');
-      document.body.classList.add('font-mono');
-      document.getElementById('btn-mono').classList.add('active');
-      document.getElementById('btn-sans').classList.remove('active');
-    }
-  }
-
   // Disclosure toggle
   function toggleDisclosure(id) {
     document.getElementById(id).classList.toggle('open');
