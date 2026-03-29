@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepFlow — Receipt Chat Spec</title>
+
+    <!-- Euclid Circular B — Self-hosted -->
+    <style>
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-SemiBold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Euclid Circular B';
+            src: url('fonts/EuclidCircularB-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
+    <!-- JetBrains Mono for receipt examples -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-cyan: #00D4F5;
+            --brand-blue: #2244FF;
+            --brand-mid: #0099FF;
+            --brand-gradient: linear-gradient(135deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-gradient-horizontal: linear-gradient(90deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-gradient-vertical: linear-gradient(180deg, #00E5FF 0%, #0099FF 45%, #2244FF 100%);
+            --brand-solid: #0077DD;
+            --brand-solid-hover: #0066CC;
+            --brand-solid-active: #005BB5;
+
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --text-tertiary: #6B7280;
+            --text-inverse: #FFFFFF;
+
+            --surface-page: #FFFFFF;
+            --surface-raised: #F8F9FB;
+            --surface-overlay: #FFFFFF;
+            --surface-nav: rgba(255, 255, 255, 0.9);
+            --surface-card: #FFFFFF;
+            --surface-card-border: #E4E7ED;
+            --surface-hover: #F1F3F6;
+
+            --status-success: #059669;
+            --status-success-bg: rgba(5, 150, 105, 0.08);
+            --status-success-border: rgba(5, 150, 105, 0.2);
+            --status-warning: #D97706;
+            --status-warning-bg: rgba(217, 119, 6, 0.08);
+            --status-warning-border: rgba(217, 119, 6, 0.2);
+            --status-error: #DC2626;
+            --status-error-bg: rgba(220, 38, 38, 0.08);
+            --status-error-border: rgba(220, 38, 38, 0.2);
+            --status-info: #2563EB;
+            --status-info-bg: rgba(37, 99, 235, 0.08);
+            --status-info-border: rgba(37, 99, 235, 0.2);
+
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            --space-16: 64px;
+            --space-20: 80px;
+            --space-24: 96px;
+
+            --text-xs: 0.75rem;
+            --text-sm: 0.8125rem;
+            --text-base: 0.875rem;
+            --text-md: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+
+            --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+        }
+
+        [data-theme="dark"] {
+            --brand-solid: #0099FF;
+            --brand-solid-hover: #00AAFF;
+
+            --text-primary: #E8E8EF;
+            --text-secondary: #ABABBD;
+            --text-tertiary: #8585A0;
+            --text-inverse: #0A0A0F;
+
+            --surface-page: #0A0A0F;
+            --surface-raised: #111118;
+            --surface-overlay: #1C1C27;
+            --surface-nav: rgba(10, 10, 15, 0.85);
+            --surface-card: #111118;
+            --surface-card-border: #1C1C27;
+            --surface-hover: #16161F;
+
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.25);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        /* ============================================
+           THEME TOGGLE
+           ============================================ */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-full);
+            padding: 3px;
+            cursor: pointer;
+        }
+        .theme-toggle-option {
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 500;
+            color: var(--text-tertiary);
+            transition: all var(--duration-fast) var(--ease-default);
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+        .theme-toggle-option.active {
+            background: var(--brand-solid);
+            color: white;
+        }
+
+        /* ============================================
+           BASE
+           ============================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Euclid Circular B', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+            background: var(--surface-page);
+            color: var(--text-secondary);
+            font-size: var(--text-base);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            transition: background var(--duration-normal) var(--ease-default), color var(--duration-normal) var(--ease-default);
+        }
+        ::selection {
+            background: rgba(0, 119, 221, 0.2);
+            color: var(--text-primary);
+        }
+        [data-theme="dark"] ::selection {
+            background: rgba(0, 153, 255, 0.3);
+        }
+
+        /* ============================================
+           NAV
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--surface-nav);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--surface-card-border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .nav-brand img { height: 28px; width: auto; filter: brightness(0); }
+        [data-theme="dark"] .nav-brand img { filter: brightness(1); }
+        .nav-divider { width: 1px; height: 24px; background: var(--surface-card-border); }
+        .nav-subtitle { font-size: var(--text-sm); font-weight: 500; color: var(--text-tertiary); }
+        .nav-links { display: flex; gap: var(--space-1); list-style: none; }
+        .nav-links a {
+            display: block;
+            padding: var(--space-2) var(--space-3);
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            transition: color var(--duration-fast) var(--ease-default), background var(--duration-fast) var(--ease-default);
+        }
+        .nav-links a:hover { color: var(--text-primary); background: var(--surface-hover); }
+        @media (max-width: 1100px) { .nav-links { display: none; } }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-8); }
+        .hero {
+            padding: 140px var(--space-8) var(--space-16);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px; left: 50%;
+            transform: translateX(-50%);
+            width: 1000px; height: 700px;
+            background: radial-gradient(ellipse, rgba(0,119,221,0.05) 0%, rgba(34,68,255,0.02) 40%, transparent 70%);
+            pointer-events: none;
+        }
+        [data-theme="dark"] .hero::before {
+            background: radial-gradient(ellipse, rgba(0,153,255,0.07) 0%, rgba(34,68,255,0.03) 40%, transparent 70%);
+        }
+        .hero h1 {
+            font-size: var(--text-5xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: var(--space-6);
+        }
+        .gradient-text {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: var(--text-lg);
+            color: var(--text-tertiary);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-8);
+        }
+        .hero-badge-dot {
+            width: 6px; height: 6px;
+            background: var(--brand-solid);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .section {
+            padding: var(--space-24) 0;
+            border-top: 1px solid var(--surface-card-border);
+        }
+        .section-header { margin-bottom: var(--space-16); }
+        .section-number {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-3);
+        }
+        .section-title {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-4);
+        }
+        .section-desc {
+            font-size: var(--text-md);
+            color: var(--text-tertiary);
+            max-width: 700px;
+            line-height: 1.7;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface-card);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            transition: border-color var(--duration-normal) var(--ease-default);
+        }
+        .card:hover { border-color: rgba(107, 114, 128, 0.3); }
+        .card-title { font-size: var(--text-lg); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-3); }
+        .card-text { color: var(--text-secondary); line-height: 1.7; }
+        .card-grid { display: grid; gap: var(--space-6); }
+        .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+        @media (max-width: 768px) { .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; } }
+
+        /* Branded left-border statement */
+        .brand-statement {
+            font-size: var(--text-2xl);
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+            border-left: 3px solid;
+            border-image: var(--brand-gradient-vertical) 1;
+            padding-left: var(--space-6);
+            margin-bottom: var(--space-10);
+            max-width: 800px;
+        }
+        .brand-statement em {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: normal;
+        }
+
+        /* TL;DR box */
+        .tldr {
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-left: 4px solid;
+            border-image: var(--brand-gradient-vertical) 1;
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+            padding: var(--space-8);
+            margin-bottom: var(--space-12);
+        }
+        .tldr-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        .tldr ul {
+            list-style: none;
+            padding: 0;
+        }
+        .tldr li {
+            padding: var(--space-2) 0;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+        }
+        .tldr li::before {
+            content: '→';
+            color: var(--brand-solid);
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Tables */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--text-sm);
+            margin: var(--space-6) 0;
+        }
+        .spec-table th {
+            text-align: left;
+            padding: var(--space-3) var(--space-4);
+            font-weight: 600;
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            border-bottom: 2px solid var(--surface-card-border);
+            background: var(--surface-raised);
+        }
+        .spec-table td {
+            padding: var(--space-3) var(--space-4);
+            border-bottom: 1px solid var(--surface-card-border);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+        .spec-table tr:last-child td { border-bottom: none; }
+        .spec-table tr:hover td { background: var(--surface-hover); }
+        .spec-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+        /* Code blocks */
+        pre, .code-block {
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-6);
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+            font-size: var(--text-sm);
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        code {
+            font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.9em;
+            background: var(--surface-raised);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            color: var(--brand-solid);
+            border: 1px solid var(--surface-card-border);
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: inherit;
+        }
+
+        /* Pillar icon */
+        .pillar-icon {
+            width: 48px; height: 48px;
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: var(--space-5);
+        }
+
+        /* Utility */
+        .mt-4 { margin-top: var(--space-4); }
+        .mt-6 { margin-top: var(--space-6); }
+        .mt-8 { margin-top: var(--space-8); }
+        .mb-4 { margin-bottom: var(--space-4); }
+        .mb-6 { margin-bottom: var(--space-6); }
+        .mb-8 { margin-bottom: var(--space-8); }
+        .mb-12 { margin-bottom: var(--space-12); }
+        .text-muted { color: var(--text-tertiary); }
+
+        /* ============================================
+           RECEIPT PREVIEW — dark receipt mockup
+           ============================================ */
+        .receipt-preview {
+            background: #0a0c10;
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.65;
+            color: #c8cdd5;
+            overflow: hidden;
+            border: 1px solid var(--surface-card-border);
+        }
+        .receipt-preview .rp-paper {
+            background: #1a1f2a;
+            border-radius: var(--radius-md);
+            padding: var(--space-5);
+        }
+        .receipt-preview .rp-header {
+            text-align: center;
+            margin-bottom: var(--space-4);
+        }
+        .receipt-preview .rp-brand {
+            font-size: 10px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #555b65;
+            font-weight: 300;
+        }
+        .receipt-preview .rp-brand .rp-hex { color: #00D4F5; opacity: 0.6; }
+        .receipt-preview .rp-dateline {
+            font-size: 10.5px;
+            color: #555b65;
+            letter-spacing: 1px;
+            font-weight: 300;
+            margin-top: 8px;
+        }
+        .receipt-preview .rp-msg {
+            padding: 6px 0;
+        }
+        .receipt-preview .rp-user {
+            border-left: 3px solid #00D4F5;
+            padding-left: 14px;
+        }
+        .receipt-preview .rp-user .rp-prompt {
+            color: #00D4F5;
+            opacity: 0.7;
+            margin-right: 6px;
+            font-weight: 500;
+        }
+        .receipt-preview .rp-error {
+            border-left: 3px solid #f87171;
+            padding-left: 14px;
+            background: rgba(248, 113, 113, 0.08);
+            border-radius: 0 3px 3px 0;
+        }
+        .receipt-preview .rp-error-icon { color: #f87171; margin-right: 6px; }
+        .receipt-preview .rp-disc {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 3px;
+            font-size: 11.5px;
+            color: #8b919a;
+            margin: 4px 0;
+        }
+        .receipt-preview .rp-chevron { font-size: 9px; color: #555b65; }
+        .receipt-preview .rp-tool-icon { opacity: 0.6; margin-right: 3px; }
+        .receipt-preview .rp-green { color: #4ade80; }
+        .receipt-preview .rp-amber { color: #f59e0b; }
+        .receipt-preview .rp-cyan { color: #00D4F5; }
+        .receipt-preview .rp-time {
+            font-size: 9.5px;
+            color: #555b65;
+            text-align: right;
+            opacity: 0.6;
+            margin-top: 1px;
+            font-weight: 300;
+        }
+        .receipt-preview .rp-gap { height: 14px; }
+        .receipt-preview .rp-gap-lg { height: 22px; }
+
+        /* Chip preview */
+        .receipt-preview .rp-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 10px;
+            margin-bottom: 10px;
+        }
+        .receipt-preview .rp-chip {
+            font-size: 11px;
+            padding: 4px 0 4px 10px;
+            border-left: 2.5px solid #555b65;
+            color: #8b919a;
+        }
+        .receipt-preview .rp-chip-cyan { border-left-color: #00D4F5; }
+        .receipt-preview .rp-chip-amber { border-left-color: #f59e0b; }
+        .receipt-preview .rp-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #1e2430;
+            padding-top: 12px;
+        }
+        .receipt-preview .rp-input-prompt {
+            color: #00D4F5;
+            opacity: 0.5;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .receipt-preview .rp-input-field {
+            flex: 1;
+            border-bottom: 1px solid #252a35;
+            padding: 6px 0;
+            color: #555b65;
+            opacity: 0.5;
+            font-size: 13px;
+        }
+        .receipt-preview .rp-send {
+            color: #555b65;
+            opacity: 0.4;
+            font-size: 16px;
+        }
+
+        /* Thread break preview */
+        .receipt-preview .rp-break {
+            margin: 0 -20px;
+        }
+        .receipt-preview .rp-break-fade-out {
+            height: 32px;
+            background: linear-gradient(to bottom, #1a1f2a, #0a0c10);
+        }
+        .receipt-preview .rp-break-gap {
+            height: 16px;
+            background: #0a0c10;
+        }
+        .receipt-preview .rp-break-dateline {
+            background: #0a0c10;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 24px;
+        }
+        .receipt-preview .rp-break-dateline::before,
+        .receipt-preview .rp-break-dateline::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #252a35;
+        }
+        .receipt-preview .rp-break-ts {
+            font-size: 10px;
+            color: #555b65;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            opacity: 0.6;
+        }
+        .receipt-preview .rp-break-gap-sm {
+            height: 10px;
+            background: #0a0c10;
+        }
+        .receipt-preview .rp-break-fade-in {
+            height: 32px;
+            background: linear-gradient(to bottom, #0a0c10, #1a1f2a);
+        }
+
+        /* Colour swatch row */
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--space-4);
+        }
+        .swatch {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            background: var(--surface-raised);
+            border: 1px solid var(--surface-card-border);
+            border-radius: var(--radius-md);
+        }
+        .swatch-dot {
+            width: 32px; height: 32px;
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .swatch-label {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .swatch-value {
+            font-size: var(--text-xs);
+            color: var(--text-tertiary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Footer */
+        .footer {
+            padding: var(--space-12) 0;
+            border-top: 1px solid var(--surface-card-border);
+            text-align: center;
+        }
+        .footer p { font-size: var(--text-sm); color: var(--text-tertiary); }
+        .footer a { color: var(--brand-solid); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand">
+                <img src="assets/iconmark-white.png" alt="DeepFlow">
+                <span class="nav-divider"></span>
+                <span class="nav-subtitle">Receipt Chat Spec</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Guidelines</a></li>
+                <li><a href="views.html">Views</a></li>
+                <li><a href="wireframes.html">Wireframes</a></li>
+                <li><a href="hubbar.html">Hub Bar</a></li>
+                <li><a href="sidebar.html">Sidebar</a></li>
+                <li><a href="mobile.html">📱 Mobile</a></li>
+                <li><a href="chat-architecture.html">💬 Chat Architecture</a></li>
+                <li><a href="receipt-chat-spec.html" style="color: var(--brand-solid); font-weight: 600;">🧾 Receipt Chat</a></li>
+                <li><a href="review.html">📝 Review</a></li>
+                <li><a href="brief.md">📋 Brief</a></li>
+            </ul>
+            <div class="theme-toggle" role="radiogroup" aria-label="Theme switcher">
+                <button class="theme-toggle-option active" data-theme-value="light" aria-checked="true" role="radio">☀️ Light</button>
+                <button class="theme-toggle-option" data-theme-value="dark" aria-checked="false" role="radio">🌙 Dark</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                Implementation Specification
+            </div>
+            <h1>Receipt <span class="gradient-text">Chat</span></h1>
+            <p class="hero-sub">
+                A thermal-receipt-printer-inspired chat panel. Monospace text on dark paper. Not a messaging app — a command receipt unrolling from a machine.
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- ==========================================
+             TL;DR
+             ========================================== -->
+        <div class="tldr" id="tldr">
+            <div class="tldr-title">🧾 TL;DR — What This Is</div>
+            <ul>
+                <li>An alternate <strong style="color: var(--text-primary);">chat panel visual style</strong> for DeepFlow — receipt printer aesthetic, monospace typography, dark paper background</li>
+                <li>Sits inside the existing <strong style="color: var(--text-primary);">resizable panel system</strong> (280–400px, sidebar → chat → content → detail)</li>
+                <li>Behaviour and architecture from the <a href="chat-architecture.html" style="color: var(--brand-solid);">Chat Architecture spec</a> are unchanged — this spec covers <strong style="color: var(--text-primary);">visual design and React components only</strong></li>
+                <li>Seven message types: <strong style="color: var(--text-primary);">user, machine, thinking disclosure, tool call disclosure, task confirmation, error, status lists</strong></li>
+                <li>Thread system with <strong style="color: var(--text-primary);">paper-fade-to-dark transitions</strong> between conversation sessions</li>
+                <li>Complete <strong style="color: var(--text-primary);">CSS token specification</strong> — every colour, size, and timing extracted from the working prototype</li>
+                <li>Full <strong style="color: var(--text-primary);">React component API</strong> with TypeScript types — ready for implementation</li>
+            </ul>
+        </div>
+
+
+        <!-- ==========================================
+             SECTION 1: DESIGN PHILOSOPHY
+             ========================================== -->
+        <section id="philosophy" class="section">
+            <div class="section-header">
+                <div class="section-number">01 — Philosophy</div>
+                <h2 class="section-title">This Is Not a Messaging App</h2>
+                <p class="section-desc">It's a receipt printer. Old accountant thermal paper. Continuous tape, monospace type, minimal chrome.</p>
+            </div>
+
+            <div class="brand-statement">
+                The chat reads like a printed receipt unrolling from a machine. <em>Text on paper. Nothing else.</em>
+            </div>
+
+            <div class="card-grid card-grid-3 mb-8">
+                <div class="card">
+                    <div class="pillar-icon">🖨️</div>
+                    <div class="card-title">Text-First</div>
+                    <p class="card-text">No bubbles, no avatars in messages, no rounded cards. Just text on paper. Hierarchy through colour, borders, and indentation — not size.</p>
+                </div>
+                <div class="card">
+                    <div class="pillar-icon">⬛</div>
+                    <div class="card-title">Dark Paper</div>
+                    <p class="card-text">Dark mode with a slightly lighter "paper" background. The contrast creates the illusion of paper sitting on a dark desk. Receipt tape, not chat window.</p>
+                </div>
+                <div class="card">
+                    <div class="pillar-icon">📐</div>
+                    <div class="card-title">Full Width</div>
+                    <p class="card-text">Fills the entire resizable panel. No centred strip. Content has a max-width for readability (720px) but the container is edge-to-edge.</p>
+                </div>
+            </div>
+
+            <!-- Live preview -->
+            <div class="receipt-preview">
+                <div class="rp-paper">
+                    <div class="rp-header">
+                        <div class="rp-brand"><span class="rp-hex">⬡</span> DEEPFLOW</div>
+                        <div class="rp-dateline">Mon, 23 Mar · 08:15</div>
+                    </div>
+                    <div class="rp-msg">Good morning, Ali.<br><br>3 tasks need attention today:<br>• ICAAP Capital Model — blocked<br>• Board Pack — due Thursday<br>• Supplier Review — Sarah commented</div>
+                    <div class="rp-time">08:15</div>
+                    <div class="rp-gap-lg"></div>
+                    <div class="rp-msg rp-user"><span class="rp-prompt">›</span> What's the status on the capital model?</div>
+                    <div class="rp-time">08:17</div>
+                    <div class="rp-gap"></div>
+                    <div class="rp-msg">
+                        <div class="rp-disc"><span class="rp-chevron">▶</span> Thinking…</div>
+                        <div class="rp-disc"><span class="rp-chevron">▶</span> <span class="rp-tool-icon">⚙</span> Searched tasks</div>
+                        <div style="margin-top: 4px;">The capital model is blocked on two inputs:<br><br>1. Risk weightings from Sarah — no response<br>2. Q4 actuals from finance — received, not imported</div>
+                    </div>
+                    <div class="rp-time">08:17</div>
+                    <div class="rp-gap"></div>
+                    <div class="rp-msg rp-user"><span class="rp-prompt">›</span> Yes, and import the Q4 actuals</div>
+                    <div class="rp-time">08:18</div>
+                    <div class="rp-gap"></div>
+                    <div class="rp-msg"><span class="rp-green">✓</span> Chase Sarah re: risk weightings → sent via Slack<br><span class="rp-amber">⟳</span> Import Q4 actuals → running now</div>
+                    <div class="rp-time">08:18</div>
+                </div>
+            </div>
+            <p class="text-muted mt-4" style="font-size: var(--text-sm); text-align: center;">
+                Live preview — messages, disclosures, status items, and timestamps rendered in the receipt style.
+            </p>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 2: DESIGN TOKENS
+             ========================================== -->
+        <section id="tokens" class="section">
+            <div class="section-header">
+                <div class="section-number">02 — Design Tokens</div>
+                <h2 class="section-title">CSS Variables</h2>
+                <p class="section-desc">Every colour, font, spacing value, and timing — extracted from the working prototype. Use these exactly.</p>
+            </div>
+
+            <h3 style="font-size: var(--text-lg); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-6);">Colours</h3>
+
+            <div class="swatch-grid mb-8">
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #0a0c10;"></div>
+                    <div><div class="swatch-label">bg-dark</div><div class="swatch-value">#0a0c10</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #1a1f2a;"></div>
+                    <div><div class="swatch-label">paper</div><div class="swatch-value">#1a1f2a</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #222833;"></div>
+                    <div><div class="swatch-label">paper-edge</div><div class="swatch-value">#222833</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #c8cdd5;"></div>
+                    <div><div class="swatch-label">text-primary</div><div class="swatch-value">#c8cdd5</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #8b919a;"></div>
+                    <div><div class="swatch-label">text-dim</div><div class="swatch-value">#8b919a</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #555b65;"></div>
+                    <div><div class="swatch-label">text-muted</div><div class="swatch-value">#555b65</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #00D4F5;"></div>
+                    <div><div class="swatch-label">cyan</div><div class="swatch-value">#00D4F5</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #4ade80;"></div>
+                    <div><div class="swatch-label">green</div><div class="swatch-value">#4ade80</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #f59e0b;"></div>
+                    <div><div class="swatch-label">amber</div><div class="swatch-value">#f59e0b</div></div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-dot" style="background: #f87171;"></div>
+                    <div><div class="swatch-label">red</div><div class="swatch-value">#f87171</div></div>
+                </div>
+            </div>
+
+            <h3 style="font-size: var(--text-lg); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-6);">Typography</h3>
+
+            <div class="card mb-8">
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Font family</td>
+                            <td><code>'JetBrains Mono', 'SF Mono', 'Fira Code', monospace</code></td>
+                            <td>All text in the chat panel — no exceptions</td>
+                        </tr>
+                        <tr>
+                            <td>Base size</td>
+                            <td><code>13px</code></td>
+                            <td>Messages (user and machine)</td>
+                        </tr>
+                        <tr>
+                            <td>Line height</td>
+                            <td><code>1.65</code></td>
+                            <td>All text</td>
+                        </tr>
+                        <tr>
+                            <td>Timestamp</td>
+                            <td><code>9.5px / weight 300</code></td>
+                            <td>Right-aligned, muted</td>
+                        </tr>
+                        <tr>
+                            <td>Disclosure label</td>
+                            <td><code>11.5px / weight 400</code></td>
+                            <td>Toggle button text</td>
+                        </tr>
+                        <tr>
+                            <td>Disclosure content</td>
+                            <td><code>12px / weight 400</code></td>
+                            <td>Expanded block text</td>
+                        </tr>
+                        <tr>
+                            <td>Brand text</td>
+                            <td><code>10px / weight 300 / spacing 2.5px</code></td>
+                            <td>Thread header "DEEPFLOW"</td>
+                        </tr>
+                        <tr>
+                            <td>Dateline</td>
+                            <td><code>10.5px / weight 300 / spacing 1px</code></td>
+                            <td>Thread date/time</td>
+                        </tr>
+                        <tr>
+                            <td>Chip text</td>
+                            <td><code>11px / weight 400 / spacing 0.2px</code></td>
+                            <td>Shortcut chips</td>
+                        </tr>
+                        <tr>
+                            <td>Input prompt</td>
+                            <td><code>14px / weight 500</code></td>
+                            <td>The › character</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="font-size: var(--text-lg); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-6);">Animations</h3>
+
+            <div class="card">
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>Animation</th>
+                            <th>Duration</th>
+                            <th>Easing</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Print-in</td>
+                            <td><code>0.3s</code></td>
+                            <td><code>ease-out</code></td>
+                            <td>Messages fade + slide from translateY(-6px) to 0</td>
+                        </tr>
+                        <tr>
+                            <td>Stagger</td>
+                            <td><code>0.05s</code> per msg</td>
+                            <td>—</td>
+                            <td>First 5 messages stagger on initial load</td>
+                        </tr>
+                        <tr>
+                            <td>Chevron rotate</td>
+                            <td><code>0.2s</code></td>
+                            <td>default</td>
+                            <td>▶ rotates to 90° on disclosure open</td>
+                        </tr>
+                        <tr>
+                            <td>Input focus</td>
+                            <td><code>0.2s</code></td>
+                            <td>default</td>
+                            <td>Bottom border → cyan on focus</td>
+                        </tr>
+                        <tr>
+                            <td>Send hover</td>
+                            <td><code>0.15s</code></td>
+                            <td>default</td>
+                            <td>↵ button opacity + colour change</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 3: LAYOUT
+             ========================================== -->
+        <section id="layout" class="section">
+            <div class="section-header">
+                <div class="section-number">03 — Layout</div>
+                <h2 class="section-title">Panel Structure</h2>
+                <p class="section-desc">Full width of the resizable panel. Scroll area for the receipt tape, input pinned to the bottom.</p>
+            </div>
+
+            <pre><code>┌─────────────────────────────────────────┐
+│ .receipt-container                       │  flex column, 100% h × w
+│ ┌─────────────────────────────────────┐ │
+│ │ .receipt-scroll                     │ │  flex: 1, overflow-y: auto
+│ │ ┌─────────────────────────────────┐ │ │
+│ │ │ .receipt-tape                   │ │ │  padding: 20px, max-w: 720px
+│ │ │                                 │ │ │
+│ │ │   [ThreadHeader]                │ │ │
+│ │ │   [Messages...]                 │ │ │
+│ │ │   [ThreadBreak]                 │ │ │
+│ │ │   [ThreadHeader]                │ │ │
+│ │ │   [Messages...]                 │ │ │
+│ │ │                                 │ │ │
+│ │ └─────────────────────────────────┘ │ │
+│ └─────────────────────────────────────┘ │
+│ ┌─────────────────────────────────────┐ │
+│ │ .input-area                         │ │  pinned bottom, border-top
+│ │   [ShortcutChips]                   │ │
+│ │   [› InputField               ↵]   │ │
+│ └─────────────────────────────────────┘ │
+└─────────────────────────────────────────┘</code></pre>
+
+            <div class="card-grid card-grid-2 mt-8">
+                <div class="card">
+                    <div class="card-title">Container</div>
+                    <p class="card-text">
+                        <code>display: flex; flex-direction: column; height: 100%; width: 100%;</code><br><br>
+                        Background: <code>var(--rc-paper)</code> (#1a1f2a)<br>
+                        Side borders: <code>1px solid #000</code><br>
+                        Paper texture: <code>::before</code> pseudo with SVG noise at <code>opacity: 0.015</code>
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Scroll Area</div>
+                    <p class="card-text">
+                        <code>flex: 1; overflow-y: auto;</code><br><br>
+                        Scrollbar completely hidden (both <code>scrollbar-width: none</code> and <code>::-webkit-scrollbar { display: none }</code>)<br><br>
+                        Receipt tape: <code>max-width: 720px</code>, left-aligned (not centred)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 4: MESSAGE TYPES
+             ========================================== -->
+        <section id="messages" class="section">
+            <div class="section-header">
+                <div class="section-number">04 — Message Types</div>
+                <h2 class="section-title">Seven Message Variants</h2>
+                <p class="section-desc">Each message type has a distinct visual treatment. No bubbles. No avatars. Just text, borders, and colour.</p>
+            </div>
+
+            <!-- A: User -->
+            <div class="card mb-6">
+                <div class="card-title">A — User Message</div>
+                <div class="receipt-preview mt-4" style="max-width: 500px;">
+                    <div class="rp-paper">
+                        <div class="rp-msg rp-user"><span class="rp-prompt">›</span> What's the status on the capital model?</div>
+                        <div class="rp-time">08:17</div>
+                    </div>
+                </div>
+                <p class="card-text mt-4">
+                    <code>border-left: 3px solid var(--rc-cyan)</code> · <code>padding-left: 14px</code><br>
+                    Prompt <code>›</code>: cyan, <code>opacity: 0.7</code>, <code>font-weight: 500</code>, <code>margin-right: 6px</code>
+                </p>
+            </div>
+
+            <!-- B: Machine -->
+            <div class="card mb-6">
+                <div class="card-title">B — Machine Message</div>
+                <div class="receipt-preview mt-4" style="max-width: 500px;">
+                    <div class="rp-paper">
+                        <div class="rp-msg">Based on previous imports, about 4–5 minutes. The Q4 dataset is ~2,400 rows.</div>
+                        <div class="rp-time">08:19</div>
+                    </div>
+                </div>
+                <p class="card-text mt-4">
+                    No left border. No decoration. Plain text in <code>var(--rc-text-primary)</code>.<br>
+                    <code>white-space: pre-wrap; word-break: break-word;</code>
+                </p>
+            </div>
+
+            <!-- C: Thinking -->
+            <div class="card mb-6">
+                <div class="card-title">C — Thinking Disclosure (Collapsible)</div>
+                <div class="receipt-preview mt-4" style="max-width: 500px;">
+                    <div class="rp-paper">
+                        <div class="rp-disc"><span class="rp-chevron">▶</span> Thinking…</div>
+                    </div>
+                </div>
+                <p class="card-text mt-4">
+                    Toggle: <code>&lt;button&gt;</code> with <code>aria-expanded</code>. Chevron <code>▶</code> rotates 90° when open (0.2s).<br>
+                    Background: <code>rgba(255,255,255, 0.02)</code>. Hover: <code>rgba(255,255,255, 0.04)</code>.<br>
+                    Content: <code>font-size: 12px</code>, <code>color: var(--rc-text-muted)</code>, left border <code>1px solid #252a35</code>, indented <code>22px</code>.
+                </p>
+            </div>
+
+            <!-- D: Tool Call -->
+            <div class="card mb-6">
+                <div class="card-title">D — Tool Call Disclosure (Collapsible)</div>
+                <div class="receipt-preview mt-4" style="max-width: 500px;">
+                    <div class="rp-paper">
+                        <div class="rp-disc"><span class="rp-chevron">▶</span> <span class="rp-tool-icon">⚙</span> Searched tasks</div>
+                        <div class="rp-disc"><span class="rp-chevron">▶</span> <span class="rp-tool-icon">⚙</span> Created task: Import Q4 actuals</div>
+                    </div>
+                </div>
+                <p class="card-text mt-4">
+                    Same structure as thinking disclosure. Label includes <code>⚙</code> tool icon at <code>opacity: 0.6</code>.<br>
+                    Tool name describes the action: "Searched tasks", "Sent message to Sarah", "Running capital model".
+                </p>
+            </div>
+
+            <!-- E: Task confirm -->
+            <div class="card mb-6">
+                <div class="card-title">E — Task Confirmation</div>
+                <div class="receipt-preview mt-4" style="max-width: 500px;">
+                    <div class="rp-paper">
+                        <div class="rp-msg"><span class="rp-green">✓</span> Task created: <span class="rp-cyan" style="text-decoration: underline; text-decoration-color: rgba(0, 212, 245, 0.3); text-underline-offset: 2px;">Review strategic proposals</span></div>
+                        <div class="rp-msg"><span class="rp-amber">⟳</span> Import Q4 actuals → running now</div>
+                    </div>
+                </div>
+                <p class="card-text mt-4">
+                    Complete: <code>✓</code> in <code>var(--rc-green)</code> + clickable link in cyan with subtle underline.<br>
+                    Running: <code>⟳</code> in <code>var(--rc-amber)</code>.
+                </p>
+            </div>
+
+            <!-- F: Error -->
+            <div class="card mb-6">
+                <div class="card-title">F — Error / Warning</div>
+                <div class="receipt-preview mt-4" style="max-width: 500px;">
+                    <div class="rp-paper">
+                        <div class="rp-msg rp-error"><span class="rp-error-icon">⚠</span> Google Calendar sync failed — token expired.<br><br>This won't affect your work today.</div>
+                        <div class="rp-time">14:58</div>
+                    </div>
+                </div>
+                <p class="card-text mt-4">
+                    <code>border-left: 3px solid var(--rc-red)</code> · <code>padding-left: 14px</code><br>
+                    <code>background: var(--rc-red-dim)</code> (rgba(248,113,113,0.08))<br>
+                    <code>border-radius: 0 3px 3px 0</code>
+                </p>
+            </div>
+
+            <!-- G: Status lists -->
+            <div class="card">
+                <div class="card-title">G — Status Lists</div>
+                <div class="receipt-preview mt-4" style="max-width: 500px;">
+                    <div class="rp-paper">
+                        <div class="rp-msg">
+                            <span class="rp-green">✓</span> Board pack updated — risk section complete<br>
+                            <span class="rp-green">✓</span> Results sent to Sarah via Slack<br>
+                            <span class="rp-amber">⟳</span> Chasing finance on appendix data<br>
+                            • Executive summary — not started
+                        </div>
+                    </div>
+                </div>
+                <p class="card-text mt-4">
+                    Done: <code>✓ var(--rc-green)</code> · Running: <code>⟳ var(--rc-amber)</code> · Default: <code>•</code> in text colour
+                </p>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 5: THREAD SYSTEM
+             ========================================== -->
+        <section id="threads" class="section">
+            <div class="section-header">
+                <div class="section-number">05 — Threads</div>
+                <h2 class="section-title">Thread Breaks &amp; Headers</h2>
+                <p class="section-desc">Conversations are separated by a five-part visual break — the receipt paper fading out, a dark gap, a dateline, and new paper fading in.</p>
+            </div>
+
+            <!-- Thread break preview -->
+            <div class="receipt-preview mb-8">
+                <div class="rp-paper">
+                    <div class="rp-msg">Based on previous imports, about 4–5 minutes.</div>
+                    <div class="rp-time">08:19</div>
+                    <div style="height: 12px;"></div>
+
+                    <div class="rp-break">
+                        <div class="rp-break-fade-out"></div>
+                        <div class="rp-break-gap"></div>
+                        <div class="rp-break-dateline">
+                            <span class="rp-break-ts">Mon, 23 Mar · 11:42</span>
+                        </div>
+                        <div class="rp-break-gap-sm"></div>
+                        <div class="rp-break-fade-in"></div>
+                    </div>
+
+                    <div class="rp-header" style="margin-top: 0;">
+                        <div class="rp-brand"><span class="rp-hex">⬡</span> DEEPFLOW</div>
+                        <div class="rp-dateline">Mon, 23 Mar · 11:42</div>
+                    </div>
+                    <div class="rp-msg">Quick update: Q4 actuals imported successfully.</div>
+                    <div class="rp-time">11:42</div>
+                </div>
+            </div>
+
+            <div class="card mb-8">
+                <div class="card-title">Thread Break Structure (top → bottom)</div>
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Element</th>
+                            <th>Height</th>
+                            <th>Background</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Fade out</td>
+                            <td>48px</td>
+                            <td><code>linear-gradient(to bottom, var(--rc-paper), var(--rc-bg-dark))</code></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Dark gap</td>
+                            <td>24px</td>
+                            <td><code>var(--rc-bg-dark)</code> solid</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Dateline rule</td>
+                            <td>auto</td>
+                            <td>Dark bg + <code>1px #252a35</code> lines + centred timestamp</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Small gap</td>
+                            <td>16px</td>
+                            <td><code>var(--rc-bg-dark)</code> solid</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Fade in</td>
+                            <td>48px</td>
+                            <td><code>linear-gradient(to bottom, var(--rc-bg-dark), var(--rc-paper))</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="card-text mt-4">
+                    <strong style="color: var(--text-primary);">Critical:</strong> Thread break bleeds to panel edges with <code>margin: 0 -20px</code> (negating the receipt tape padding).
+                </p>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <div class="card-title">Thread Header</div>
+                    <p class="card-text">
+                        <code>⬡</code> hexagon: cyan, <code>opacity: 0.6</code>, <code>font-size: 11px</code><br>
+                        "DEEPFLOW": <code>text-transform: uppercase</code>, <code>font-size: 10px</code>, <code>letter-spacing: 2.5px</code>, <code>color: var(--rc-text-muted)</code>, <code>font-weight: 300</code><br>
+                        Dateline: decorative gradient dashes (max-width 60px each side, <code>opacity: 0.3</code>)
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">When Threads Break</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">User action:</strong> explicit "new thread" button<br>
+                        <strong style="color: var(--text-primary);">Time gap:</strong> configurable threshold (default: 2+ hours since last message)<br>
+                        <strong style="color: var(--text-primary);">Session start:</strong> new login or session
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 6: INPUT AREA
+             ========================================== -->
+        <section id="input" class="section">
+            <div class="section-header">
+                <div class="section-number">06 — Input Area</div>
+                <h2 class="section-title">Chips + Ghost Input</h2>
+                <p class="section-desc">Flat shortcut chips with colour-coded left borders. A ghost-style underline input with the › prompt.</p>
+            </div>
+
+            <div class="receipt-preview mb-8" style="max-width: 500px;">
+                <div class="rp-paper" style="padding-bottom: 0;">
+                    <div class="rp-chips">
+                        <span class="rp-chip rp-chip-cyan">What's blocked?</span>
+                        <span class="rp-chip rp-chip-cyan">Summarise</span>
+                        <span class="rp-chip rp-chip-amber">Run model</span>
+                        <span class="rp-chip rp-chip-amber">Create task</span>
+                        <span class="rp-chip">Board pack</span>
+                        <span class="rp-chip">Next meeting</span>
+                    </div>
+                    <div class="rp-input-row">
+                        <span class="rp-input-prompt">›</span>
+                        <div class="rp-input-field">Message DeepFlow…</div>
+                        <span class="rp-send">↵</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <div class="card-title">Shortcut Chips</div>
+                    <p class="card-text">
+                        No background, no pill shape. Left border only (<code>2.5px</code>).<br><br>
+                        <strong style="color: #00D4F5;">Cyan:</strong> status queries ("What's blocked?", "Summarise")<br>
+                        <strong style="color: #f59e0b;">Amber:</strong> actions ("Run model", "Create task")<br>
+                        <strong style="color: #555b65;">Grey:</strong> navigation ("Board pack", "Next meeting")<br><br>
+                        Hover: subtle <code>rgba(255,255,255,0.03)</code> tint + colour text
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Input Field</div>
+                    <p class="card-text">
+                        Ghost style — no border except <code>border-bottom: 1px solid #252a35</code><br>
+                        Focus: bottom border transitions to cyan (0.2s)<br>
+                        <code>›</code> prompt: cyan at <code>opacity: 0.5</code>, <code>14px</code>, weight 500<br>
+                        <code>↵</code> send button: muted, lights up cyan on hover<br>
+                        <code>caret-color: var(--rc-cyan)</code><br><br>
+                        Safe area: <code>padding-bottom: env(safe-area-inset-bottom, 0)</code>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 7: COMPONENT API
+             ========================================== -->
+        <section id="components" class="section">
+            <div class="section-header">
+                <div class="section-number">07 — Component API</div>
+                <h2 class="section-title">React Components</h2>
+                <p class="section-desc">React 19 component tree with TypeScript types. Ready for implementation.</p>
+            </div>
+
+            <pre class="mb-8"><code>&lt;ReceiptChat&gt;
+  &lt;ReceiptScroll&gt;
+    &lt;Thread&gt;
+      &lt;ThreadHeader brand="DeepFlow" date="Mon, 23 Mar · 08:15" /&gt;
+      &lt;Message type="machine" timestamp="08:15"&gt;
+        Good morning, Ali...
+      &lt;/Message&gt;
+      &lt;MessageGap size="lg" /&gt;
+      &lt;Message type="user" timestamp="08:17"&gt;
+        What's the status on the capital model?
+      &lt;/Message&gt;
+      &lt;MessageGap /&gt;
+      &lt;Message type="machine" timestamp="08:17"&gt;
+        &lt;ThinkingDisclosure&gt;...&lt;/ThinkingDisclosure&gt;
+        &lt;ToolCallDisclosure tool="Searched tasks"&gt;...&lt;/ToolCallDisclosure&gt;
+        The capital model is blocked...
+      &lt;/Message&gt;
+      &lt;Message type="machine" variant="error" timestamp="14:58"&gt;
+        ⚠ Calendar sync failed...
+      &lt;/Message&gt;
+    &lt;/Thread&gt;
+    &lt;ThreadBreak timestamp="Mon, 23 Mar · 11:42" /&gt;
+    &lt;Thread&gt;...&lt;/Thread&gt;
+  &lt;/ReceiptScroll&gt;
+  &lt;InputArea&gt;
+    &lt;ShortcutChips chips={chips} onChipClick={handleChip} /&gt;
+    &lt;ChatInput placeholder="Message DeepFlow…" onSend={handleSend} /&gt;
+  &lt;/InputArea&gt;
+&lt;/ReceiptChat&gt;</code></pre>
+
+            <div class="card mb-8">
+                <div class="card-title">TypeScript Types (Key Interfaces)</div>
+                <pre style="border: none; padding: 0; margin-top: var(--space-4);"><code>type MessageType = 'user' | 'machine';
+type MessageVariant = 'default' | 'error';
+type ChipVariant = 'cyan' | 'amber' | 'grey';
+
+interface ChatMessage {
+  id: string;
+  type: MessageType;
+  variant?: MessageVariant;
+  content: string;
+  timestamp: string;              // ISO 8601
+  disclosures?: Disclosure[];
+  taskConfirmations?: TaskConfirmation[];
+  statusItems?: StatusItem[];
+}
+
+interface Disclosure {
+  id: string;
+  kind: 'thinking' | 'tool';
+  label: string;
+  content: string;
+  defaultOpen?: boolean;          // default: false
+}
+
+interface TaskConfirmation {
+  id: string;
+  title: string;
+  url: string;
+  status: 'complete' | 'running';
+}
+
+interface StatusItem {
+  text: string;
+  status: 'done' | 'running' | 'default';
+}
+
+interface ShortcutChip {
+  id: string;
+  label: string;
+  variant: ChipVariant;
+  action: string;
+}
+
+interface ChatThread {
+  id: string;
+  startedAt: string;
+  messages: ChatMessage[];
+}</code></pre>
+            </div>
+
+            <div class="card">
+                <div class="card-title">File Structure</div>
+                <pre style="border: none; padding: 0; margin-top: var(--space-4);"><code>src/components/chat/receipt/
+├── ReceiptChat.tsx              Root container
+├── ReceiptScroll.tsx            Scroll + infinite scroll up
+├── Thread.tsx                   Thread wrapper
+├── ThreadHeader.tsx             ⬡ brand + dateline
+├── ThreadBreak.tsx              5-part visual break
+├── Message.tsx                  User/machine + variants
+├── MessageGap.tsx               Spacing (sm/lg)
+├── ThinkingDisclosure.tsx       Collapsible thinking
+├── ToolCallDisclosure.tsx       Collapsible tool call
+├── TaskConfirm.tsx              ✓/⟳ task link
+├── StatusItem.tsx               ✓/⟳/• list item
+├── InputArea.tsx                Bottom section
+├── ShortcutChips.tsx            Chip bar
+├── ChatInput.tsx                Input + send
+├── receipt-tokens.css           CSS custom properties
+└── types.ts                     TypeScript types</code></pre>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 8: ACCESSIBILITY
+             ========================================== -->
+        <section id="a11y" class="section">
+            <div class="section-header">
+                <div class="section-number">08 — Accessibility</div>
+                <h2 class="section-title">ARIA, Contrast &amp; Keyboard</h2>
+                <p class="section-desc">Receipt aesthetics don't excuse poor accessibility. Every element must be keyboard-navigable and screen-reader-friendly.</p>
+            </div>
+
+            <div class="card-grid card-grid-3 mb-8">
+                <div class="card">
+                    <div class="pillar-icon">🔘</div>
+                    <div class="card-title">Disclosures</div>
+                    <p class="card-text">
+                        <code>&lt;button&gt;</code> semantics.<br>
+                        <code>aria-expanded="false|true"</code><br>
+                        <code>aria-controls</code> → content ID<br>
+                        Content: <code>display: none</code> when collapsed
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="pillar-icon">⏰</div>
+                    <div class="card-title">Timestamps</div>
+                    <p class="card-text">
+                        Use <code>&lt;time datetime="..."&gt;</code> elements for all dates and times.<br>
+                        Datelines and message timestamps.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="pillar-icon">⌨️</div>
+                    <div class="card-title">Keyboard</div>
+                    <p class="card-text">
+                        Chips: arrow keys + Enter/Space<br>
+                        Disclosures: Tab + Enter/Space<br>
+                        Input: Tab focus, Enter sends<br>
+                        Chat region: <code>role="log"</code>, <code>aria-live="polite"</code>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Colour Contrast Ratios</div>
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Foreground</th>
+                            <th>Background</th>
+                            <th>Ratio</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Primary text</td>
+                            <td>#c8cdd5</td>
+                            <td>#1a1f2a</td>
+                            <td>~7.2:1</td>
+                            <td style="color: var(--status-success); font-weight: 600;">AAA ✓</td>
+                        </tr>
+                        <tr>
+                            <td>Dim text</td>
+                            <td>#8b919a</td>
+                            <td>#1a1f2a</td>
+                            <td>~4.5:1</td>
+                            <td style="color: var(--status-success); font-weight: 600;">AA ✓</td>
+                        </tr>
+                        <tr>
+                            <td>Cyan accent</td>
+                            <td>#00D4F5</td>
+                            <td>#1a1f2a</td>
+                            <td>~7.8:1</td>
+                            <td style="color: var(--status-success); font-weight: 600;">AAA ✓</td>
+                        </tr>
+                        <tr>
+                            <td>Green (success)</td>
+                            <td>#4ade80</td>
+                            <td>#1a1f2a</td>
+                            <td>~8.5:1</td>
+                            <td style="color: var(--status-success); font-weight: 600;">AAA ✓</td>
+                        </tr>
+                        <tr>
+                            <td>Red (error)</td>
+                            <td>#f87171</td>
+                            <td>#1a1f2a</td>
+                            <td>~6.7:1</td>
+                            <td style="color: var(--status-success); font-weight: 600;">AA ✓</td>
+                        </tr>
+                        <tr>
+                            <td>Muted text (timestamps)</td>
+                            <td>#555b65</td>
+                            <td>#1a1f2a</td>
+                            <td>~2.5:1</td>
+                            <td style="color: var(--status-warning); font-weight: 600;">Below AA ⚠</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="card-text mt-4">
+                    Muted text (#555b65) is used for timestamps only — supplementary information that's also communicated by position and format. Consider bumping to <code>#6b7280</code> (~3.5:1) for better compliance.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 9: INTEGRATION
+             ========================================== -->
+        <section id="integration" class="section">
+            <div class="section-header">
+                <div class="section-number">09 — Integration</div>
+                <h2 class="section-title">Fitting Into DeepFlow</h2>
+                <p class="section-desc">How the receipt chat connects to the existing panel system, WebSocket events, and chat history API.</p>
+            </div>
+
+            <div class="card-grid card-grid-2 mb-8">
+                <div class="card">
+                    <div class="card-title">Panel System</div>
+                    <p class="card-text">
+                        Replaces <code>&lt;ChatPanel /&gt;</code> in the shell layout with <code>&lt;ReceiptChat /&gt;</code>.<br><br>
+                        Uses <code>react-resizable-panels</code>: min 280px, max 400px, default 320px.<br><br>
+                        Double-click handle to collapse. Size persisted via Zustand → IndexedDB.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">WebSocket Events</div>
+                    <p class="card-text">
+                        <code>chat.message { role, content, metadata }</code><br><br>
+                        <code>role: 'user'</code> → <code>&lt;Message type="user"&gt;</code><br>
+                        <code>role: 'assistant'</code> → <code>&lt;Message type="machine"&gt;</code><br>
+                        <code>metadata.thinking</code> → <code>&lt;ThinkingDisclosure&gt;</code><br>
+                        <code>metadata.toolCalls[]</code> → <code>&lt;ToolCallDisclosure&gt;</code><br>
+                        <code>metadata.error</code> → <code>variant="error"</code>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <div class="card-title">Chat History Pagination</div>
+                    <p class="card-text">
+                        Initial load: latest thread (N messages).<br>
+                        Scroll to top → <code>onScrollTop</code> → fetch previous thread from API.<br>
+                        Older threads prepended. Thread breaks inserted by time gap.<br>
+                        TanStack Query: <code>staleTime: 5min</code>, <code>gcTime: 30min</code>.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Context Scoping</div>
+                    <p class="card-text">
+                        <strong style="color: var(--text-primary);">Dashboard:</strong> "Ask about your workflow…"<br>
+                        <strong style="color: var(--text-primary);">Graph View:</strong> "Ask about [Project]…"<br>
+                        <strong style="color: var(--text-primary);">Workspace:</strong> "Ask about this task…"<br><br>
+                        Chips update per context. Context change may trigger thread break.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             SECTION 10: ANTI-PATTERNS
+             ========================================== -->
+        <section id="anti-patterns" class="section">
+            <div class="section-header">
+                <div class="section-number">10 — Anti-Patterns</div>
+                <h2 class="section-title">Do NOT Do These</h2>
+                <p class="section-desc">Receipt chat has a very specific aesthetic. These would break it.</p>
+            </div>
+
+            <div class="card" style="border-left: 3px solid var(--status-error); border-image: none;">
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>❌ Don't</th>
+                            <th>Why</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Chat bubbles</td>
+                            <td>Messages are flat text on paper, not in rounded rectangles</td>
+                        </tr>
+                        <tr>
+                            <td>Avatars in messages</td>
+                            <td>No user/bot icons next to messages — role is shown by border + prompt</td>
+                        </tr>
+                        <tr>
+                            <td>Right-aligned user messages</td>
+                            <td>Everything is left-aligned. This is a receipt, not iMessage</td>
+                        </tr>
+                        <tr>
+                            <td>Background colours on messages</td>
+                            <td>Only exception: error variant's subtle red tint</td>
+                        </tr>
+                        <tr>
+                            <td>Sans-serif fonts</td>
+                            <td>Everything in the chat panel is monospace. No exceptions</td>
+                        </tr>
+                        <tr>
+                            <td>Emoji reactions</td>
+                            <td>This is a receipt, not Slack</td>
+                        </tr>
+                        <tr>
+                            <td>Animated typing dots</td>
+                            <td>Use "Thinking…" disclosure that converts to content</td>
+                        </tr>
+                        <tr>
+                            <td>Grouped timestamps</td>
+                            <td>Each message gets its own timestamp</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div><!-- /.container -->
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p>DeepFlow — Receipt Chat Implementation Spec · <a href="chat-architecture.html">Chat Architecture</a> · <a href="index.html">Design Guidelines</a> · <a href="brief.md">Technical Brief</a></p>
+        </div>
+    </footer>
+
+    <!-- THEME TOGGLE SCRIPT -->
+    <script>
+        const toggleBtns = document.querySelectorAll('.theme-toggle-option');
+        const root = document.documentElement;
+
+        function setTheme(theme) {
+            root.setAttribute('data-theme', theme);
+            toggleBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.themeValue === theme);
+                btn.setAttribute('aria-checked', btn.dataset.themeValue === theme);
+            });
+            localStorage.setItem('df-theme', theme);
+        }
+
+        toggleBtns.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.themeValue)));
+        const saved = localStorage.getItem('df-theme');
+        if (saved) setTheme(saved);
+    </script>
+
+</body>
+</html>
